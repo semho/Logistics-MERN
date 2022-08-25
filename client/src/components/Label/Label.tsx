@@ -1,18 +1,25 @@
 import React from "react";
 
-type TColor = "sky" | "gray" | "purple" | "red" | "yellow" | "green";
-
 interface IInputProps {
-  textColor: TColor;
+  textColor?: string;
   title: string;
   forId: string;
   className?: string;
 }
-export function Label({ textColor, title, forId, className }: IInputProps) {
-  const listClass = `form-label inline-block mb-2 text-${textColor}-700 ${className}`;
+export function Label({
+  textColor = "#374151",
+  title,
+  forId,
+  className,
+}: IInputProps) {
+  const listClass = `form-label inline-block mb-2 ${className}`;
 
   return (
-    <label htmlFor={forId} className={listClass}>
+    <label
+      htmlFor={forId}
+      className={listClass}
+      style={{ color: textColor, cursor: "pointer" }}
+    >
       {title}
     </label>
   );

@@ -27,3 +27,48 @@ button {
   background: transparent;
   cursor: pointer;
 }
+
+:root {
+  --purple: rgb(168 85 247);
+  --purple-hover: rgb(192 132 252);
+  --rose: rgb(244 63 94);
+  --rose-hover: rgb(251 113 133);
+  --gray: rgb(107 114 128);
+  --gray-hover: rgb(156 163 175);
+  --gray-light: rgb(209 213 219);
+  --gray-hard: rgb(55 65 81);
+  --sky: rgb(14 165 233);
+  --sky-hover: rgb(56 189 248);
+}
+
+.purple {
+  background-color: var(--purple);
+}
+
+.purple:hover {
+  background-color: var(--purple-hover);
+}
+
+.rose {
+  background-color: var(--rose);
+}
+
+.rose:hover {
+  background-color: var(--rose-hover);
+}
+
+.gray {
+  background-color: var(--gray);
+}
+
+.gray:hover {
+  background-color: var(--gray-hover);
+}
+
+.sky {
+  background-color: var(--sky);
+}
+
+.sky:hover {
+  background-color: var(--sky-hover);
+}

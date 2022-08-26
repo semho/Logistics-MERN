@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "../../components/Button";
+import { ButtonStyled } from "../../components/ButtonStyled/ButtonStyled";
 import { Input } from "../../components/Input";
+import { InputStyled } from "../../components/InputStyled";
 import { Label } from "../../components/Label";
+import { LabelStyled } from "../../components/LabelStyled";
 import { useHttp } from "../../hooks/useHttp";
 
 export function AuthPage() {
@@ -31,22 +34,21 @@ export function AuthPage() {
       <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
         <h1 className="text-[42px] text-center mb-5 ">Вход в приложение</h1>
         <div className="form-group mb-6">
-          <Label title="Email" forId="inputEmail" />
-          <Input
+          <LabelStyled title="Email" forId="inputEmail" textColor="gray" />
+          <InputStyled
+            colorFocus="purple"
             type="email"
-            borderColor="purple"
             id="inputEmail"
             placeholder="Введите Email"
-            ariaDescribedby="emailHelp"
             name="email"
             onChange={changeHandler}
           />
         </div>
         <div className="form-group mb-6">
-          <Label title="Пароль" forId="inputPassword" />
-          <Input
+          <LabelStyled title="Пароль" forId="inputPassword" textColor="gray" />
+          <InputStyled
+            colorFocus="purple"
             type="password"
-            borderColor="purple"
             id="inputPassword"
             placeholder="Введите пароль"
             name="password"
@@ -54,13 +56,14 @@ export function AuthPage() {
           />
         </div>
         <div className="flex justify-around ">
-          <Button
+          <ButtonStyled
             title="Авторизоваться"
             variant="purple"
             type="button"
+            onClick={registerHander}
             disabled={loading}
           />
-          <Button
+          <ButtonStyled
             title="Зарегистироваться"
             variant="sky"
             type="button"

@@ -1,19 +1,22 @@
-import React, { useState } from "react";
-import { Button } from "../../components/Button";
+import React, { useEffect, useState } from "react";
 import { ButtonStyled } from "../../components/ButtonStyled/ButtonStyled";
-import { Input } from "../../components/Input";
 import { InputStyled } from "../../components/InputStyled";
-import { Label } from "../../components/Label";
 import { LabelStyled } from "../../components/LabelStyled";
 import { useHttp } from "../../hooks/useHttp";
+import { useMessage } from "../../hooks/useMessage";
 
 export function AuthPage() {
-  const { loading, error, request } = useHttp();
-
+  const message = useMessage();
+  const { loading, error, request, clearError } = useHttp();
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    message(error, "error");
+    clearError();
+  }, [clearError, error, message]);
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [event.target.name]: event.target.value });
@@ -26,6 +29,7 @@ export function AuthPage() {
         "POST",
         JSON.stringify({ ...form })
       );
+      message(data.message, "info");
     } catch (e) {}
   };
 
@@ -33,6 +37,7 @@ export function AuthPage() {
     <div className="h-screen relative">
       <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4">
         <h1 className="text-[42px] text-center mb-5 ">Вход в приложение</h1>
+
         <div className="form-group mb-6">
           <LabelStyled title="Email" forId="inputEmail" textColor="gray" />
           <InputStyled
@@ -60,7 +65,7 @@ export function AuthPage() {
             title="Авторизоваться"
             variant="purple"
             type="button"
-            onClick={registerHander}
+            // onClick={registerHander}
             disabled={loading}
           />
           <ButtonStyled

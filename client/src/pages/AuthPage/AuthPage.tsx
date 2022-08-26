@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ButtonStyled } from "../../components/ButtonStyled/ButtonStyled";
 import { InputStyled } from "../../components/InputStyled";
 import { LabelStyled } from "../../components/LabelStyled";
+import { AuthContext } from "../../context/AuthContext";
 import { useHttp } from "../../hooks/useHttp";
 import { useMessage } from "../../hooks/useMessage";
 
 export function AuthPage() {
+  const auth = useContext(AuthContext);
   const message = useMessage();
   const { loading, error, request, clearError } = useHttp();
   const [form, setForm] = useState({
@@ -22,7 +24,7 @@ export function AuthPage() {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
-  const registerHander = async () => {
+  const registerHandler = async () => {
     try {
       const data = await request(
         "/api/auth/register",
@@ -30,6 +32,17 @@ export function AuthPage() {
         JSON.stringify({ ...form })
       );
       message(data.message, "info");
+    } catch (e) {}
+  };
+
+  const loginHandler = async () => {
+    try {
+      const data = await request(
+        "/api/auth/login",
+        "POST",
+        JSON.stringify({ ...form })
+      );
+      auth.login(data.token, data.userId);
     } catch (e) {}
   };
 
@@ -65,14 +78,14 @@ export function AuthPage() {
             title="Авторизоваться"
             variant="purple"
             type="button"
-            // onClick={registerHander}
+            onClick={loginHandler}
             disabled={loading}
           />
           <ButtonStyled
             title="Зарегистироваться"
             variant="sky"
             type="button"
-            onClick={registerHander}
+            onClick={registerHandler}
             disabled={loading}
           />
         </div>

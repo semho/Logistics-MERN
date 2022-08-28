@@ -6,22 +6,29 @@ const config = require("config");
 
 router.post("/create", auth, async (req, res) => {
   try {
-    const baseUrl = config.get("baseUrl");
-    const { fromTo, distance, product, units, forwarder, price } = req.body;
-    const sum = units * price;
-    const newRecord = new Record({
-      fromTo,
-      distance,
-      product,
-      units,
-      forwarder,
-      price,
-      sum,
-      owner: req.user.userId,
-    });
-
-    await newRecord.save();
-    res.status(201).json({ newRecord });
+    try {
+      const { fromTo, distance, product, units, forwarder, price } = req.body;
+      if (!fromTo || !distance || !product || !units || !forwarder || !price) {
+        throw new Error({ message: "Некорректные данные в полях ввода формы" });
+      }
+      const sum = units * price;
+      const newRecord = new Record({
+        fromTo,
+        distance,
+        product,
+        units,
+        forwarder,
+        price,
+        sum,
+        owner: req.user.userId,
+      });
+      await newRecord.save();
+      res.status(201).json({ message: "Запись добавлена", newRecord });
+    } catch (e) {
+      res
+        .status(400)
+        .json({ message: "Некорректные данные в полях ввода формы" });
+    }
   } catch (e) {
     res.status(500).json({ message: "Что-то пошло не так." });
   }

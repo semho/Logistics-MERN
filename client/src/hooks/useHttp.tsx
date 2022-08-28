@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 
-// interface IUser {
-//   email: string;
-//   password: string;
-// }
+type THeaders = {
+  "Content-Type"?: string;
+  Authorization?: string;
+};
 
 export function useHttp() {
   const [loading, setLoading] = useState(false);
@@ -14,14 +14,12 @@ export function useHttp() {
       url: string,
       method = "GET",
       body: null | BodyInit = null,
-      headers = {}
+      headers: THeaders = {}
     ) => {
       setLoading(true);
       try {
         if (body) {
-          headers = {
-            "Content-Type": "application/json",
-          };
+          headers["Content-Type"] = "application/json";
         }
         const response = await fetch(url, {
           method,

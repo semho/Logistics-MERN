@@ -8,7 +8,7 @@ export function Content() {
       <header className="text-xl font-bold underline">
         <Navbar />
       </header>
-      <main className="md:container md:mx-auto">
+      <main className="md:container md:mx-auto pt-10">
         <Outlet />
       </main>
     </>

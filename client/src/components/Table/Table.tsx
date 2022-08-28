@@ -1,7 +1,13 @@
 import React from "react";
+import { IListRecords } from "../../models/Record";
+import { formatDate } from "../../utils/formatDate";
 import { ButtonStyled } from "../ButtonStyled";
 
-export function Table() {
+interface ITable {
+  list: IListRecords;
+}
+
+export function Table({ list }: ITable) {
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -73,50 +79,54 @@ export function Table() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    1
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    20.10.2020
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    Данилов-Ярославль
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    60
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    Бревна березовые
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    30
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    Петров А.А.
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    4500
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    135 000
-                  </td>
-                  <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                    <ButtonStyled
-                      title="Изменить"
-                      variant="sky"
-                      type="button"
-                      disabled={false}
-                      className="mr-2"
-                    />
-                    <ButtonStyled
-                      title="Удалить"
-                      variant="rose"
-                      type="button"
-                      disabled={false}
-                    />
-                  </td>
-                </tr>
+                {list.map((record, index) => {
+                  return (
+                    <tr className="border-b" key={record._id}>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {index + 1}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {formatDate(record.date)}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {record.fromTo}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {record.distance}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {record.product}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {record.units}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {record.forwarder}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {record.price}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        {record.sum}
+                      </td>
+                      <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                        <ButtonStyled
+                          title="Изменить"
+                          variant="sky"
+                          type="button"
+                          disabled={false}
+                          className="mr-2"
+                        />
+                        <ButtonStyled
+                          title="Удалить"
+                          variant="rose"
+                          type="button"
+                          disabled={false}
+                        />
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

@@ -2,10 +2,15 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useHttp } from "../../hooks/useHttp";
 import { useMessage } from "../../hooks/useMessage";
+import { IRecord } from "../../models/Record";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 
-export function FormAddRecord() {
+interface IAddRecord {
+  updateList: (value: IRecord) => void;
+}
+
+export function FormAddRecord({ updateList }: IAddRecord) {
   const auth = useContext(AuthContext);
   const { loading, request, error, clearError } = useHttp();
   const message = useMessage();
@@ -29,6 +34,8 @@ export function FormAddRecord() {
           Authorization: `Bearer ${auth.token}`,
         }
       );
+      //отправляем запись в родительский стейт
+      updateList(data.newRecord);
       message(data.message, "info");
     } catch (e) {}
   };

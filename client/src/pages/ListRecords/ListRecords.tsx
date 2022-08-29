@@ -5,7 +5,7 @@ import { Table } from "../../components/Table";
 import { AuthContext } from "../../context/AuthContext";
 import { useHttp } from "../../hooks/useHttp";
 import { useMessage } from "../../hooks/useMessage";
-import { IListRecords } from "../../models/Record";
+import { IListRecords, IRecord } from "../../models/Record";
 
 export function ListRecords() {
   const [list, setList] = useState<IListRecords>([]);
@@ -30,6 +30,10 @@ export function ListRecords() {
   useEffect(() => {
     fetchRecords();
   }, [fetchRecords]);
+  //функция обновляет таблицу при добавлении нового значения из формы
+  function updateList(value: IRecord) {
+    setList((prev) => prev.concat(value));
+  }
 
   if (loading) {
     return <Loader />;
@@ -37,7 +41,7 @@ export function ListRecords() {
 
   return (
     <>
-      <FormAddRecord />
+      <FormAddRecord updateList={updateList} />
       {list.length > 0 && <Table list={list} />}
 
       {list.length === 0 && !loading && (

@@ -1,13 +1,59 @@
-import React from "react";
-import { IListRecords } from "../../models/Record";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useHttp } from "../../hooks/useHttp";
+import { useMessage } from "../../hooks/useMessage";
+import { IListRecords, IRecord } from "../../models/Record";
 import { formatDate } from "../../utils/formatDate";
 import { ButtonStyled } from "../ButtonStyled";
+import { Modal } from "../Modal/Modal";
 
 interface ITable {
   list: IListRecords;
+  deleteRecordFromList: (value: IRecord) => void;
 }
 
-export function Table({ list }: ITable) {
+export function Table({ list, deleteRecordFromList }: ITable) {
+  const [modalActive, setModalActive] = useState(false);
+  const [record, setRecord] = useState<IRecord>();
+  const { token } = useContext(AuthContext);
+  const message = useMessage();
+  const { loading, request, error, clearError } = useHttp();
+
+  useEffect(() => {
+    message(error, "error");
+    clearError();
+  }, [clearError, error, message]);
+
+  //удаление записи
+  const deleteRecord = async () => {
+    if (record) {
+      try {
+        const data = await request(
+          "/api/records/delete",
+          "POST",
+          JSON.stringify({ ...record }),
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        );
+        deleteRecordFromList(record);
+        message(data.message, "info");
+        setModalActive(false);
+      } catch (e) {}
+    }
+  };
+  //открываем модальное окно
+  const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setModalActive(true);
+    //получаем id записи для модального окна
+    const idRecord = (event.target as HTMLButtonElement).parentElement!
+      .parentElement!.id;
+    const record = list.find((record) => record._id === idRecord);
+    if (record) {
+      setRecord(record);
+    }
+  };
+
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -81,7 +127,7 @@ export function Table({ list }: ITable) {
               <tbody>
                 {list.map((record, index) => {
                   return (
-                    <tr className="border-b" key={record._id}>
+                    <tr className="border-b" key={record._id} id={record._id}>
                       <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                         {index + 1}
                       </td>
@@ -122,6 +168,7 @@ export function Table({ list }: ITable) {
                           variant="rose"
                           type="button"
                           disabled={false}
+                          onClick={openModal}
                         />
                       </td>
                     </tr>
@@ -132,6 +179,28 @@ export function Table({ list }: ITable) {
           </div>
         </div>
       </div>
+      <Modal active={modalActive} setActive={setModalActive}>
+        <h3 className="text-xl text-center mb-5">
+          Вы действительно хотите удалить запись? {record?._id}
+        </h3>
+        <div className="text-center">
+          <ButtonStyled
+            title="Да"
+            variant="rose"
+            type="button"
+            disabled={loading}
+            className="mr-5"
+            onClick={deleteRecord}
+          />
+          <ButtonStyled
+            title="Отмена"
+            variant="gray"
+            type="button"
+            disabled={loading}
+            onClick={() => setModalActive(false)}
+          />
+        </div>
+      </Modal>
     </div>
   );
 }

@@ -52,5 +52,15 @@ router.get("/:id", auth, async (req, res) => {
     res.status(500).json({ message: "Что-то пошло не так." });
   }
 });
+//удаляем из БД
+router.post("/delete", auth, async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const deleteRecord = await Record.deleteOne({ _id });
+    res.json({ message: "Запись удалена", deleteRecord });
+  } catch (e) {
+    res.status(500).json({ message: "Что-то пошло не так." });
+  }
+});
 
 module.exports = router;

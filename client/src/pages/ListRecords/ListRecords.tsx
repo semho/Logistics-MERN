@@ -31,8 +31,12 @@ export function ListRecords() {
     fetchRecords();
   }, [fetchRecords]);
   //функция обновляет таблицу при добавлении нового значения из формы
-  function updateList(value: IRecord) {
+  function addRecordList(value: IRecord) {
     setList((prev) => prev.concat(value));
+  }
+  //функция обновляет таблицу при удалении значения из формы
+  function deleteRecordFromList(value: IRecord) {
+    setList(list.filter((record) => record._id !== value._id));
   }
 
   if (loading) {
@@ -41,8 +45,10 @@ export function ListRecords() {
 
   return (
     <>
-      <FormAddRecord updateList={updateList} />
-      {list.length > 0 && <Table list={list} />}
+      <FormAddRecord updateList={addRecordList} />
+      {list.length > 0 && (
+        <Table list={list} deleteRecordFromList={deleteRecordFromList} />
+      )}
 
       {list.length === 0 && !loading && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>

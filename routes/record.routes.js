@@ -53,7 +53,7 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 //удаляем из БД
-router.post("/delete", auth, async (req, res) => {
+router.delete("/delete", auth, async (req, res) => {
   try {
     const { _id } = req.body;
     const deleteRecord = await Record.deleteOne({ _id });
@@ -63,7 +63,7 @@ router.post("/delete", auth, async (req, res) => {
   }
 });
 //обновляем запись в БД
-router.post("/update", auth, async (req, res) => {
+router.put("/update", auth, async (req, res) => {
   try {
     const { _id, fromTo, distance, product, units, forwarder, price } =
       req.body;

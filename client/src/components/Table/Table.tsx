@@ -40,7 +40,7 @@ export function Table({
       try {
         const data = await request(
           "/api/records/delete",
-          "POST",
+          "DELETE",
           JSON.stringify({ ...record }),
           {
             Authorization: `Bearer ${token}`,
@@ -58,7 +58,7 @@ export function Table({
       try {
         const data = await request(
           "/api/records/update",
-          "POST",
+          "PUT",
           JSON.stringify({ ...record }),
           {
             Authorization: `Bearer ${token}`,

@@ -62,5 +62,33 @@ router.post("/delete", auth, async (req, res) => {
     res.status(500).json({ message: "Что-то пошло не так." });
   }
 });
+//обновляем запись в БД
+router.post("/update", auth, async (req, res) => {
+  try {
+    const { _id, fromTo, distance, product, units, forwarder, price } =
+      req.body;
+    const sum = units * price;
+    const editRecord = await Record.updateOne(
+      { _id: _id },
+      {
+        $set: {
+          fromTo: fromTo,
+          distance: distance,
+          product: product,
+          units: units,
+          forwarder: forwarder,
+          price: price,
+          sum: sum,
+        },
+      }
+    );
 
+    if (editRecord.matchedCount === 0) {
+      throw new Error("Запись не найдена");
+    }
+    res.json({ message: "Запись изменена", editRecord });
+  } catch (e) {
+    res.status(500).json({ message: "Что-то пошло не так." });
+  }
+});
 module.exports = router;

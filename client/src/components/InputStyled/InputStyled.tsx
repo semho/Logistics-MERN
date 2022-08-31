@@ -10,6 +10,7 @@ interface IInputProps {
   name: string;
   id?: string;
   placeholder?: string;
+  value?: string | number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -21,10 +22,12 @@ export function InputStyled({
   id,
   placeholder,
   type,
+  value,
 }: IInputProps) {
   return (
     <StyleInput
       onChange={onChange}
+      value={value}
       type={type}
       name={name}
       id={id}

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useHttp } from "../../hooks/useHttp";
 import { useMessage } from "../../hooks/useMessage";
-import { IListRecords, IRecord } from "../../models/Record";
+import { IListRecords, initialEmptyState, IRecord } from "../../models/Record";
 import { formatDate } from "../../utils/formatDate";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
@@ -21,9 +21,14 @@ export function Table({
 }: ITable) {
   const [modalActiveDelete, setModalActiveDelete] = useState(false);
   const [modalActiveEdit, setModalActiveEdit] = useState(false);
-  const [record, setRecord] = useState<IRecord>();
+  const [record, setRecord] = useState<IRecord>(initialEmptyState);
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRecord({ ...record!, [event.target.name]: event.target.value });
+    if (record) {
+      setRecord({
+        ...record,
+        [event.target.name]: event.target.value,
+      });
+    }
   };
   const { token } = useContext(AuthContext);
   const message = useMessage();
@@ -64,6 +69,7 @@ export function Table({
             Authorization: `Bearer ${token}`,
           }
         );
+
         updateRecordFromList(record);
         message(data.message, "info");
         setModalActiveEdit(false);
@@ -238,7 +244,7 @@ export function Table({
         </h3>
         <div>
           <InputStyled
-            value={record?.fromTo}
+            value={record.fromTo}
             colorFocus="sky"
             type="text"
             placeholder="Откуда-Куда"
@@ -247,7 +253,7 @@ export function Table({
             className="my-2"
           />
           <InputStyled
-            value={record?.distance}
+            value={record.distance}
             colorFocus="sky"
             type="text"
             placeholder="Расстояние"
@@ -256,7 +262,7 @@ export function Table({
             className="my-2"
           />
           <InputStyled
-            value={record?.product}
+            value={record.product}
             colorFocus="sky"
             type="text"
             placeholder="Продукт"
@@ -265,7 +271,7 @@ export function Table({
             className="my-2"
           />
           <InputStyled
-            value={record?.units}
+            value={record.units}
             colorFocus="sky"
             type="text"
             placeholder="Количество"
@@ -274,7 +280,7 @@ export function Table({
             className="my-2"
           />
           <InputStyled
-            value={record?.forwarder}
+            value={record.forwarder}
             colorFocus="sky"
             type="text"
             placeholder="Ответственный"
@@ -283,7 +289,7 @@ export function Table({
             className="my-2"
           />
           <InputStyled
-            value={record?.price}
+            value={record.price}
             colorFocus="sky"
             type="text"
             placeholder="Стоимость единицы"

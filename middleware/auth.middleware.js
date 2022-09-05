@@ -1,14 +1,13 @@
-const jwt = require("jsonwebtoken");
-const config = require("config");
+import jwt from "jsonwebtoken";
+import config from "../config/default.json";
 
-module.exports = (req, res, next) => {
+export const auth = (req, res, next) => {
   if (req.method === "OPTIONS") {
     next();
   }
 
   try {
     //строку Bearer token помещаем в массив и забираем token
-
     const token = req.headers.authorization.split(" ")[1].trim();
     if (!token) {
       res.status(401).json({ message: "Нет авторизации" });
@@ -16,7 +15,7 @@ module.exports = (req, res, next) => {
 
     try {
       //декодируем токен
-      const decoded = jwt.verify(token, config.get("secretJwt"));
+      const decoded = jwt.verify(token, config.secretJwt);
       //token отправляем в request в объект user
       req.user = decoded;
       next();

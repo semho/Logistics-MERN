@@ -34,9 +34,30 @@ export function ListRecords() {
   function addRecordList(value: IRecord) {
     setList((prev) => prev.concat(value));
   }
-  //функция обновляет таблицу при удалении значения из формы
+  //функция обновляет таблицу при удалении записи из списка
   function deleteRecordFromList(value: IRecord) {
     setList(list.filter((record) => record._id !== value._id));
+  }
+
+  //функция обновляет таблицу при изменения записи из списка
+  function updateRecordFromList(value: IRecord) {
+    setList(
+      list.map((record) => {
+        if (record._id === value._id) {
+          return {
+            ...record,
+            fromTo: value.fromTo,
+            distance: value.distance,
+            product: value.product,
+            units: value.units,
+            forwarder: value.forwarder,
+            price: value.price,
+            sum: value.price * value.units,
+          };
+        }
+        return record;
+      })
+    );
   }
 
   if (loading) {
@@ -47,7 +68,11 @@ export function ListRecords() {
     <>
       <FormAddRecord updateList={addRecordList} />
       {list.length > 0 && (
-        <Table list={list} deleteRecordFromList={deleteRecordFromList} />
+        <Table
+          list={list}
+          deleteRecordFromList={deleteRecordFromList}
+          updateRecordFromList={updateRecordFromList}
+        />
       )}
 
       {list.length === 0 && !loading && (

@@ -2,19 +2,34 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useHttp } from "../../hooks/useHttp";
 import { useMessage } from "../../hooks/useMessage";
-import { IListRecords, IRecord } from "../../models/Record";
+import { IListRecords, initialEmptyState, IRecord } from "../../models/Record";
 import { formatDate } from "../../utils/formatDate";
 import { ButtonStyled } from "../ButtonStyled";
+import { InputStyled } from "../InputStyled";
 import { Modal } from "../Modal/Modal";
 
 interface ITable {
   list: IListRecords;
   deleteRecordFromList: (value: IRecord) => void;
+  updateRecordFromList: (value: IRecord) => void;
 }
 
-export function Table({ list, deleteRecordFromList }: ITable) {
-  const [modalActive, setModalActive] = useState(false);
-  const [record, setRecord] = useState<IRecord>();
+export function Table({
+  list,
+  deleteRecordFromList,
+  updateRecordFromList,
+}: ITable) {
+  const [modalActiveDelete, setModalActiveDelete] = useState(false);
+  const [modalActiveEdit, setModalActiveEdit] = useState(false);
+  const [record, setRecord] = useState<IRecord>(initialEmptyState);
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (record) {
+      setRecord({
+        ...record,
+        [event.target.name]: event.target.value,
+      });
+    }
+  };
   const { token } = useContext(AuthContext);
   const message = useMessage();
   const { loading, request, error, clearError } = useHttp();
@@ -30,7 +45,7 @@ export function Table({ list, deleteRecordFromList }: ITable) {
       try {
         const data = await request(
           "/api/records/delete",
-          "POST",
+          "DELETE",
           JSON.stringify({ ...record }),
           {
             Authorization: `Bearer ${token}`,
@@ -38,21 +53,42 @@ export function Table({ list, deleteRecordFromList }: ITable) {
         );
         deleteRecordFromList(record);
         message(data.message, "info");
-        setModalActive(false);
+        setModalActiveDelete(false);
+      } catch (e) {}
+    }
+  };
+  //редактирование записи
+  const editRecordHandler = async () => {
+    if (record) {
+      try {
+        const data = await request(
+          "/api/records/update",
+          "PUT",
+          JSON.stringify({ ...record }),
+          {
+            Authorization: `Bearer ${token}`,
+          }
+        );
+
+        updateRecordFromList(record);
+        message(data.message, "info");
+        setModalActiveEdit(false);
       } catch (e) {}
     }
   };
   //открываем модальное окно
-  const openModal = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setModalActive(true);
-    //получаем id записи для модального окна
-    const idRecord = (event.target as HTMLButtonElement).parentElement!
-      .parentElement!.id;
-    const record = list.find((record) => record._id === idRecord);
-    if (record) {
-      setRecord(record);
-    }
-  };
+  const openModal =
+    (isDelete: boolean) => (event: React.MouseEvent<HTMLButtonElement>) => {
+      isDelete ? setModalActiveDelete(true) : setModalActiveEdit(true);
+      //получаем id записи для модального окна
+      const idRecord = (event.target as HTMLButtonElement).parentElement!
+        .parentElement!.id;
+      const record = list.find((record) => record._id === idRecord);
+
+      if (record) {
+        setRecord(record);
+      }
+    };
 
   return (
     <div className="flex flex-col">
@@ -162,13 +198,14 @@ export function Table({ list, deleteRecordFromList }: ITable) {
                           type="button"
                           disabled={false}
                           className="mr-2"
+                          onClick={openModal(false)}
                         />
                         <ButtonStyled
                           title="Удалить"
                           variant="rose"
                           type="button"
                           disabled={false}
-                          onClick={openModal}
+                          onClick={openModal(true)}
                         />
                       </td>
                     </tr>
@@ -179,7 +216,7 @@ export function Table({ list, deleteRecordFromList }: ITable) {
           </div>
         </div>
       </div>
-      <Modal active={modalActive} setActive={setModalActive}>
+      <Modal active={modalActiveDelete} setActive={setModalActiveDelete}>
         <h3 className="text-xl text-center mb-5">
           Вы действительно хотите удалить запись? {record?._id}
         </h3>
@@ -197,8 +234,86 @@ export function Table({ list, deleteRecordFromList }: ITable) {
             variant="gray"
             type="button"
             disabled={loading}
-            onClick={() => setModalActive(false)}
+            onClick={() => setModalActiveDelete(false)}
           />
+        </div>
+      </Modal>
+      <Modal active={modalActiveEdit} setActive={setModalActiveEdit}>
+        <h3 className="text-xl text-center mb-5">
+          Измененине записи {record?._id}
+        </h3>
+        <div>
+          <InputStyled
+            value={record.fromTo}
+            colorFocus="sky"
+            type="text"
+            placeholder="Откуда-Куда"
+            name="fromTo"
+            onChange={changeHandler}
+            className="my-2"
+          />
+          <InputStyled
+            value={record.distance}
+            colorFocus="sky"
+            type="text"
+            placeholder="Расстояние"
+            name="distance"
+            onChange={changeHandler}
+            className="my-2"
+          />
+          <InputStyled
+            value={record.product}
+            colorFocus="sky"
+            type="text"
+            placeholder="Продукт"
+            name="product"
+            onChange={changeHandler}
+            className="my-2"
+          />
+          <InputStyled
+            value={record.units}
+            colorFocus="sky"
+            type="text"
+            placeholder="Количество"
+            name="units"
+            onChange={changeHandler}
+            className="my-2"
+          />
+          <InputStyled
+            value={record.forwarder}
+            colorFocus="sky"
+            type="text"
+            placeholder="Ответственный"
+            name="forwarder"
+            onChange={changeHandler}
+            className="my-2"
+          />
+          <InputStyled
+            value={record.price}
+            colorFocus="sky"
+            type="text"
+            placeholder="Стоимость единицы"
+            name="price"
+            onChange={changeHandler}
+            className="my-2"
+          />
+          <div className="text-center">
+            <ButtonStyled
+              title="Изменить"
+              variant="sky"
+              type="button"
+              disabled={loading}
+              className="mr-5"
+              onClick={editRecordHandler}
+            />
+            <ButtonStyled
+              title="Отмена"
+              variant="gray"
+              type="button"
+              disabled={loading}
+              onClick={() => setModalActiveEdit(false)}
+            />
+          </div>
         </div>
       </Modal>
     </div>

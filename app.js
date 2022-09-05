@@ -1,18 +1,15 @@
-// const express = require("express");
 import express from "express";
-// const config = require("config");
 import config from "./config/default.json";
-// const mongoose = require("mongoose");
 import mongoose from "mongoose";
 import authRouter from "./routes/auth.routes.js";
+import recordRouter from "./routes/record.routes.js";
 
 const app = express();
 
 app.use(express.json({ extended: true }));
 
 app.use("/api/auth", authRouter);
-// app.use("/api/auth", require("./routes/auth.routes"));
-// app.use("/api/records", require("./routes/record.routes"));
+app.use("/api/records", recordRouter);
 
 const PORT = config.port || 5000;
 

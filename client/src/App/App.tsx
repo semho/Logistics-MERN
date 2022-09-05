@@ -8,43 +8,37 @@ import { setConfig } from "react-hot-loader";
 import { useRoutes } from "../routes";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { useAuth } from "../hooks/useAuth";
-import { AuthContext } from "../context/AuthContext";
+
+import { useAppSelector } from "../redux/store";
+import { IStatusUser, dataUser } from "../redux/features/authSlice";
 
 setConfig({
   showReactDomPatchNotification: false,
 });
 
 const App = () => {
-  const { token, login, logout, userId } = useAuth();
+  const {
+    statusUser: { user },
+  }: IStatusUser = useAppSelector(dataUser);
+  const { token } = user || "";
   const isAuth = !!token;
   const routes = useRoutes(isAuth);
   return (
-    <AuthContext.Provider
-      value={{
-        token,
-        userId,
-        login,
-        logout,
-        isAuth,
-      }}
-    >
-      <BrowserRouter>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        <Layout>{routes}</Layout>
-      </BrowserRouter>
-    </AuthContext.Provider>
+    <BrowserRouter>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <Layout>{routes}</Layout>
+    </BrowserRouter>
   );
 };
 

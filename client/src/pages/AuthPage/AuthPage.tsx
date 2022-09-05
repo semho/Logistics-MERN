@@ -1,50 +1,52 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonStyled } from "../../components/ButtonStyled/ButtonStyled";
 import { InputStyled } from "../../components/InputStyled";
 import { LabelStyled } from "../../components/LabelStyled";
-import { AuthContext } from "../../context/AuthContext";
-import { useHttp } from "../../hooks/useHttp";
 import { useMessage } from "../../hooks/useMessage";
 
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { dataUser, IStatusUser, login } from "../../redux/features/authSlice";
+import { toast } from "react-toastify";
+import { Loader } from "../../components/Loader";
+
 export function AuthPage() {
-  const auth = useContext(AuthContext);
+  const {
+    statusUser: { loading, error },
+  }: IStatusUser = useAppSelector(dataUser);
+  const dispatch = useAppDispatch();
   const message = useMessage();
-  const { loading, error, request, clearError } = useHttp();
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
   useEffect(() => {
-    message(error, "error");
-    clearError();
-  }, [clearError, error, message]);
+    error && message((error as Error).message, "error");
+  }, [error, message]);
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
   const registerHandler = async () => {
-    try {
-      const data = await request(
-        "/api/auth/register",
-        "POST",
-        JSON.stringify({ ...form })
-      );
-      message(data.message, "info");
-    } catch (e) {}
+    //   try {
+    //     const data = await request(
+    //       "/api/auth/register",
+    //       "POST",
+    //       JSON.stringify({ ...form })
+    //     );
+    //     message(data.message, "info");
+    //   } catch (e) {}
   };
 
   const loginHandler = async () => {
-    try {
-      const data = await request(
-        "/api/auth/login",
-        "POST",
-        JSON.stringify({ ...form })
-      );
-      auth.login(data.token, data.userId);
-    } catch (e) {}
+    const formValue = { ...form };
+    dispatch(login({ formValue, toast }));
   };
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="h-screen relative">

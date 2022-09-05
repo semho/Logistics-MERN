@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const { Schema, Types } = mongoose;
 
@@ -8,6 +9,6 @@ const UserSchema = new Schema({
   listRecords: [{ type: Types.ObjectId, ref: "Record" }],
 });
 
-const User = mongoose.model("User", UserSchema);
+export default mongoose.model("User", UserSchema);
 
-module.exports = User;
+// module.exports = User;

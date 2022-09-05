@@ -1,11 +1,12 @@
 {
   "name": "logistics-mern",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "server": "nodemon app.js",
+    "server": "nodemon --experimental-json-modules app.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },

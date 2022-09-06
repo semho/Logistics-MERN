@@ -38,6 +38,12 @@ export function RegPage() {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
+  const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.code === "Enter") {
+      registerHandler();
+    }
+  };
+
   const registerHandler = async () => {
     const formValue = { ...form };
 
@@ -68,6 +74,7 @@ export function RegPage() {
               placeholder="Введите Email"
               name="email"
               onChange={changeHandler}
+              onKeyDown={keyDownHandler}
             />
           </div>
           <div className="form-group mb-6">
@@ -83,6 +90,7 @@ export function RegPage() {
               placeholder="Введите пароль"
               name="password"
               onChange={changeHandler}
+              onKeyDown={keyDownHandler}
             />
           </div>
           <div className="w-full">

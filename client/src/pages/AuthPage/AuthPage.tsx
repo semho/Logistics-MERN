@@ -35,9 +35,14 @@ export function AuthPage() {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
 
+  const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.code === "Enter") {
+      loginHandler();
+    }
+  };
+
   const loginHandler = async () => {
     const formValue = { ...form };
-    console.log(formValue);
     if (emptyField(formValue.email, "Email")) return;
     if (emptyField(formValue.password, "Пароль")) return;
     if (matchEmail(formValue.email)) return;
@@ -65,6 +70,7 @@ export function AuthPage() {
               placeholder="Введите Email"
               name="email"
               onChange={changeHandler}
+              onKeyDown={keyDownHandler}
             />
           </div>
           <div className="form-group mb-6">
@@ -80,6 +86,7 @@ export function AuthPage() {
               placeholder="Введите пароль"
               name="password"
               onChange={changeHandler}
+              onKeyDown={keyDownHandler}
             />
           </div>
           <div className="w-full">

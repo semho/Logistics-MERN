@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ButtonStyled } from "../../components/ButtonStyled";
@@ -6,6 +6,8 @@ import { InputStyled } from "../../components/InputStyled";
 import { LabelStyled } from "../../components/LabelStyled";
 import { Loader } from "../../components/Loader";
 import { useMessage } from "../../hooks/useMessage";
+import { useValidate } from "../../hooks/useValidate";
+import { initialUser } from "../../models/User";
 import {
   dataUser,
   IStatusUser,
@@ -20,14 +22,13 @@ export function RegPage() {
   }: IStatusUser = useAppSelector(dataUser);
   const dispatch = useAppDispatch();
   const message = useMessage();
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  const { checkingLength, emptyField, matchEmail } = useValidate();
+  const [form, setForm] = useState(initialUser);
 
   useEffect(() => {
     setAuthError((error as Error).message);
     error && message(errorAuth, "error");
+    setForm(initialUser);
   }, [error, errorAuth, message]);
   useEffect(() => {
     setAuthError("");
@@ -39,6 +40,12 @@ export function RegPage() {
 
   const registerHandler = async () => {
     const formValue = { ...form };
+
+    if (emptyField(formValue.email, "Email")) return;
+    if (emptyField(formValue.password, "Пароль")) return;
+    if (matchEmail(formValue.email)) return;
+    if (checkingLength(formValue.password, "Пароль", 6)) return;
+
     dispatch(register({ formValue, toast }));
   };
 
@@ -55,7 +62,7 @@ export function RegPage() {
           <div className="form-group mb-6">
             <LabelStyled title="Email" forId="inputEmail" textColor="gray" />
             <InputStyled
-              colorFocus="purple"
+              colorFocus="sky"
               type="email"
               id="inputEmail"
               placeholder="Введите Email"
@@ -70,7 +77,7 @@ export function RegPage() {
               textColor="gray"
             />
             <InputStyled
-              colorFocus="purple"
+              colorFocus="sky"
               type="password"
               id="inputPassword"
               placeholder="Введите пароль"

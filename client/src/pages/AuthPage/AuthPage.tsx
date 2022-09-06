@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ButtonStyled } from "../../components/ButtonStyled/ButtonStyled";
 import { InputStyled } from "../../components/InputStyled";
 import { LabelStyled } from "../../components/LabelStyled";
@@ -9,6 +9,8 @@ import { dataUser, IStatusUser, login } from "../../redux/features/authSlice";
 import { toast } from "react-toastify";
 import { Loader } from "../../components/Loader";
 import { Link } from "react-router-dom";
+import { useValidate } from "../../hooks/useValidate";
+import { initialUser } from "../../models/User";
 
 export function AuthPage() {
   const [errorAuth, setAuthError] = useState("");
@@ -17,14 +19,13 @@ export function AuthPage() {
   }: IStatusUser = useAppSelector(dataUser);
   const dispatch = useAppDispatch();
   const message = useMessage();
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  const { checkingLength, emptyField, matchEmail } = useValidate();
+  const [form, setForm] = useState(initialUser);
 
   useEffect(() => {
     setAuthError((error as Error).message);
     error && message(errorAuth, "error");
+    setForm(initialUser);
   }, [error, errorAuth, message]);
   useEffect(() => {
     setAuthError("");
@@ -36,6 +37,12 @@ export function AuthPage() {
 
   const loginHandler = async () => {
     const formValue = { ...form };
+    console.log(formValue);
+    if (emptyField(formValue.email, "Email")) return;
+    if (emptyField(formValue.password, "Пароль")) return;
+    if (matchEmail(formValue.email)) return;
+    if (checkingLength(formValue.password, "Пароль", 6)) return;
+
     dispatch(login({ formValue, toast }));
   };
 

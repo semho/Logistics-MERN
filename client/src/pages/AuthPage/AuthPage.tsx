@@ -13,7 +13,7 @@ import { useValidate } from "../../hooks/useValidate";
 import { initialUser } from "../../models/User";
 
 export function AuthPage() {
-  const [errorAuth, setAuthError] = useState("");
+  const [errorAuth, setErrorAuth] = useState("");
   const {
     statusUser: { loading, error },
   }: IStatusUser = useAppSelector(dataUser);
@@ -23,12 +23,12 @@ export function AuthPage() {
   const [form, setForm] = useState(initialUser);
 
   useEffect(() => {
-    setAuthError((error as Error).message);
+    setErrorAuth((error as Error).message);
     error && message(errorAuth, "error");
     setForm(initialUser);
   }, [error, errorAuth, message]);
   useEffect(() => {
-    setAuthError("");
+    setErrorAuth("");
   }, []);
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

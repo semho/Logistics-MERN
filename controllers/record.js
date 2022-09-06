@@ -42,9 +42,13 @@ export const createRecord = async (req, res) => {
  */
 export const getRecords = async (req, res) => {
   try {
-    //userId следует получить из middleware
-    const records = await Record.find({ owner: req.user.userId });
-    res.json(records);
+    try {
+      //userId следует получить из middleware
+      const records = await Record.find({ owner: req.user.userId });
+      res.json(records);
+    } catch (e) {
+      res.status(400).json({ message: "У пользователя записи не найдены" });
+    }
   } catch (e) {
     res.status(500).json({ message: "Что-то пошло не так." });
   }

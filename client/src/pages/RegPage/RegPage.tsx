@@ -16,7 +16,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 export function RegPage() {
-  const [errorAuth, setAuthError] = useState("");
+  const [errorAuth, setErrorAuth] = useState("");
   const {
     statusUser: { loading, error },
   }: IStatusUser = useAppSelector(dataUser);
@@ -26,12 +26,12 @@ export function RegPage() {
   const [form, setForm] = useState(initialUser);
 
   useEffect(() => {
-    setAuthError((error as Error).message);
+    setErrorAuth((error as Error).message);
     error && message(errorAuth, "error");
     setForm(initialUser);
   }, [error, errorAuth, message]);
   useEffect(() => {
-    setAuthError("");
+    setErrorAuth("");
   }, []);
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

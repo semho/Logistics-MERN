@@ -49,6 +49,21 @@ export const login = createAsyncThunk(
   }
 );
 
+export const register = createAsyncThunk(
+  "auth/register",
+  async (dataLogin: IDataLogin, { rejectWithValue }) => {
+    try {
+      const { formValue, toast } = dataLogin;
+      const response = await api.signUp(formValue);
+      toast.success("Вы зарегистрированы");
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -66,6 +81,17 @@ const authSlice = createSlice({
       state.statusUser.user = payload;
     });
     builder.addCase(login.rejected, (state, { payload }) => {
+      state.statusUser.loading = false;
+      state.statusUser.error = payload;
+    });
+    builder.addCase(register.pending, (state, { payload }) => {
+      state.statusUser.loading = true;
+    });
+    builder.addCase(register.fulfilled, (state, { payload }) => {
+      state.statusUser.loading = false;
+      state.statusUser.user = payload;
+    });
+    builder.addCase(register.rejected, (state, { payload }) => {
       state.statusUser.loading = false;
       state.statusUser.error = payload;
     });

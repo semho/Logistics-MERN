@@ -5,7 +5,12 @@ import { LabelStyled } from "../../components/LabelStyled";
 import { useMessage } from "../../hooks/useMessage";
 
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { dataUser, IStatusUser, login } from "../../redux/features/authSlice";
+import {
+  dataUser,
+  IStatusUser,
+  login,
+  register,
+} from "../../redux/features/authSlice";
 import { toast } from "react-toastify";
 import { Loader } from "../../components/Loader";
 
@@ -29,14 +34,8 @@ export function AuthPage() {
   };
 
   const registerHandler = async () => {
-    //   try {
-    //     const data = await request(
-    //       "/api/auth/register",
-    //       "POST",
-    //       JSON.stringify({ ...form })
-    //     );
-    //     message(data.message, "info");
-    //   } catch (e) {}
+    const formValue = { ...form };
+    dispatch(register({ formValue, toast }));
   };
 
   const loginHandler = async () => {

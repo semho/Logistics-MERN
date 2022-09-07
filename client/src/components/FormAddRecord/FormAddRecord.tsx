@@ -1,48 +1,42 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { AuthContext } from "../../context/AuthContext";
-import { useHttp } from "../../hooks/useHttp";
 import { useMessage } from "../../hooks/useMessage";
 import { IRecord } from "../../models/Record";
 import { dataUser, IStatusUser } from "../../redux/features/authSlice";
-import { createRecord } from "../../redux/features/recordSlice";
+import {
+  createRecord,
+  dataRecords,
+  IStoreListRecords,
+} from "../../redux/features/recordSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 
 interface IAddRecord {
-  updateList: (value: IRecord) => void;
+  updateList?: (value: IRecord) => void;
 }
 
 export function FormAddRecord({ updateList }: IAddRecord) {
-  const auth = useContext(AuthContext);
-  const { loading, request, error, clearError } = useHttp();
   const message = useMessage();
   const [record, setRecord] = useState({});
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
   };
-
+  const {
+    statusRecords: { loading, error },
+  }: IStoreListRecords = useAppSelector(dataRecords);
+  const [errorRecord, setErrorRecord] = useState("");
+  //показываем ошибки, если есть
   useEffect(() => {
-    message(error, "error");
-    clearError();
-  }, [clearError, error, message]);
+    setErrorRecord((error as Error).message);
+    error && message(errorRecord, "error");
+  }, [error, errorRecord, message]);
 
-  // const addRecordHandler = async () => {
-  //   try {
-  //     const data = await request(
-  //       "/api/records/create",
-  //       "POST",
-  //       JSON.stringify({ ...record }),
-  //       {
-  //         Authorization: `Bearer ${auth.token}`,
-  //       }
-  //     );
-  //     //отправляем запись в родительский стейт
-  //     updateList(data.newRecord);
-  //     message(data.message, "info");
-  //   } catch (e) {}
-  // };
+  //обнуляем ошибки
+  useEffect(() => {
+    setErrorRecord("");
+  }, []);
+
   //данные пользователя из redux
   const {
     statusUser: { user },

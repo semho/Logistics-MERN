@@ -84,7 +84,9 @@ export function ListRecords() {
 
   return (
     <>
-      <FormAddRecord updateList={addRecordList} />
+      <FormAddRecord
+      // updateList={addRecordList}
+      />
       {list.length > 0 && (
         <Table
           list={list}

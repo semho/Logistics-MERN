@@ -47,7 +47,6 @@ export const deleteRecord = createAsyncThunk(
       if (!!response) {
         toast.success("Запись удалена");
       }
-      // return response;
       dispatch(removeRecord(record));
     } catch (error) {
       console.log(error);
@@ -58,7 +57,7 @@ export const deleteRecord = createAsyncThunk(
 
 export const createRecord = createAsyncThunk(
   "record/createRecord",
-  async (dataRecord: IApiEmptyRecord, { rejectWithValue }) => {
+  async (dataRecord: IApiEmptyRecord, { rejectWithValue, dispatch }) => {
     try {
       const { newRecord, token, toast } = dataRecord;
       const response = await api.newRecord(newRecord, token);
@@ -68,7 +67,8 @@ export const createRecord = createAsyncThunk(
       if (!!response) {
         toast.success("Запись добавлена");
       }
-      return response;
+      dispatch(addNewRecord(response.data.answerRecord));
+      // return response;
     } catch (error) {
       console.log(error);
       return rejectWithValue((error as AxiosError).response?.data);
@@ -106,6 +106,9 @@ const recordSlice = createSlice({
         (record) => record._id !== action.payload._id
       );
     },
+    addNewRecord: (state, action: PayloadAction<IRecord>) => {
+      state.statusRecords.listRecords.push(action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getRecords.pending, (state, { payload }) => {
@@ -118,9 +121,11 @@ const recordSlice = createSlice({
     });
     builder.addCase(getRecords.rejected, setError);
     builder.addCase(deleteRecord.rejected, setError);
+    builder.addCase(createRecord.rejected, setError);
   },
 });
-export const { removeRecord } = recordSlice.actions;
+
+const { removeRecord, addNewRecord } = recordSlice.actions;
 
 export const dataRecords = (state: RootState) => state.records;
 

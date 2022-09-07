@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FormAddRecord } from "../../components/FormAddRecord";
 import { Loader } from "../../components/Loader";
 import { Table } from "../../components/Table";
@@ -88,7 +88,7 @@ export function ListRecords() {
       {list.length > 0 && (
         <Table
           list={list}
-          deleteRecordFromList={deleteRecordFromList}
+          // deleteRecordFromList={deleteRecordFromList}
           updateRecordFromList={updateRecordFromList}
         />
       )}

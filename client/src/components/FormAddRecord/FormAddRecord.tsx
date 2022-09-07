@@ -1,8 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { AuthContext } from "../../context/AuthContext";
 import { useHttp } from "../../hooks/useHttp";
 import { useMessage } from "../../hooks/useMessage";
 import { IRecord } from "../../models/Record";
+import { dataUser, IStatusUser } from "../../redux/features/authSlice";
+import { createRecord } from "../../redux/features/recordSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 
@@ -24,20 +28,30 @@ export function FormAddRecord({ updateList }: IAddRecord) {
     clearError();
   }, [clearError, error, message]);
 
+  // const addRecordHandler = async () => {
+  //   try {
+  //     const data = await request(
+  //       "/api/records/create",
+  //       "POST",
+  //       JSON.stringify({ ...record }),
+  //       {
+  //         Authorization: `Bearer ${auth.token}`,
+  //       }
+  //     );
+  //     //отправляем запись в родительский стейт
+  //     updateList(data.newRecord);
+  //     message(data.message, "info");
+  //   } catch (e) {}
+  // };
+  //данные пользователя из redux
+  const {
+    statusUser: { user },
+  }: IStatusUser = useAppSelector(dataUser);
+  const { token } = user || "";
+  const dispatch = useAppDispatch();
   const addRecordHandler = async () => {
-    try {
-      const data = await request(
-        "/api/records/create",
-        "POST",
-        JSON.stringify({ ...record }),
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      //отправляем запись в родительский стейт
-      updateList(data.newRecord);
-      message(data.message, "info");
-    } catch (e) {}
+    const newRecord = { ...record };
+    dispatch(createRecord({ newRecord, token, toast }));
   };
 
   return (

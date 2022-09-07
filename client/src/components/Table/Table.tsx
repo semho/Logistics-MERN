@@ -7,16 +7,20 @@ import { formatDate } from "../../utils/formatDate";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 import { Modal } from "../Modal/Modal";
+import { deleteRecord } from "../../redux/features/recordSlice";
+import { dataUser, IStatusUser } from "../../redux/features/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { toast } from "react-toastify";
 
 interface ITable {
   list: IListRecords;
-  deleteRecordFromList: (value: IRecord) => void;
+  // deleteRecordFromList: (value: IRecord) => void;
   updateRecordFromList: (value: IRecord) => void;
 }
 
 export function Table({
   list,
-  deleteRecordFromList,
+  // deleteRecordFromList,
   updateRecordFromList,
 }: ITable) {
   const [modalActiveDelete, setModalActiveDelete] = useState(false);
@@ -30,7 +34,7 @@ export function Table({
       });
     }
   };
-  const { token } = useContext(AuthContext);
+  // const { token } = useContext(AuthContext);
   const message = useMessage();
   const { loading, request, error, clearError } = useHttp();
 
@@ -39,22 +43,16 @@ export function Table({
     clearError();
   }, [clearError, error, message]);
 
+  const dispatch = useAppDispatch();
+  const {
+    statusUser: { user },
+  }: IStatusUser = useAppSelector(dataUser);
+  const { token } = user || "";
   //удаление записи
-  const deleteRecord = async () => {
+  const removeRecord = async () => {
     if (record) {
-      try {
-        const data = await request(
-          "/api/records/delete",
-          "DELETE",
-          JSON.stringify({ ...record }),
-          {
-            Authorization: `Bearer ${token}`,
-          }
-        );
-        deleteRecordFromList(record);
-        message(data.message, "info");
-        setModalActiveDelete(false);
-      } catch (e) {}
+      dispatch(deleteRecord({ record, token, toast }));
+      setModalActiveDelete(false);
     }
   };
   //редактирование записи
@@ -227,7 +225,7 @@ export function Table({
             type="button"
             disabled={loading}
             className="mr-5"
-            onClick={deleteRecord}
+            onClick={() => removeRecord()}
           />
           <ButtonStyled
             title="Отмена"

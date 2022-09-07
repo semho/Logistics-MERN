@@ -24,8 +24,8 @@ export const createRecord = async (req, res) => {
         sum,
         owner: req.user.userId,
       });
-      await newRecord.save();
-      res.status(201).json({ message: "Запись добавлена", newRecord });
+      const answerRecord = await newRecord.save();
+      res.status(201).json({ message: "Запись добавлена", answerRecord });
     } catch (e) {
       res
         .status(400)
@@ -68,7 +68,7 @@ export const getRecordOne = async (req, res) => {
 };
 /**
  * удаление записи
- * @param {*} res
+ * @param {*} req
  * @param {*} res
  */
 export const deleteRecord = async (req, res) => {
@@ -82,7 +82,7 @@ export const deleteRecord = async (req, res) => {
 };
 /**
  * обновление записи
- * @param {*} res
+ * @param {*} req
  * @param {*} req
  */
 export const updateRecord = async (req, res) => {

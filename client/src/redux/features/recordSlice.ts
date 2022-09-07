@@ -138,7 +138,7 @@ const recordSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getRecords.pending, (state, { payload }) => {
+    builder.addCase(getRecords.pending, (state) => {
       state.statusRecords.loading = true;
       state.statusRecords.error = "";
     });

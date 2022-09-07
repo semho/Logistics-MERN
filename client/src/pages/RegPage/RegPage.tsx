@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ButtonStyled } from "../../components/ButtonStyled";
 import { InputStyled } from "../../components/InputStyled";
 import { LabelStyled } from "../../components/LabelStyled";
 import { Loader } from "../../components/Loader";
-import { useMessage } from "../../hooks/useMessage";
+
+import { useShowError } from "../../hooks/useShowError";
 import { useValidate } from "../../hooks/useValidate";
 import { initialUser } from "../../models/User";
 import {
@@ -16,37 +17,23 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 export function RegPage() {
-  const [errorAuth, setErrorAuth] = useState("");
   const {
     statusUser: { loading, error },
   }: IStatusUser = useAppSelector(dataUser);
   const dispatch = useAppDispatch();
-  const message = useMessage();
   const { checkingLength, emptyField, matchEmail } = useValidate();
   const [form, setForm] = useState(initialUser);
-
-  useEffect(() => {
-    setErrorAuth((error as Error).message);
-    error && message(errorAuth, "error");
-    setForm(initialUser);
-  }, [error, errorAuth, message]);
-  useEffect(() => {
-    setErrorAuth("");
-  }, []);
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
-
   const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.code === "Enter") {
       registerHandler();
     }
   };
-
   const registerHandler = async () => {
     const formValue = { ...form };
-
     if (emptyField(formValue.email, "Email")) return;
     if (emptyField(formValue.password, "Пароль")) return;
     if (matchEmail(formValue.email)) return;
@@ -54,6 +41,8 @@ export function RegPage() {
 
     dispatch(register({ formValue, toast }));
   };
+
+  useShowError(error);
 
   if (loading) {
     return <Loader />;

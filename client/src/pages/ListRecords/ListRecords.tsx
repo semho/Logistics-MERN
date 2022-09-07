@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import { FormAddRecord } from "../../components/FormAddRecord";
 import { Loader } from "../../components/Loader";
 import { Table } from "../../components/Table";
-import { useMessage } from "../../hooks/useMessage";
+import { useShowError } from "../../hooks/useShowError";
 import { useToken } from "../../hooks/useToken";
 import {
   dataRecords,
@@ -12,11 +12,9 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 export function ListRecords() {
-  const [errorRecord, setErrorRecord] = useState("");
   const {
     statusRecords: { loading, error },
   }: IStoreListRecords = useAppSelector(dataRecords);
-  const message = useMessage();
   const token = useToken();
   //диспач для получения записей в redux от сервера
   const dispatch = useAppDispatch();
@@ -28,14 +26,7 @@ export function ListRecords() {
     recordsDispatch();
   }, [recordsDispatch]);
   //показываем ошибки, если есть
-  useEffect(() => {
-    setErrorRecord((error as Error).message);
-    error && message(errorRecord, "error");
-  }, [error, errorRecord, message]);
-  //удаляем ошибки
-  useEffect(() => {
-    setErrorRecord("");
-  }, []);
+  useShowError(error);
 
   if (loading) {
     return <Loader />;

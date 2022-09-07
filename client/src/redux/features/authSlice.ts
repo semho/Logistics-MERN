@@ -64,6 +64,21 @@ export const register = createAsyncThunk(
   }
 );
 
+const setLoad = (state: IStatusUser) => {
+  state.statusUser.loading = true;
+  state.statusUser.error = "";
+};
+
+const setPayload = (state: IStatusUser, { payload }: any) => {
+  state.statusUser.loading = false;
+  state.statusUser.user = payload;
+};
+
+const setError = (state: IStatusUser, { payload }: any) => {
+  state.statusUser.loading = false;
+  state.statusUser.error = payload;
+};
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -73,28 +88,12 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(login.pending, (state, { payload }) => {
-      state.statusUser.loading = true;
-    });
-    builder.addCase(login.fulfilled, (state, { payload }) => {
-      state.statusUser.loading = false;
-      state.statusUser.user = payload;
-    });
-    builder.addCase(login.rejected, (state, { payload }) => {
-      state.statusUser.loading = false;
-      state.statusUser.error = payload;
-    });
-    builder.addCase(register.pending, (state, { payload }) => {
-      state.statusUser.loading = true;
-    });
-    builder.addCase(register.fulfilled, (state, { payload }) => {
-      state.statusUser.loading = false;
-      state.statusUser.user = payload;
-    });
-    builder.addCase(register.rejected, (state, { payload }) => {
-      state.statusUser.loading = false;
-      state.statusUser.error = payload;
-    });
+    builder.addCase(login.pending, setLoad);
+    builder.addCase(login.fulfilled, setPayload);
+    builder.addCase(login.rejected, setError);
+    builder.addCase(register.pending, setLoad);
+    builder.addCase(register.fulfilled, setPayload);
+    builder.addCase(register.rejected, setError);
   },
 });
 

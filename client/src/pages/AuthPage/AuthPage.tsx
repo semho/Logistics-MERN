@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ButtonStyled } from "../../components/ButtonStyled/ButtonStyled";
 import { InputStyled } from "../../components/InputStyled";
 import { LabelStyled } from "../../components/LabelStyled";
-import { useMessage } from "../../hooks/useMessage";
 
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { dataUser, IStatusUser, login } from "../../redux/features/authSlice";
@@ -11,36 +10,24 @@ import { Loader } from "../../components/Loader";
 import { Link } from "react-router-dom";
 import { useValidate } from "../../hooks/useValidate";
 import { initialUser } from "../../models/User";
+import { useShowError } from "../../hooks/useShowError";
 
 export function AuthPage() {
-  const [errorAuth, setErrorAuth] = useState("");
   const {
     statusUser: { loading, error },
   }: IStatusUser = useAppSelector(dataUser);
   const dispatch = useAppDispatch();
-  const message = useMessage();
   const { checkingLength, emptyField, matchEmail } = useValidate();
   const [form, setForm] = useState(initialUser);
-
-  useEffect(() => {
-    setErrorAuth((error as Error).message);
-    error && message(errorAuth, "error");
-    setForm(initialUser);
-  }, [error, errorAuth, message]);
-  useEffect(() => {
-    setErrorAuth("");
-  }, []);
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [event.target.name]: event.target.value });
   };
-
   const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.code === "Enter") {
       loginHandler();
     }
   };
-
   const loginHandler = async () => {
     const formValue = { ...form };
     if (emptyField(formValue.email, "Email")) return;
@@ -50,6 +37,8 @@ export function AuthPage() {
 
     dispatch(login({ formValue, toast }));
   };
+
+  useShowError(error);
 
   if (loading) {
     return <Loader />;

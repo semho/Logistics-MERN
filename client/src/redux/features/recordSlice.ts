@@ -58,7 +58,6 @@ export const deleteRecord = createAsyncThunk(
     try {
       const { record, token, toast } = dataRecord;
       const response = await api.deleteRecord(record, token);
-      console.log(response);
       if (!!response) {
         dispatch(removeRecord(record));
         toast.success("Запись удалена");

@@ -12,6 +12,7 @@ interface IInputProps {
   placeholder?: string;
   value?: string | number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 export function InputStyled({
@@ -23,9 +24,11 @@ export function InputStyled({
   placeholder,
   type,
   value,
+  onKeyDown,
 }: IInputProps) {
   return (
     <StyleInput
+      onKeyDown={onKeyDown}
       onChange={onChange}
       value={value}
       type={type}

@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { NavbarItem } from "./NavbarItem";
+import { useAppDispatch } from "../../redux/store";
+import { removeUser } from "../../redux/features/authSlice";
 
 export function Navbar() {
-  const auth = useContext(AuthContext);
+  const dispatch = useAppDispatch();
+
   const history = useNavigate();
   const logoutHandler = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    auth.logout();
+    dispatch(removeUser(""));
     history("/");
   };
 

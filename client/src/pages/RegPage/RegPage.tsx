@@ -1,18 +1,22 @@
 import React, { useState } from "react";
-import { ButtonStyled } from "../../components/ButtonStyled/ButtonStyled";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ButtonStyled } from "../../components/ButtonStyled";
 import { InputStyled } from "../../components/InputStyled";
 import { LabelStyled } from "../../components/LabelStyled";
-
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { dataUser, IStatusUser, login } from "../../redux/features/authSlice";
-import { toast } from "react-toastify";
 import { Loader } from "../../components/Loader";
-import { Link } from "react-router-dom";
+
+import { useShowError } from "../../hooks/useShowError";
 import { useValidate } from "../../hooks/useValidate";
 import { initialUser } from "../../models/User";
-import { useShowError } from "../../hooks/useShowError";
+import {
+  dataUser,
+  IStatusUser,
+  register,
+} from "../../redux/features/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 
-export function AuthPage() {
+export function RegPage() {
   const {
     statusUser: { loading, error },
   }: IStatusUser = useAppSelector(dataUser);
@@ -25,17 +29,17 @@ export function AuthPage() {
   };
   const keyDownHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.code === "Enter") {
-      loginHandler();
+      registerHandler();
     }
   };
-  const loginHandler = async () => {
+  const registerHandler = async () => {
     const formValue = { ...form };
     if (emptyField(formValue.email, "Email")) return;
     if (emptyField(formValue.password, "Пароль")) return;
     if (matchEmail(formValue.email)) return;
     if (checkingLength(formValue.password, "Пароль", 6)) return;
 
-    dispatch(login({ formValue, toast }));
+    dispatch(register({ formValue, toast }));
   };
 
   useShowError(error);
@@ -48,12 +52,12 @@ export function AuthPage() {
     <div className="h-screen relative">
       <div className="absolute top-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/4 shadow-xl rounded divide-y-2 w-5/6 md:w-1/2 lg:w-1/4">
         <div className="px-5 pb-3">
-          <h1 className="text-[42px] text-center mb-5 ">Вход</h1>
+          <h1 className="text-[42px] text-center mb-5 ">Регистрация</h1>
 
           <div className="form-group mb-6">
             <LabelStyled title="Email" forId="inputEmail" textColor="gray" />
             <InputStyled
-              colorFocus="purple"
+              colorFocus="sky"
               type="email"
               id="inputEmail"
               placeholder="Введите Email"
@@ -69,7 +73,7 @@ export function AuthPage() {
               textColor="gray"
             />
             <InputStyled
-              colorFocus="purple"
+              colorFocus="sky"
               type="password"
               id="inputPassword"
               placeholder="Введите пароль"
@@ -80,19 +84,19 @@ export function AuthPage() {
           </div>
           <div className="w-full">
             <ButtonStyled
-              title="Авторизоваться"
-              variant="purple"
+              title="Зарегистироваться"
+              variant="sky"
               type="button"
-              onClick={loginHandler}
+              onClick={registerHandler}
               disabled={loading}
               className="w-full"
             />
           </div>
         </div>
         <p className="p-3 text-center">
-          Еще не зарегистированы?{" "}
-          <Link to="/reg" className="purple-color">
-            Зарегистрироваться
+          Уже зарегистированы?{" "}
+          <Link to="/auth" className="purple-color">
+            Авторизоваться
           </Link>
         </p>
       </div>

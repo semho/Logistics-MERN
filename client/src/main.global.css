@@ -45,6 +45,10 @@ button {
   background-color: var(--purple);
 }
 
+.purple-color {
+  color: var(--purple);
+}
+
 .purple:hover {
   background-color: var(--purple-hover);
 }
@@ -71,4 +75,8 @@ button {
 
 .sky:hover {
   background-color: var(--sky-hover);
+}
+
+a.purple-color:hover {
+  text-decoration: underline;
 }

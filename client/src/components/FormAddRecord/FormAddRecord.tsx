@@ -1,43 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { useHttp } from "../../hooks/useHttp";
-import { useMessage } from "../../hooks/useMessage";
-import { IRecord } from "../../models/Record";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { useToken } from "../../hooks/useToken";
+import {
+  createRecord,
+  dataRecords,
+  IStoreListRecords,
+} from "../../redux/features/recordSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 
-interface IAddRecord {
-  updateList: (value: IRecord) => void;
-}
-
-export function FormAddRecord({ updateList }: IAddRecord) {
-  const auth = useContext(AuthContext);
-  const { loading, request, error, clearError } = useHttp();
-  const message = useMessage();
+export function FormAddRecord() {
   const [record, setRecord] = useState({});
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
   };
-
-  useEffect(() => {
-    message(error, "error");
-    clearError();
-  }, [clearError, error, message]);
-
+  const {
+    statusRecords: { loading },
+  }: IStoreListRecords = useAppSelector(dataRecords);
+  const token = useToken();
+  const dispatch = useAppDispatch();
+  //добавляем запись
   const addRecordHandler = async () => {
-    try {
-      const data = await request(
-        "/api/records/create",
-        "POST",
-        JSON.stringify({ ...record }),
-        {
-          Authorization: `Bearer ${auth.token}`,
-        }
-      );
-      //отправляем запись в родительский стейт
-      updateList(data.newRecord);
-      message(data.message, "info");
-    } catch (e) {}
+    const newRecord = { ...record };
+    dispatch(createRecord({ newRecord, token, toast }));
   };
 
   return (

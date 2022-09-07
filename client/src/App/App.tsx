@@ -8,19 +8,14 @@ import { setConfig } from "react-hot-loader";
 import { useRoutes } from "../routes";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-
-import { useAppSelector } from "../redux/store";
-import { IStatusUser, dataUser } from "../redux/features/authSlice";
+import { useToken } from "../hooks/useToken";
 
 setConfig({
   showReactDomPatchNotification: false,
 });
 
 const App = () => {
-  const {
-    statusUser: { user },
-  }: IStatusUser = useAppSelector(dataUser);
-  const { token } = user || "";
+  const token = useToken();
   const isAuth = !!token;
   const routes = useRoutes(isAuth);
   return (

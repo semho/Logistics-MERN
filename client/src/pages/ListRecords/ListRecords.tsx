@@ -3,8 +3,7 @@ import { FormAddRecord } from "../../components/FormAddRecord";
 import { Loader } from "../../components/Loader";
 import { Table } from "../../components/Table";
 import { useMessage } from "../../hooks/useMessage";
-import { IListRecords } from "../../models/Record";
-import { dataUser, IStatusUser } from "../../redux/features/authSlice";
+import { useToken } from "../../hooks/useToken";
 import {
   dataRecords,
   getRecords,
@@ -13,12 +12,12 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 export function ListRecords() {
-  const message = useMessage();
-  //данные пользователя из redux
+  const [errorRecord, setErrorRecord] = useState("");
   const {
-    statusUser: { user },
-  }: IStatusUser = useAppSelector(dataUser);
-  const { token } = user || "";
+    statusRecords: { loading, error },
+  }: IStoreListRecords = useAppSelector(dataRecords);
+  const message = useMessage();
+  const token = useToken();
   //диспач для получения записей в redux от сервера
   const dispatch = useAppDispatch();
   const recordsDispatch = useCallback(() => {
@@ -28,25 +27,15 @@ export function ListRecords() {
   useEffect(() => {
     recordsDispatch();
   }, [recordsDispatch]);
-  //получаем актуальные данные таблицы записей из redux
-  const state = useAppSelector((state) => state.records);
-  const {
-    statusRecords: { loading, error },
-  }: IStoreListRecords = useAppSelector(dataRecords);
-
-  const [list, setList] = useState<IListRecords>([]);
-  const [errorRecord, setErrorRecord] = useState("");
   //показываем ошибки, если есть
   useEffect(() => {
     setErrorRecord((error as Error).message);
     error && message(errorRecord, "error");
   }, [error, errorRecord, message]);
-
-  //обновляем массив объектов записей при изменении стейта
+  //удаляем ошибки
   useEffect(() => {
     setErrorRecord("");
-    setList(state.statusRecords.listRecords);
-  }, [state.statusRecords.listRecords]);
+  }, []);
 
   if (loading) {
     return <Loader />;
@@ -55,11 +44,7 @@ export function ListRecords() {
   return (
     <>
       <FormAddRecord />
-      {list.length > 0 && <Table list={list} />}
-
-      {list.length === 0 && !loading && (
-        <div className="text-center text-xl mt-20">Записей пока нет</div>
-      )}
+      <Table />
     </>
   );
 }

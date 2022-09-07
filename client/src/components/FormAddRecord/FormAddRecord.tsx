@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { dataUser, IStatusUser } from "../../redux/features/authSlice";
+import { useToken } from "../../hooks/useToken";
 import {
   createRecord,
   dataRecords,
@@ -18,12 +18,7 @@ export function FormAddRecord() {
   const {
     statusRecords: { loading },
   }: IStoreListRecords = useAppSelector(dataRecords);
-
-  //данные пользователя из redux
-  const {
-    statusUser: { user },
-  }: IStatusUser = useAppSelector(dataUser);
-  const { token } = user || "";
+  const token = useToken();
   const dispatch = useAppDispatch();
   //добавляем запись
   const addRecordHandler = async () => {

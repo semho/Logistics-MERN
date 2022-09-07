@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IListRecords, initialEmptyState, IRecord } from "../../models/Record";
 import { formatDate } from "../../utils/formatDate";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 import { Modal } from "../Modal/Modal";
 import { deleteRecord, updateRecord } from "../../redux/features/recordSlice";
-import { dataUser, IStatusUser } from "../../redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { toast } from "react-toastify";
+import { useToken } from "../../hooks/useToken";
 
-interface ITable {
-  list: IListRecords;
-}
-
-export function Table({ list }: ITable) {
+export function Table() {
+  const [list, setList] = useState<IListRecords>([]);
+  //получаем актуальные данные таблицы записей из redux
+  const state = useAppSelector((state) => state.records);
   const [modalActiveDelete, setModalActiveDelete] = useState(false);
   const [modalActiveEdit, setModalActiveEdit] = useState(false);
   const [record, setRecord] = useState<IRecord>(initialEmptyState);
+  const dispatch = useAppDispatch();
+  const token = useToken();
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (record) {
       setRecord({
@@ -25,12 +26,6 @@ export function Table({ list }: ITable) {
       });
     }
   };
-
-  const dispatch = useAppDispatch();
-  const {
-    statusUser: { user },
-  }: IStatusUser = useAppSelector(dataUser);
-  const { token } = user || "";
   //удаление записи
   const removeRecord = async () => {
     if (record) {
@@ -58,6 +53,14 @@ export function Table({ list }: ITable) {
         setRecord(record);
       }
     };
+  //обновляем массив объектов записей при изменении стейта
+  useEffect(() => {
+    setList(state.statusRecords.listRecords);
+  }, [state.statusRecords.listRecords]);
+
+  if (list.length === 0 && !state.statusRecords.loading) {
+    return <div className="text-center text-xl mt-20">Записей пока нет</div>;
+  }
 
   return (
     <div className="flex flex-col">

@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { useMessage } from "../../hooks/useMessage";
-import { IRecord } from "../../models/Record";
 import { dataUser, IStatusUser } from "../../redux/features/authSlice";
 import {
   createRecord,
@@ -12,30 +10,14 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 
-interface IAddRecord {
-  updateList?: (value: IRecord) => void;
-}
-
-export function FormAddRecord({ updateList }: IAddRecord) {
-  const message = useMessage();
+export function FormAddRecord() {
   const [record, setRecord] = useState({});
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
   };
   const {
-    statusRecords: { loading, error },
+    statusRecords: { loading },
   }: IStoreListRecords = useAppSelector(dataRecords);
-  const [errorRecord, setErrorRecord] = useState("");
-  //показываем ошибки, если есть
-  useEffect(() => {
-    setErrorRecord((error as Error).message);
-    error && message(errorRecord, "error");
-  }, [error, errorRecord, message]);
-
-  //обнуляем ошибки
-  useEffect(() => {
-    setErrorRecord("");
-  }, []);
 
   //данные пользователя из redux
   const {
@@ -43,6 +25,7 @@ export function FormAddRecord({ updateList }: IAddRecord) {
   }: IStatusUser = useAppSelector(dataUser);
   const { token } = user || "";
   const dispatch = useAppDispatch();
+  //добавляем запись
   const addRecordHandler = async () => {
     const newRecord = { ...record };
     dispatch(createRecord({ newRecord, token, toast }));

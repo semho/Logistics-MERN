@@ -35,19 +35,34 @@ const initialState: IStoreListRecords = {
       },
 };
 
+export const updateRecord = createAsyncThunk(
+  "record/updateRecord",
+  async (dataRecord: IApiRecord, { rejectWithValue, dispatch }) => {
+    try {
+      const { record, token, toast } = dataRecord;
+      const response = await api.updateRecord(record, token);
+      if (!!response) {
+        dispatch(editRecord(record));
+        toast.success("Запись изменена");
+      }
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  }
+);
+
 export const deleteRecord = createAsyncThunk(
   "record/deleteRecord",
   async (dataRecord: IApiRecord, { rejectWithValue, dispatch }) => {
     try {
       const { record, token, toast } = dataRecord;
       const response = await api.deleteRecord(record, token);
-      if (!response) {
-        throw new Error("Ошибка удаления запеси из таблицы");
-      }
+      console.log(response);
       if (!!response) {
+        dispatch(removeRecord(record));
         toast.success("Запись удалена");
       }
-      dispatch(removeRecord(record));
     } catch (error) {
       console.log(error);
       return rejectWithValue((error as AxiosError).response?.data);
@@ -61,14 +76,10 @@ export const createRecord = createAsyncThunk(
     try {
       const { newRecord, token, toast } = dataRecord;
       const response = await api.newRecord(newRecord, token);
-      if (!response) {
-        throw new Error("Ошибка добавления запеси в таблицу");
-      }
       if (!!response) {
+        dispatch(addNewRecord(response.data.answerRecord));
         toast.success("Запись добавлена");
       }
-      dispatch(addNewRecord(response.data.answerRecord));
-      // return response;
     } catch (error) {
       console.log(error);
       return rejectWithValue((error as AxiosError).response?.data);
@@ -81,9 +92,6 @@ export const getRecords = createAsyncThunk(
   async (token: string, { rejectWithValue }) => {
     try {
       const response = await api.allRecords(token);
-      if (!response) {
-        throw new Error("Ошибка загрузки запесей в таблицу");
-      }
       return response.data;
     } catch (error) {
       console.log(error);
@@ -109,6 +117,25 @@ const recordSlice = createSlice({
     addNewRecord: (state, action: PayloadAction<IRecord>) => {
       state.statusRecords.listRecords.push(action.payload);
     },
+    editRecord: (state, action: PayloadAction<IRecord>) => {
+      state.statusRecords.listRecords = state.statusRecords.listRecords.map(
+        (record) => {
+          if (record._id === action.payload._id) {
+            return {
+              ...record,
+              fromTo: action.payload.fromTo,
+              distance: action.payload.distance,
+              product: action.payload.product,
+              units: action.payload.units,
+              forwarder: action.payload.forwarder,
+              price: action.payload.price,
+              sum: action.payload.price * action.payload.units,
+            };
+          }
+          return record;
+        }
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getRecords.pending, (state, { payload }) => {
@@ -122,10 +149,11 @@ const recordSlice = createSlice({
     builder.addCase(getRecords.rejected, setError);
     builder.addCase(deleteRecord.rejected, setError);
     builder.addCase(createRecord.rejected, setError);
+    builder.addCase(updateRecord.rejected, setError);
   },
 });
 
-const { removeRecord, addNewRecord } = recordSlice.actions;
+const { removeRecord, addNewRecord, editRecord } = recordSlice.actions;
 
 export const dataRecords = (state: RootState) => state.records;
 

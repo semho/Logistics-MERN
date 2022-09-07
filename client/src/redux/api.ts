@@ -26,7 +26,6 @@ export const deleteRecord = (record: IRecord, token: string) =>
   });
 
 export const updateRecord = (record: IRecord, token: string) =>
-  axios.put("/api/records/update", {
+  axios.put("/api/records/update", record, {
     headers: { Authorization: `Bearer ${token}` },
-    data: record,
   });

@@ -1,28 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { useHttp } from "../../hooks/useHttp";
-import { useMessage } from "../../hooks/useMessage";
+import React, { useState } from "react";
 import { IListRecords, initialEmptyState, IRecord } from "../../models/Record";
 import { formatDate } from "../../utils/formatDate";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 import { Modal } from "../Modal/Modal";
-import { deleteRecord } from "../../redux/features/recordSlice";
+import { deleteRecord, updateRecord } from "../../redux/features/recordSlice";
 import { dataUser, IStatusUser } from "../../redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { toast } from "react-toastify";
 
 interface ITable {
   list: IListRecords;
-  // deleteRecordFromList: (value: IRecord) => void;
-  updateRecordFromList: (value: IRecord) => void;
 }
 
-export function Table({
-  list,
-  // deleteRecordFromList,
-  updateRecordFromList,
-}: ITable) {
+export function Table({ list }: ITable) {
   const [modalActiveDelete, setModalActiveDelete] = useState(false);
   const [modalActiveEdit, setModalActiveEdit] = useState(false);
   const [record, setRecord] = useState<IRecord>(initialEmptyState);
@@ -34,14 +25,6 @@ export function Table({
       });
     }
   };
-  // const { token } = useContext(AuthContext);
-  const message = useMessage();
-  const { loading, request, error, clearError } = useHttp();
-
-  useEffect(() => {
-    message(error, "error");
-    clearError();
-  }, [clearError, error, message]);
 
   const dispatch = useAppDispatch();
   const {
@@ -58,20 +41,8 @@ export function Table({
   //редактирование записи
   const editRecordHandler = async () => {
     if (record) {
-      try {
-        const data = await request(
-          "/api/records/update",
-          "PUT",
-          JSON.stringify({ ...record }),
-          {
-            Authorization: `Bearer ${token}`,
-          }
-        );
-
-        updateRecordFromList(record);
-        message(data.message, "info");
-        setModalActiveEdit(false);
-      } catch (e) {}
+      dispatch(updateRecord({ record, token, toast }));
+      setModalActiveEdit(false);
     }
   };
   //открываем модальное окно
@@ -223,7 +194,7 @@ export function Table({
             title="Да"
             variant="rose"
             type="button"
-            disabled={loading}
+            disabled={false}
             className="mr-5"
             onClick={() => removeRecord()}
           />
@@ -231,7 +202,7 @@ export function Table({
             title="Отмена"
             variant="gray"
             type="button"
-            disabled={loading}
+            disabled={false}
             onClick={() => setModalActiveDelete(false)}
           />
         </div>
@@ -300,7 +271,7 @@ export function Table({
               title="Изменить"
               variant="sky"
               type="button"
-              disabled={loading}
+              disabled={false}
               className="mr-5"
               onClick={editRecordHandler}
             />
@@ -308,7 +279,7 @@ export function Table({
               title="Отмена"
               variant="gray"
               type="button"
-              disabled={loading}
+              disabled={false}
               onClick={() => setModalActiveEdit(false)}
             />
           </div>

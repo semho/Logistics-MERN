@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { IListRecords, initialEmptyState, IRecord } from "../../models/Record";
+import { IListRecords } from "../../models/Record";
 import { Modal } from "../Modal/Modal";
-import { deleteRecord, updateRecord } from "../../redux/features/recordSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { toast } from "react-toastify";
-import { useToken } from "../../hooks/useToken";
+import { useAppSelector } from "../../redux/store";
 import { RecordItem } from "./RecordItem";
 import { TableHead } from "./TableHead";
 import FormForModalDelete from "./FormForModalDelete/FormForModalDelete";
@@ -16,42 +13,18 @@ export function Table() {
   const state = useAppSelector((state) => state.records);
   const [modalActiveDelete, setModalActiveDelete] = useState(false);
   const [modalActiveEdit, setModalActiveEdit] = useState(false);
-  const [record, setRecord] = useState<IRecord>(initialEmptyState);
-  const dispatch = useAppDispatch();
-  const token = useToken();
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (record) {
-      setRecord({
-        ...record,
-        [event.target.name]: event.target.value,
-      });
-    }
-  };
-  //удаление записи
-  const removeRecord = async () => {
-    if (record) {
-      dispatch(deleteRecord({ record, token, toast }));
-      setModalActiveDelete(false);
-    }
-  };
-  //редактирование записи
-  const editRecordHandler = async () => {
-    if (record) {
-      dispatch(updateRecord({ record, token, toast }));
-      setModalActiveEdit(false);
-    }
-  };
+  const [idRecord, setIdRecord] = useState("");
+
   //открываем модальное окно
   const openModal =
     (isDelete: boolean) => (event: React.MouseEvent<HTMLButtonElement>) => {
       isDelete ? setModalActiveDelete(true) : setModalActiveEdit(true);
       //получаем id записи для модального окна
-      const idRecord = (event.target as HTMLButtonElement).parentElement!
-        .parentElement!.id;
-      const record = list.find((record) => record._id === idRecord);
+      const idRecord = (event.target as HTMLButtonElement).parentElement
+        ?.parentElement?.id;
 
-      if (record) {
-        setRecord(record);
+      if (idRecord) {
+        setIdRecord(idRecord);
       }
     };
   //обновляем массив объектов записей при изменении стейта
@@ -88,17 +61,14 @@ export function Table() {
       </div>
       <Modal active={modalActiveDelete} setActive={setModalActiveDelete}>
         <FormForModalDelete
-          id={record._id}
-          removeRecord={removeRecord}
           setModalActiveDelete={setModalActiveDelete}
+          id={idRecord}
         />
       </Modal>
       <Modal active={modalActiveEdit} setActive={setModalActiveEdit}>
         <FormForModalEdit
-          record={record}
-          changeHandler={changeHandler}
           setModalActiveEdit={setModalActiveEdit}
-          editRecordHandler={editRecordHandler}
+          id={idRecord}
         />
       </Modal>
     </div>

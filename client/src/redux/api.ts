@@ -19,10 +19,10 @@ export const newRecord = (record: {}, token: string) =>
     headers: { Authorization: `Bearer ${token}` },
   });
 
-export const deleteRecord = (record: IRecord, token: string) =>
+export const deleteRecord = (id: string, token: string) =>
   axios.delete("/api/records/delete", {
     headers: { Authorization: `Bearer ${token}` },
-    data: record,
+    data: { id },
   });
 
 export const updateRecord = (record: IRecord, token: string) =>

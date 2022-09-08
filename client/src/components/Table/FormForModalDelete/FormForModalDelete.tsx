@@ -1,17 +1,25 @@
 import React from "react";
+import { deleteRecord } from "../../../redux/features/recordSlice";
+import { useAppDispatch } from "../../../redux/store";
 import { ButtonStyled } from "../../ButtonStyled";
 
 interface IFormDelete {
   id: string;
-  removeRecord: () => Promise<void>;
   setModalActiveDelete: (value: React.SetStateAction<boolean>) => void;
 }
 
 export default function FormForModalDelete({
-  id,
-  removeRecord,
   setModalActiveDelete,
+  id,
 }: IFormDelete) {
+  const dispatch = useAppDispatch();
+  const removeRecord = async () => {
+    if (id) {
+      dispatch(deleteRecord(id));
+      setModalActiveDelete(false);
+    }
+  };
+
   return (
     <>
       <h3 className="text-xl text-center mb-5">

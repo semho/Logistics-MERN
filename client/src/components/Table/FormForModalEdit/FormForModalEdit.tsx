@@ -1,25 +1,50 @@
-import React from "react";
-import { IRecord } from "../../../models/Record";
+import React, { useEffect, useState } from "react";
+import { initialEmptyState, IRecord } from "../../../models/Record";
+import { updateRecord } from "../../../redux/features/recordSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store";
 import { ButtonStyled } from "../../ButtonStyled";
 import { InputStyled } from "../../InputStyled";
 
 interface IFormEdit {
-  record: IRecord;
-  editRecordHandler: () => Promise<void>;
   setModalActiveEdit: (value: React.SetStateAction<boolean>) => void;
-  changeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  id: string;
 }
 
 export default function FormForModalEdit({
-  record,
-  changeHandler,
   setModalActiveEdit,
-  editRecordHandler,
+  id,
 }: IFormEdit) {
+  const dispatch = useAppDispatch();
+  const [record, setRecord] = useState<IRecord>(initialEmptyState);
+  const recordById = useAppSelector((state) =>
+    state.records.statusRecords.listRecords.find((record) => record._id === id)
+  );
+
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (record) {
+      setRecord({
+        ...record,
+        [event.target.name]: event.target.value,
+      });
+    }
+  };
+
+  //редактирование записи
+  const editRecordHandler = async () => {
+    if (id && record) {
+      dispatch(updateRecord({ record }));
+      setModalActiveEdit(false);
+    }
+  };
+
+  useEffect(() => {
+    if (recordById) setRecord(recordById);
+  }, [recordById]);
+
   return (
     <>
       <h3 className="text-xl text-center mb-5">
-        Измененине записи №&nbsp;{record?._id}
+        Измененине записи №&nbsp;{id}
       </h3>
       <div>
         <InputStyled

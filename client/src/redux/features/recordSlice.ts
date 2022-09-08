@@ -15,14 +15,10 @@ export interface IStoreListRecords {
 
 interface IApiEmptyRecord {
   newRecord: {};
-  token: string;
-  toast: typeof toast;
 }
 
 interface IApiRecord {
   record: IRecord;
-  token: string;
-  toast: typeof toast;
 }
 
 const initialState: IStoreListRecords = {
@@ -37,9 +33,12 @@ const initialState: IStoreListRecords = {
 
 export const updateRecord = createAsyncThunk(
   "record/updateRecord",
-  async (dataRecord: IApiRecord, { rejectWithValue, dispatch }) => {
+  async (dataRecord: IApiRecord, { rejectWithValue, dispatch, getState }) => {
     try {
-      const { record, token, toast } = dataRecord;
+      const appState = getState() as RootState;
+      const token = appState.auth.statusUser.user.token;
+
+      const { record } = dataRecord;
       const response = await api.updateRecord(record, token);
       if (!!response) {
         dispatch(editRecord(record));
@@ -54,12 +53,14 @@ export const updateRecord = createAsyncThunk(
 
 export const deleteRecord = createAsyncThunk(
   "record/deleteRecord",
-  async (dataRecord: IApiRecord, { rejectWithValue, dispatch }) => {
+  async (id: string, { rejectWithValue, dispatch, getState }) => {
     try {
-      const { record, token, toast } = dataRecord;
-      const response = await api.deleteRecord(record, token);
+      const appState = getState() as RootState;
+      const token = appState.auth.statusUser.user.token;
+
+      const response = await api.deleteRecord(id, token);
       if (!!response) {
-        dispatch(removeRecord(record));
+        dispatch(removeRecord(id));
         toast.success("Запись удалена");
       }
     } catch (error) {
@@ -71,9 +72,15 @@ export const deleteRecord = createAsyncThunk(
 
 export const createRecord = createAsyncThunk(
   "record/createRecord",
-  async (dataRecord: IApiEmptyRecord, { rejectWithValue, dispatch }) => {
+  async (
+    dataRecord: IApiEmptyRecord,
+    { rejectWithValue, dispatch, getState }
+  ) => {
     try {
-      const { newRecord, token, toast } = dataRecord;
+      const appState = getState() as RootState;
+      const token = appState.auth.statusUser.user.token;
+
+      const { newRecord } = dataRecord;
       const response = await api.newRecord(newRecord, token);
       if (!!response) {
         dispatch(addNewRecord(response.data.answerRecord));
@@ -88,8 +95,10 @@ export const createRecord = createAsyncThunk(
 
 export const getRecords = createAsyncThunk(
   "record/getRecords",
-  async (token: string, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
+      const appState = getState() as RootState;
+      const token = appState.auth.statusUser.user.token;
       const response = await api.allRecords(token);
       return response.data;
     } catch (error) {
@@ -108,9 +117,9 @@ const recordSlice = createSlice({
   name: "tableRecords",
   initialState,
   reducers: {
-    removeRecord: (state, action: PayloadAction<IRecord>) => {
+    removeRecord: (state, action: PayloadAction<string>) => {
       state.statusRecords.listRecords = state.statusRecords.listRecords.filter(
-        (record) => record._id !== action.payload._id
+        (record) => record._id !== action.payload
       );
     },
     addNewRecord: (state, action: PayloadAction<IRecord>) => {

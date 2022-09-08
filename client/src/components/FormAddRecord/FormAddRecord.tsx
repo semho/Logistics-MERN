@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
-import { useToken } from "../../hooks/useToken";
 import {
   createRecord,
   dataRecords,
@@ -18,19 +16,18 @@ export function FormAddRecord() {
   const {
     statusRecords: { loading },
   }: IStoreListRecords = useAppSelector(dataRecords);
-  const token = useToken();
   const dispatch = useAppDispatch();
   //добавляем запись
   const addRecordHandler = async () => {
     const newRecord = { ...record };
-    dispatch(createRecord({ newRecord, token, toast }));
+    dispatch(createRecord({ newRecord }));
   };
 
   return (
     <>
       <h3 className="text-2xl mb-5 ">Добавить запись:</h3>
       <div className="form-group mb-6 flex flex-wrap">
-        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+        <div className="w-full md:w-1/6  px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
             type="text"
@@ -57,7 +54,7 @@ export function FormAddRecord() {
             onChange={changeHandler}
           />
         </div>
-        <div className="w-full md:w-1/12 px-3 mb-6 md:mb-0">
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
             type="text"
@@ -75,7 +72,7 @@ export function FormAddRecord() {
             onChange={changeHandler}
           />
         </div>
-        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+        <div className="w-full md:w-1/6 lg:w-1/12 px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
             type="text"
@@ -84,7 +81,7 @@ export function FormAddRecord() {
             onChange={changeHandler}
           />
         </div>
-        <div className="w-full md:w-1/12 px-3 mb-6 md:mb-0">
+        <div className="w-full md:w-full md:pt-5 lg:w-1/12 lg:pt-0 px-3 mb-6 md:mb-0">
           <ButtonStyled
             title="Добавить"
             variant="sky"

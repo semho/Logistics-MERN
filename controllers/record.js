@@ -71,8 +71,10 @@ export const getRecordOne = async (req, res) => {
 export const deleteRecord = async (req, res) => {
   try {
     try {
-      const { _id } = req.body;
-      const recordDelete = await Record.deleteOne({ _id });
+      const { id } = req.body;
+      const recordDelete = await Record.deleteOne({
+        _id: id,
+      });
       if (recordDelete.deletedCount === 0)
         throw new Error("Не удалось удалить запись из базы данных");
       res.json({ message: "Запись удалена", recordDelete });

@@ -4,6 +4,8 @@ import { Content } from "./components/Content/Content";
 import { AuthPage } from "./pages/AuthPage";
 import { ListRecords } from "./pages/ListRecords";
 import { RegPage } from "./pages/RegPage";
+import SettingsPage from "./pages/SettingsPage/SettingsPage";
+import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
 
 export function useRoutes(isAuth: boolean) {
   if (isAuth) {
@@ -11,6 +13,8 @@ export function useRoutes(isAuth: boolean) {
       <Routes>
         <Route path="/" element={<Content />}>
           <Route path="/" element={<ListRecords />} />
+          <Route path="/statistics" element={<StatisticsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

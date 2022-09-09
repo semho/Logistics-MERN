@@ -36,13 +36,26 @@ export function Table() {
     return <div className="text-center text-xl mt-20">Записей пока нет</div>;
   }
 
+  const cellNames = [
+    "#",
+    "Дата",
+    "Откуда-Куда",
+    "Расстояние, км",
+    "Товар",
+    "Количество, м3",
+    "Ответственный",
+    "Стоимость единицы, руб",
+    "Сумма товара, руб",
+    "Действия",
+  ];
+
   return (
     <div className="flex flex-col">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
           <div className="overflow-hidden">
             <table className="min-w-full">
-              <TableHead />
+              <TableHead cellNames={cellNames} />
               <tbody>
                 {list.map((record, index) => {
                   return (

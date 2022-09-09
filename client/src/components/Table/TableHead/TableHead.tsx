@@ -1,20 +1,17 @@
 import React from "react";
 import { CeilHead } from "./CeilHead";
 
-export function TableHead() {
+interface ITableHead {
+  cellNames: string[];
+}
+
+export function TableHead({ cellNames }: ITableHead) {
   return (
     <thead className="border-b">
       <tr>
-        <CeilHead>#</CeilHead>
-        <CeilHead>Дата</CeilHead>
-        <CeilHead>Откуда-Куда</CeilHead>
-        <CeilHead>Расстояние, км</CeilHead>
-        <CeilHead>Товар</CeilHead>
-        <CeilHead>Количество, м3</CeilHead>
-        <CeilHead>Ответственный</CeilHead>
-        <CeilHead>Стоимость единицы, руб</CeilHead>
-        <CeilHead>Сумма товара, руб</CeilHead>
-        <CeilHead>Действия</CeilHead>
+        {cellNames.map((title) => (
+          <CeilHead key={title}>{title}</CeilHead>
+        ))}
       </tr>
     </thead>
   );

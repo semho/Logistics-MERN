@@ -8,86 +8,69 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 
-export function FormAddRecord() {
+export function FormAddForwarder() {
   const [record, setRecord] = useState({});
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
   };
-  const {
-    statusRecords: { loading },
-  }: IStoreListRecords = useAppSelector(dataRecords);
-  const dispatch = useAppDispatch();
-  //добавляем запись
-  const addRecordHandler = async () => {
-    const newRecord = { ...record };
-    dispatch(createRecord({ newRecord }));
-  };
+  //TODO: добавить загрузку
+  // const {
+  //   statusRecords: { loading },
+  // }: IStoreListRecords = useAppSelector(dataRecords);
+  // const dispatch = useAppDispatch();
+  // const addRecordHandler = async () => {
+  //   const newRecord = { ...record };
+  //TODO: добавить в redux
+  //   dispatch();
+  // };
 
   return (
     <>
-      <h3 className="text-2xl mb-5 ">Добавить запись:</h3>
+      <h3 className="text-2xl mb-5 ">Добавить ответственного за доставку:</h3>
       <div className="form-group mb-6 flex flex-wrap">
-        <div className="w-full md:w-1/6  px-3 mb-6 md:mb-0">
-          <InputStyled
-            colorFocus="sky"
-            type="text"
-            placeholder="Откуда-Куда"
-            name="fromTo"
-            onChange={changeHandler}
-          />
-        </div>
         <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
             type="text"
-            placeholder="Расстояние"
-            name="distance"
-            onChange={changeHandler}
-          />
-        </div>
-        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-          <InputStyled
-            colorFocus="sky"
-            type="text"
-            placeholder="Продукт"
-            name="product"
-            onChange={changeHandler}
-          />
-        </div>
-        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-          <InputStyled
-            colorFocus="sky"
-            type="text"
-            placeholder="Количество"
-            name="units"
-            onChange={changeHandler}
-          />
-        </div>
-        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
-          <InputStyled
-            colorFocus="sky"
-            type="text"
-            placeholder="Ответственный"
+            placeholder="Фамилия И.О."
             name="forwarder"
             onChange={changeHandler}
           />
         </div>
-        <div className="w-full md:w-1/6 lg:w-1/12 px-3 mb-6 md:mb-0">
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
             type="text"
-            placeholder="Цена"
-            name="price"
+            placeholder="Дата Рождения"
+            name="birth"
             onChange={changeHandler}
           />
         </div>
-        <div className="w-full md:w-full md:pt-5 lg:w-1/12 lg:pt-0 px-3 mb-6 md:mb-0">
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+          <InputStyled
+            colorFocus="sky"
+            type="text"
+            placeholder="№ водительских прав"
+            name="number"
+            onChange={changeHandler}
+          />
+        </div>
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+          <InputStyled
+            colorFocus="sky"
+            type="text"
+            placeholder="Марка машины"
+            name="carBrand"
+            onChange={changeHandler}
+          />
+        </div>
+        <div className="w-full md:pt-0 md:w-1/6 lg:pt-0 px-3 mb-6 md:mb-0">
           <ButtonStyled
             title="Добавить"
             variant="sky"
             type="button"
-            disabled={loading}
-            onClick={addRecordHandler}
+            disabled={false}
+            // onClick={addRecordHandler}
           />
         </div>
       </div>

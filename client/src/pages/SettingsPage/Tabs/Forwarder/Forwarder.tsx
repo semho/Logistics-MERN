@@ -9,6 +9,7 @@ export default function Forwarder() {
     "Дата Рождения",
     "Гос. номер",
     "Марка машины",
+    "Действия",
   ];
   const list = [
     {
@@ -35,9 +36,8 @@ export default function Forwarder() {
   ];
   return (
     <>
-      <div className="pt-5">
-        <FormAddForwarder />
-      </div>
+      <FormAddForwarder />
+
       <TableSettings nameThead={cellNames} data={list} />
     </>
   );

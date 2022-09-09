@@ -26,14 +26,23 @@ export function FormAddProduct() {
 
   return (
     <>
-      <h3 className="text-2xl mb-5 ">Добавить товар в список:</h3>
-      <div className="form-group mb-6 flex flex-wrap">
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      <h3 className="text-2xl mb-5 mt-5">Добавить товар в список:</h3>
+      <div className="form-group mb-6 flex flex-wrap justify-center">
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
             type="text"
             placeholder="Товар"
             name="product"
+            onChange={changeHandler}
+          />
+        </div>
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+          <InputStyled
+            colorFocus="sky"
+            type="text"
+            placeholder="Единица измерения"
+            name="unit"
             onChange={changeHandler}
           />
         </div>

@@ -26,9 +26,11 @@ export function FormAddPointsDestination() {
 
   return (
     <>
-      <h3 className="text-2xl mb-5 ">Добавить пункт отправления-назначения:</h3>
-      <div className="form-group mb-6 flex flex-wrap">
-        <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+      <h3 className="text-2xl mb-5 mt-5">
+        Добавить пункт отправления-назначения:
+      </h3>
+      <div className="form-group mb-6 flex flex-wrap justify-center">
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
             type="text"
@@ -37,7 +39,7 @@ export function FormAddPointsDestination() {
             onChange={changeHandler}
           />
         </div>
-        <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
             type="text"
@@ -46,7 +48,25 @@ export function FormAddPointsDestination() {
             onChange={changeHandler}
           />
         </div>
-        <div className="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+          <InputStyled
+            colorFocus="sky"
+            type="text"
+            placeholder="Отправитель"
+            name="sender"
+            onChange={changeHandler}
+          />
+        </div>
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
+          <InputStyled
+            colorFocus="sky"
+            type="text"
+            placeholder="Получатель"
+            name="recipient"
+            onChange={changeHandler}
+          />
+        </div>
+        <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
             type="text"

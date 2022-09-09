@@ -26,8 +26,10 @@ export function FormAddForwarder() {
 
   return (
     <>
-      <h3 className="text-2xl mb-5 ">Добавить ответственного за доставку:</h3>
-      <div className="form-group mb-6 flex flex-wrap">
+      <h3 className="text-2xl mb-5 mt-5">
+        Добавить ответственного за доставку:
+      </h3>
+      <div className="form-group mb-6 flex flex-wrap justify-center">
         <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
           <InputStyled
             colorFocus="sky"
@@ -50,7 +52,7 @@ export function FormAddForwarder() {
           <InputStyled
             colorFocus="sky"
             type="text"
-            placeholder="№ водительских прав"
+            placeholder="Гос. номер машины"
             name="number"
             onChange={changeHandler}
           />

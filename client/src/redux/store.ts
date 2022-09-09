@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import AuthReducer from "./features/authSlice";
 import RecordReducer from "./features/recordSlice";
+import SettingsReducer from "./features/settingsSlice";
 
 //NOTE: собираем localStorage для помещения данных в Middleware
 const localStorageMiddleware = ({ getState }: any) => {
@@ -22,6 +23,7 @@ const store = configureStore({
   reducer: {
     auth: AuthReducer,
     records: RecordReducer,
+    settings: SettingsReducer,
   },
   preloadedState: reHydrateStore(),
   middleware: (getDefaultMiddleware) =>

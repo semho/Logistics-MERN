@@ -22,7 +22,7 @@ export default function TableRow({ id, valueRow, index }: ITableRow) {
       {Object.values(valueRow).map((title) => (
         <TableCeil key={title} title={String(title)} />
       ))}
-      <CeilItem>
+      <CeilItem className="w-1/4">
         <ButtonStyled
           title="Изменить"
           variant="sky"

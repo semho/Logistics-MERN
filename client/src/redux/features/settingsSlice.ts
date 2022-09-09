@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  initialSettingsDestination,
-  initialSettingsForwarder,
-  initialSettingsProduct,
   ISettingsDestination,
   ISettingsForwarder,
   ISettingsProduct,
@@ -28,9 +25,9 @@ const initialState: IStoreSettings = {
     ? JSON.parse(localStorage.getItem("allSettings") || "{}")
     : {
         allSettings: {
-          settingsDestination: [initialSettingsDestination],
-          settingsProduct: [initialSettingsProduct],
-          settingsForwarder: [initialSettingsForwarder],
+          settingsDestination: [],
+          settingsProduct: [],
+          settingsForwarder: [],
         },
         error: "",
         loading: false,
@@ -52,6 +49,8 @@ const settingsSlice = createSlice({
     },
   },
 });
+
+export const { newDestination, removeDestination } = settingsSlice.actions;
 
 export const dataSettings = (state: RootState) => state.settings;
 

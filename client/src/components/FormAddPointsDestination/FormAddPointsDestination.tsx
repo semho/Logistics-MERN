@@ -1,28 +1,30 @@
 import React, { useState } from "react";
-import {
-  createRecord,
-  dataRecords,
-  IStoreListRecords,
-} from "../../redux/features/recordSlice";
+import { useValidate } from "../../hooks/useValidate";
+import { initialSettingsDestination } from "../../models/Settings";
+import { newDestination } from "../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
 
 export function FormAddPointsDestination() {
-  const [record, setRecord] = useState({});
+  const { emptyField, zeroField } = useValidate();
+  const [record, setRecord] = useState(initialSettingsDestination);
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
   };
-  //TODO: добавить загрузку
-  // const {
-  //   statusRecords: { loading },
-  // }: IStoreListRecords = useAppSelector(dataRecords);
-  // const dispatch = useAppDispatch();
-  // const addRecordHandler = async () => {
-  //   const newRecord = { ...record };
-  //TODO: добавить в redux
-  //   dispatch();
-  // };
+  //TODO: разкоментить, когда сделаем асинхронную загрузку
+  // const loading = useAppSelector(state => state.settings.statusSettings.loading)
+  const dispatch = useAppDispatch();
+  const addRecordSettingsHandler = async () => {
+    const newRecord = { ...record };
+    if (emptyField(record.from, 'Поле ввода "Откуда"')) return;
+    if (emptyField(record.to, 'Поле ввода "Куда"')) return;
+    if (emptyField(record.sender, 'Поле ввода "Отправитель"')) return;
+    if (emptyField(record.recipient, 'Поле ввода "Получатель"')) return;
+    if (zeroField(record.distance, 'Поле ввода "Расстояние"')) return;
+    //TODO: сделать асинхронное добавление
+    // dispatch(newDestination(newRecord));
+  };
 
   return (
     <>
@@ -81,7 +83,7 @@ export function FormAddPointsDestination() {
             variant="sky"
             type="button"
             disabled={false}
-            // onClick={addRecordHandler}
+            onClick={addRecordSettingsHandler}
           />
         </div>
       </div>

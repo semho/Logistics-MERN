@@ -1,16 +1,20 @@
 export interface ISettingsDestination {
-  fromTo: string;
+  from: string;
+  to: string;
   distance: number;
-  senderToRecipient: string;
+  sender: string;
+  recipient: string;
   owner: string;
   __v: number;
   _id: string;
 }
 
 export const initialSettingsDestination: ISettingsDestination = {
-  fromTo: "",
+  from: "",
+  to: "",
+  sender: "",
+  recipient: "",
   distance: Number(),
-  senderToRecipient: "",
   owner: "",
   __v: Number(),
   _id: "",

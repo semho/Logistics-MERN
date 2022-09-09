@@ -1,25 +1,23 @@
-import Record from "../models/Record.js";
+import Destination from "../models/Destination.js";
+
 /**
  * Создание записи
  * @param {*} req
  * @param {*} res
  */
-export const createRecord = async (req, res) => {
+export const createDestination = async (req, res) => {
   try {
     try {
-      const { fromTo, distance, product, units, forwarder, price } = req.body;
-      if (!fromTo || !distance || !product || !units || !forwarder || !price) {
+      const { from, to, sender, recipient, distance } = req.body;
+      if (!from || !to || !sender || !recipient || !distance) {
         throw new Error("Некорректные данные в полях ввода формы");
       }
-      const sum = units * price;
-      const newRecord = new Record({
-        fromTo,
+      const newRecord = new Destination({
+        from,
+        to,
+        sender,
+        recipient,
         distance,
-        product,
-        units,
-        forwarder,
-        price,
-        sum,
         owner: req.user.userId,
       });
       const answerRecord = await newRecord.save();
@@ -36,11 +34,11 @@ export const createRecord = async (req, res) => {
  * @param {*} req
  * @param {*} res
  */
-export const getRecords = async (req, res) => {
+export const getDestination = async (req, res) => {
   try {
     try {
       //userId следует получить из middleware
-      const records = await Record.find({ owner: req.user.userId });
+      const records = await Destination.find({ owner: req.user.userId });
       res.json(records);
     } catch (e) {
       res.status(400).json({ message: "У пользователя записи не найдены" });
@@ -50,28 +48,15 @@ export const getRecords = async (req, res) => {
   }
 };
 /**
- * получение одной записи
- * @param {*} req
- * @param {*} res
- */
-export const getRecordOne = async (req, res) => {
-  try {
-    const record = await Record.findById(req.params.id);
-    res.json(record);
-  } catch (e) {
-    res.status(500).json({ message: "Что-то пошло не так." });
-  }
-};
-/**
  * удаление записи
  * @param {*} req
  * @param {*} res
  */
-export const deleteRecord = async (req, res) => {
+export const deleteDestination = async (req, res) => {
   try {
     try {
       const { id } = req.body;
-      const recordDelete = await Record.deleteOne({
+      const recordDelete = await Destination.deleteOne({
         _id: id,
       });
       if (recordDelete.deletedCount === 0)
@@ -89,23 +74,19 @@ export const deleteRecord = async (req, res) => {
  * @param {*} req
  * @param {*} req
  */
-export const updateRecord = async (req, res) => {
+export const updateDestination = async (req, res) => {
   try {
     try {
-      const { _id, fromTo, distance, product, units, forwarder, price } =
-        req.body;
-      const sum = units * price;
-      const editRecord = await Record.updateOne(
+      const { _id, from, to, sender, recipient, distance } = req.body;
+      const editRecord = await Destination.updateOne(
         { _id: _id },
         {
           $set: {
-            fromTo: fromTo,
+            from: from,
+            to: to,
+            sender: sender,
+            recipient: recipient,
             distance: distance,
-            product: product,
-            units: units,
-            forwarder: forwarder,
-            price: price,
-            sum: sum,
           },
         }
       );

@@ -5,6 +5,7 @@ import TableRow from "./TableRow/TableRow";
 interface ITableSettings {
   nameThead: string[];
   data: {
+    id: string;
     [key: string]: string | number;
   }[];
 }

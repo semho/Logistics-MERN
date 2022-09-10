@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useValidate } from "../../hooks/useValidate";
 import { initialSettingsDestination } from "../../models/Settings";
-import { newDestination } from "../../redux/features/settingsSlice";
+import { createDestination } from "../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../ButtonStyled";
 import { InputStyled } from "../InputStyled";
@@ -12,8 +12,9 @@ export function FormAddPointsDestination() {
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
   };
-  //TODO: разкоментить, когда сделаем асинхронную загрузку
-  // const loading = useAppSelector(state => state.settings.statusSettings.loading)
+  const loading = useAppSelector(
+    (state) => state.settings.statusSettings.loading
+  );
   const dispatch = useAppDispatch();
   const addRecordSettingsHandler = async () => {
     const newRecord = { ...record };
@@ -22,8 +23,8 @@ export function FormAddPointsDestination() {
     if (emptyField(record.sender, 'Поле ввода "Отправитель"')) return;
     if (emptyField(record.recipient, 'Поле ввода "Получатель"')) return;
     if (zeroField(record.distance, 'Поле ввода "Расстояние"')) return;
-    //TODO: сделать асинхронное добавление
-    // dispatch(newDestination(newRecord));
+
+    dispatch(createDestination({ newRecord }));
   };
 
   return (
@@ -82,7 +83,7 @@ export function FormAddPointsDestination() {
             title="Добавить"
             variant="sky"
             type="button"
-            disabled={false}
+            disabled={loading}
             onClick={addRecordSettingsHandler}
           />
         </div>

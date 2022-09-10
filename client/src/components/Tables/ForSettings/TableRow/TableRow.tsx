@@ -8,18 +8,19 @@ interface IOBjRow {
 }
 
 interface ITableRow {
-  id: string | number;
+  id: string;
   valueRow: IOBjRow;
   index: number;
 }
 
 export default function TableRow({ id, valueRow, index }: ITableRow) {
-  delete valueRow.id;
+  const newObj = { ...valueRow };
+  delete newObj.id;
 
   return (
-    <tr className="border-b" id={String(id)}>
+    <tr className="border-b" id={id} key={id}>
       <CeilItem>{index}</CeilItem>
-      {Object.values(valueRow).map((title) => (
+      {Object.values(newObj).map((title) => (
         <TableCeil key={title} title={String(title)} />
       ))}
       <CeilItem className="w-1/4">

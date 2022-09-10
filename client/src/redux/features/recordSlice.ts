@@ -13,7 +13,7 @@ export interface IStoreListRecords {
   };
 }
 
-interface IApiEmptyRecord {
+export interface IApiEmptyRecord {
   newRecord: {};
 }
 

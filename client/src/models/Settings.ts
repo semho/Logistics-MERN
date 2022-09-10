@@ -9,15 +9,20 @@ export interface ISettingsDestination {
   _id: string;
 }
 
-export const initialSettingsDestination: ISettingsDestination = {
+export interface ISettingsDestinationShort {
+  from: string;
+  to: string;
+  distance: number;
+  sender: string;
+  recipient: string;
+}
+
+export const initialSettingsDestination: ISettingsDestinationShort = {
   from: "",
   to: "",
   sender: "",
   recipient: "",
   distance: Number(),
-  owner: "",
-  __v: Number(),
-  _id: "",
 };
 
 export interface IListSettingDestination extends Array<ISettingsDestination> {}

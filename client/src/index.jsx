@@ -7,6 +7,11 @@ import store from "./redux/store";
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 
+//вставляем элемент в DOM для портала
+const modal = document.createElement("div");
+modal.setAttribute("id", "modal_root");
+document.body.appendChild(modal);
+
 const render = (Component) => {
   root.render(
     <Provider store={store}>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IListRecords } from "../../models/Record";
-import { Modal } from "../Modal/Modal";
+import Modal from "../ModalWindows/ModalWithChildren/ModalWithChildren";
 import { useAppSelector } from "../../redux/store";
 import { RecordItem } from "./RecordItem";
 import { TableHead } from "./TableHead";

@@ -1,5 +1,5 @@
 import React from "react";
-import "./modal.css";
+import "./modalwithchildren.css";
 
 interface IModal {
   active: boolean;
@@ -7,7 +7,11 @@ interface IModal {
   children?: React.ReactNode;
 }
 
-export function Modal({ active, setActive, children }: IModal) {
+export default function ModalWithChildren({
+  active,
+  setActive,
+  children,
+}: IModal) {
   return (
     <div
       className={active ? "modal active" : "modal"}

@@ -18,6 +18,7 @@ export default function Forwarder() {
       birth: "10.10.1990",
       number: "У125КХ76",
       carBrand: "MAN",
+      type: "forwarder",
     },
     {
       id: "222222",
@@ -25,6 +26,7 @@ export default function Forwarder() {
       birth: "10.10.1990",
       number: "У125КХ76",
       carBrand: "MAN",
+      type: "forwarder",
     },
     {
       id: "333333",
@@ -32,6 +34,7 @@ export default function Forwarder() {
       birth: "10.10.1990",
       number: "У125КХ76",
       carBrand: "MAN",
+      type: "forwarder",
     },
   ];
   return (

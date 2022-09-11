@@ -5,9 +5,9 @@ import TableSettings from "../../../../components/Tables/ForSettings/TableSettin
 export default function Products() {
   const cellNames = ["#", "Товар", "Единица измерения", "Действия"];
   const list = [
-    { id: "1111", product: "Доска", unit: "м3" },
-    { id: "22222", product: "Бревна Березовые", unit: "м3" },
-    { id: "3333", product: "Пиловочник хвойный", unit: "м3" },
+    { id: "1111", product: "Доска", unit: "м3", type: "products" },
+    { id: "22222", product: "Бревна Березовые", unit: "м3", type: "products" },
+    { id: "3333", product: "Пиловочник хвойный", unit: "м3", type: "products" },
   ];
   return (
     <>

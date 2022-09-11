@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
 import { Content } from "./components/Content/Content";
+import ModalPortal from "./components/ModalWindows/ModalPortal/ModalPortal";
 import { AuthPage } from "./pages/AuthPage";
 import { ListRecords } from "./pages/ListRecords";
 import { RegPage } from "./pages/RegPage";
@@ -14,7 +15,9 @@ export function useRoutes(isAuth: boolean) {
         <Route path="/" element={<Content />}>
           <Route path="/" element={<ListRecords />} />
           <Route path="/statistics" element={<StatisticsPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/settings" element={<SettingsPage />}>
+            <Route path="/settings/:tab/:id" element={<ModalPortal />} />
+          </Route>
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

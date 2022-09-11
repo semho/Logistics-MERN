@@ -129,6 +129,14 @@ const setError = (state: IStoreSettings, { payload }: any) => {
   state.statusSettings.error = payload;
 };
 
+const setLoader = (state: IStoreSettings) => {
+  state.statusSettings.loading = true;
+};
+
+const deleteLoader = (state: IStoreSettings) => {
+  state.statusSettings.loading = false;
+};
+
 const settingsSlice = createSlice({
   name: "tablesSettings",
   initialState,
@@ -160,14 +168,17 @@ const settingsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getDestinations.pending, (state) => {
-      state.statusSettings.loading = true;
-      state.statusSettings.error = "";
-    });
+    builder.addCase(getDestinations.pending, setLoader);
+    builder.addCase(createDestination.pending, setLoader);
+    builder.addCase(deleteDestination.pending, setLoader);
+
     builder.addCase(getDestinations.fulfilled, (state, { payload }) => {
       state.statusSettings.loading = false;
       state.statusSettings.allSettings.settingsDestination = payload;
     });
+    builder.addCase(createDestination.fulfilled, deleteLoader);
+    builder.addCase(deleteDestination.fulfilled, deleteLoader);
+
     builder.addCase(getDestinations.rejected, setError);
     builder.addCase(deleteDestination.rejected, setError);
     builder.addCase(createDestination.rejected, setError);

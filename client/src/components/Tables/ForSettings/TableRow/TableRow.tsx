@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { deleteDestination } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch } from "../../../../redux/store";
 import { ButtonStyled } from "../../../ButtonStyled";
-import ModalPortal from "../../../ModalWindows/ModalPortal/ModalPortal";
 import { CeilItem } from "../../../Table/RecordItem/CeilItem";
 import TableCeil from "./TableCeil/TableCeil";
+import Modal from "../../../ModalWindows/ModalPortalWithChildren/ModalPortalWithChildren";
+import FormEditRecordDestination from "../FormEditRecordDestination/FormEditRecordDestination";
 
 interface IOBjRow {
   [key: string]: string | number;
@@ -18,17 +18,13 @@ interface ITableRow {
 }
 
 export default function TableRow({ id, valueRow, index }: ITableRow) {
-  const navigate = useNavigate();
-
-  const openModal = async (id: string) => {
-    navigate(`/settings/${valueRow.type}/${id}`);
-  };
+  const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useAppDispatch();
 
   const newObj = { ...valueRow };
   delete newObj.id;
   delete newObj.type;
 
-  const dispatch = useAppDispatch();
   const removeRecord = async (id: string) => {
     dispatch(deleteDestination(id));
   };
@@ -45,7 +41,7 @@ export default function TableRow({ id, valueRow, index }: ITableRow) {
           type="button"
           disabled={false}
           className="mr-2"
-          onClick={() => openModal(id)}
+          onClick={() => setIsOpen(true)}
         />
 
         <ButtonStyled
@@ -56,6 +52,9 @@ export default function TableRow({ id, valueRow, index }: ITableRow) {
           onClick={() => removeRecord(id)}
         />
       </CeilItem>
+      <Modal active={isOpen} setActive={setIsOpen}>
+        <FormEditRecordDestination setModalActiveEdit={setIsOpen} id={id} />
+      </Modal>
     </tr>
   );
 }

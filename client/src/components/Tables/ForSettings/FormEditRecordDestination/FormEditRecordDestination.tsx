@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { initialEmptyState, IRecord } from "../../../models/Record";
-import { updateRecord } from "../../../redux/features/recordSlice";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { ButtonStyled } from "../../ButtonStyled";
-import { InputStyled } from "../../InputStyled";
+import { useValidate } from "../../../../hooks/useValidate";
+import {
+  initialSettingsDestination,
+  ISettingsDestination,
+} from "../../../../models/Settings";
+import { updateDestination } from "../../../../redux/features/settingsSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { ButtonStyled } from "../../../ButtonStyled";
+import { InputStyled } from "../../../InputStyled";
+import { IFormEdit } from "../../../Table/FormForModalEdit/FormForModalEdit";
 
-export interface IFormEdit {
-  setModalActiveEdit: (value: React.SetStateAction<boolean>) => void;
-  id: string;
-}
-
-export default function FormForModalEdit({
+export default function FormEditRecordDestination({
   setModalActiveEdit,
   id,
 }: IFormEdit) {
   const dispatch = useAppDispatch();
-  const [record, setRecord] = useState<IRecord>(initialEmptyState);
+  const [record, setRecord] = useState<ISettingsDestination>(
+    initialSettingsDestination
+  );
+  const { emptyField, zeroField } = useValidate();
   const recordById = useAppSelector((state) =>
-    state.records.statusRecords.listRecords.find((record) => record._id === id)
+    state.settings.statusSettings.allSettings.settingsDestination.find(
+      (record) => record._id === id
+    )
   );
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +37,13 @@ export default function FormForModalEdit({
   //редактирование записи
   const editRecordHandler = async () => {
     if (id && record) {
-      dispatch(updateRecord({ record }));
+      if (emptyField(record.from, 'Поле ввода "Откуда"')) return;
+      if (emptyField(record.to, 'Поле ввода "Куда"')) return;
+      if (emptyField(record.sender, 'Поле ввода "Отправитель"')) return;
+      if (emptyField(record.recipient, 'Поле ввода "Получатель"')) return;
+      if (zeroField(record.distance, 'Поле ввода "Расстояние"')) return;
+
+      dispatch(updateDestination({ record }));
       setModalActiveEdit(false);
     }
   };
@@ -40,7 +51,6 @@ export default function FormForModalEdit({
   useEffect(() => {
     if (recordById) setRecord(recordById);
   }, [recordById]);
-
   return (
     <>
       <h3 className="text-xl text-center mb-5">
@@ -48,11 +58,38 @@ export default function FormForModalEdit({
       </h3>
       <div>
         <InputStyled
-          value={record.fromTo}
+          value={record.from}
           colorFocus="sky"
           type="text"
-          placeholder="Откуда-Куда"
-          name="fromTo"
+          placeholder="Откуда"
+          name="from"
+          onChange={changeHandler}
+          className="my-2"
+        />
+        <InputStyled
+          value={record.to}
+          colorFocus="sky"
+          type="text"
+          placeholder="Куда"
+          name="to"
+          onChange={changeHandler}
+          className="my-2"
+        />
+        <InputStyled
+          value={record.sender}
+          colorFocus="sky"
+          type="text"
+          placeholder="Отправитель"
+          name="sender"
+          onChange={changeHandler}
+          className="my-2"
+        />
+        <InputStyled
+          value={record.recipient}
+          colorFocus="sky"
+          type="text"
+          placeholder="Получатель"
+          name="recipient"
           onChange={changeHandler}
           className="my-2"
         />
@@ -62,42 +99,6 @@ export default function FormForModalEdit({
           type="text"
           placeholder="Расстояние"
           name="distance"
-          onChange={changeHandler}
-          className="my-2"
-        />
-        <InputStyled
-          value={record.product}
-          colorFocus="sky"
-          type="text"
-          placeholder="Продукт"
-          name="product"
-          onChange={changeHandler}
-          className="my-2"
-        />
-        <InputStyled
-          value={record.units}
-          colorFocus="sky"
-          type="text"
-          placeholder="Количество"
-          name="units"
-          onChange={changeHandler}
-          className="my-2"
-        />
-        <InputStyled
-          value={record.forwarder}
-          colorFocus="sky"
-          type="text"
-          placeholder="Ответственный"
-          name="forwarder"
-          onChange={changeHandler}
-          className="my-2"
-        />
-        <InputStyled
-          value={record.price}
-          colorFocus="sky"
-          type="text"
-          placeholder="Стоимость единицы"
-          name="price"
           onChange={changeHandler}
           className="my-2"
         />

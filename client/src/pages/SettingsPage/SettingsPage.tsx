@@ -1,5 +1,4 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
 import Tabs from "../../components/Tabs/Tabs";
 import Forwarder from "./Tabs/Forwarder/Forwarder";
 import PointsDestination from "./Tabs/PointsDestination/PointsDestination";
@@ -23,7 +22,6 @@ export default function SettingsPage() {
   return (
     <>
       <Tabs items={items} />
-      <Outlet />
     </>
   );
 }

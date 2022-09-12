@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useValidate } from "../../hooks/useValidate";
-import { initialSettingsDestination } from "../../models/Settings";
+import { initialSettingsDestinationShort } from "../../models/Settings";
 import { createDestination } from "../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../ButtonStyled";
@@ -8,7 +8,7 @@ import { InputStyled } from "../InputStyled";
 
 export function FormAddPointsDestination() {
   const { emptyField, zeroField } = useValidate();
-  const [record, setRecord] = useState(initialSettingsDestination);
+  const [record, setRecord] = useState(initialSettingsDestinationShort);
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
   };

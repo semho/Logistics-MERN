@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { useNavigate, useParams } from "react-router-dom";
-import "./modalportal.css";
+import "./modalurlportal.css";
 
-export default function ModalPortal() {
+export default function ModalURLPortal() {
   const params = useParams();
   const recordId = params.id;
   const recordTab = params.tab;

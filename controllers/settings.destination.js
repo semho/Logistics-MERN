@@ -96,6 +96,8 @@ export const updateDestination = async (req, res) => {
       }
       res.json({ message: "Запись изменена", editRecord });
     } catch (e) {
+      if (!!e.reason)
+        return res.status(400).json({ message: "Не верный тип в поле ввода" });
       res.status(400).json({ message: e.message });
     }
   } catch (e) {

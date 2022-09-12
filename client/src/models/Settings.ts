@@ -8,6 +8,16 @@ export interface ISettingsDestination {
   __v: number;
   _id: string;
 }
+export const initialSettingsDestination: ISettingsDestination = {
+  from: "",
+  to: "",
+  sender: "",
+  recipient: "",
+  distance: Number(),
+  owner: "",
+  __v: Number(),
+  _id: "",
+};
 
 export interface ISettingsDestinationShort {
   from: string;
@@ -17,7 +27,7 @@ export interface ISettingsDestinationShort {
   recipient: string;
 }
 
-export const initialSettingsDestination: ISettingsDestinationShort = {
+export const initialSettingsDestinationShort: ISettingsDestinationShort = {
   from: "",
   to: "",
   sender: "",

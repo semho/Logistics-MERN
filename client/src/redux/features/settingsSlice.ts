@@ -8,7 +8,6 @@ import {
 import { RootState } from "../store";
 import * as api from "../api";
 import { AxiosError } from "axios";
-import { IApiEmptyRecord } from "./recordSlice";
 import { toast } from "react-toastify";
 
 interface ISettings {

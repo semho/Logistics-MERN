@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
-import { FormAddRecord } from "../../components/FormAddRecord";
+import { FormAddRecord } from "../../components/Forms/FormsForAddRecords/FormAddRecord";
 import { Loader } from "../../components/Loader";
-import { Table } from "../../components/Table";
+import { Table } from "../../components/Tables/TableMain";
 import { useShowError } from "../../hooks/useShowError";
 import {
   dataRecords,

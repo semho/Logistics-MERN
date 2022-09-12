@@ -1,6 +1,6 @@
 import React from "react";
-import { FormAddForwarder } from "../../../../components/FormAddForwarder";
-import TableSettings from "../../../../components/Tables/ForSettings/TableSettings";
+import { FormAddForwarder } from "../../../../components/Forms/FormsForAddRecords/FormAddForwarder";
+import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
 
 export default function Forwarder() {
   const cellNames = [

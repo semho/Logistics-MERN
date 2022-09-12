@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { ButtonStyled } from "../../components/ButtonStyled/ButtonStyled";
-import { InputStyled } from "../../components/InputStyled";
-import { LabelStyled } from "../../components/LabelStyled";
+import { ButtonStyled } from "../../components/Controls/ButtonStyled/ButtonStyled";
+import { InputStyled } from "../../components/Controls/InputStyled";
+import { LabelStyled } from "../../components/Controls/LabelStyled";
 
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { dataUser, IStatusUser, login } from "../../redux/features/authSlice";

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { IListRecords } from "../../models/Record";
-import Modal from "../ModalWindows/ModalPortalWithChildren/ModalPortalWithChildren";
-import { useAppSelector } from "../../redux/store";
+import { IListRecords } from "../../../models/Record";
+import Modal from "../../ModalWindows/ModalPortalWithChildren/ModalPortalWithChildren";
+import { useAppSelector } from "../../../redux/store";
 import { RecordItem } from "./RecordItem";
 import { TableHead } from "./TableHead";
-import FormForModalDelete from "./FormForModalDelete/FormForModalDelete";
-import FormForModalEdit from "./FormForModalEdit/FormForModalEdit";
+import FormForModalDelete from "../../Forms/FormsForDeleteRecords/FormDeleteRecord/FormForModalDelete";
+import FormEditRecord from "../../Forms/FormsForUpdateRecords/FormEditRecord/FormEditRecord";
 
 export function Table() {
   const [list, setList] = useState<IListRecords>([]);
@@ -79,10 +79,7 @@ export function Table() {
         />
       </Modal>
       <Modal active={modalActiveEdit} setActive={setModalActiveEdit}>
-        <FormForModalEdit
-          setModalActiveEdit={setModalActiveEdit}
-          id={idRecord}
-        />
+        <FormEditRecord setModalActiveEdit={setModalActiveEdit} id={idRecord} />
       </Modal>
     </div>
   );

@@ -6,9 +6,9 @@ import {
 } from "../../../../models/Settings";
 import { updateDestination } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
-import { ButtonStyled } from "../../../ButtonStyled";
-import { InputStyled } from "../../../InputStyled";
-import { IFormEdit } from "../../../Table/FormForModalEdit/FormForModalEdit";
+import { ButtonStyled } from "../../../Controls/ButtonStyled";
+import { InputStyled } from "../../../Controls/InputStyled";
+import { IFormEdit } from "../FormEditRecord/FormEditRecord";
 
 export default function FormEditRecordDestination({
   setModalActiveEdit,

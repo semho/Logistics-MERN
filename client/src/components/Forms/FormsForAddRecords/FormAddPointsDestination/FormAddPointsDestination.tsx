@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useValidate } from "../../hooks/useValidate";
-import { initialSettingsDestinationShort } from "../../models/Settings";
-import { createDestination } from "../../redux/features/settingsSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { ButtonStyled } from "../ButtonStyled";
-import { InputStyled } from "../InputStyled";
+import { useValidate } from "../../../../hooks/useValidate";
+import { initialSettingsDestinationShort } from "../../../../models/Settings";
+import { createDestination } from "../../../../redux/features/settingsSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { ButtonStyled } from "../../../Controls/ButtonStyled";
+import { InputStyled } from "../../../Controls/InputStyled";
 
 export function FormAddPointsDestination() {
   const { emptyField, zeroField } = useValidate();

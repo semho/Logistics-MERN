@@ -1,6 +1,6 @@
 import React from "react";
-import { FormAddProduct } from "../../../../components/FormAddProduct";
-import TableSettings from "../../../../components/Tables/ForSettings/TableSettings";
+import { FormAddProduct } from "../../../../components/Forms/FormsForAddRecords/FormAddProduct";
+import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
 
 export default function Products() {
   const cellNames = ["#", "Товар", "Единица измерения", "Действия"];

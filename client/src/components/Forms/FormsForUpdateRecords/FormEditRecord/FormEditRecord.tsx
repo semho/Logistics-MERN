@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { initialEmptyState, IRecord } from "../../../models/Record";
-import { updateRecord } from "../../../redux/features/recordSlice";
-import { useAppDispatch, useAppSelector } from "../../../redux/store";
-import { ButtonStyled } from "../../ButtonStyled";
-import { InputStyled } from "../../InputStyled";
+import { initialEmptyState, IRecord } from "../../../../models/Record";
+import { updateRecord } from "../../../../redux/features/recordSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { ButtonStyled } from "../../../Controls/ButtonStyled";
+import { InputStyled } from "../../../Controls/InputStyled";
 
 export interface IFormEdit {
   setModalActiveEdit: (value: React.SetStateAction<boolean>) => void;
   id: string;
 }
 
-export default function FormForModalEdit({
-  setModalActiveEdit,
-  id,
-}: IFormEdit) {
+export default function FormEditRecord({ setModalActiveEdit, id }: IFormEdit) {
   const dispatch = useAppDispatch();
   const [record, setRecord] = useState<IRecord>(initialEmptyState);
   const recordById = useAppSelector((state) =>

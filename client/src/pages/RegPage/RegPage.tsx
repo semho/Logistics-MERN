@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ButtonStyled } from "../../components/ButtonStyled";
-import { InputStyled } from "../../components/InputStyled";
-import { LabelStyled } from "../../components/LabelStyled";
+import { ButtonStyled } from "../../components/Controls/ButtonStyled";
+import { InputStyled } from "../../components/Controls/InputStyled";
+import { LabelStyled } from "../../components/Controls/LabelStyled";
 import { Loader } from "../../components/Loader";
 
 import { useShowError } from "../../hooks/useShowError";

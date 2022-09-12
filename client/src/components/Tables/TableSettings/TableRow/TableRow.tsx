@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { deleteDestination } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch } from "../../../../redux/store";
-import { ButtonStyled } from "../../../ButtonStyled";
-import { CeilItem } from "../../../Table/RecordItem/CeilItem";
-import TableCeil from "./TableCeil/TableCeil";
+import { ButtonStyled } from "../../../Controls/ButtonStyled";
+import { CeilItem } from "../../TableMain/RecordItem/CeilItem";
+
 import Modal from "../../../ModalWindows/ModalPortalWithChildren/ModalPortalWithChildren";
-import FormEditRecordDestination from "../FormEditRecordDestination/FormEditRecordDestination";
+import TableCeil from "./TableCeil/TableCeil";
+import FormEditRecordDestination from "../../../Forms/FormsForUpdateRecords/FormEditRecordDestination/FormEditRecordDestination";
 
 interface IOBjRow {
   [key: string]: string | number;

@@ -1,7 +1,7 @@
 import React from "react";
-import { IRecord } from "../../../models/Record";
-import { formatDate } from "../../../utils/formatDate";
-import { ButtonStyled } from "../../ButtonStyled";
+import { IRecord } from "../../../../models/Record";
+import { formatDate } from "../../../../utils/formatDate";
+import { ButtonStyled } from "../../../Controls/ButtonStyled";
 import { CeilItem } from "./CeilItem";
 
 interface IRecordItem {

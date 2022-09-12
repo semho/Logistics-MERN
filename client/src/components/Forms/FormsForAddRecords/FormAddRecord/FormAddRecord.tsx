@@ -3,10 +3,10 @@ import {
   createRecord,
   dataRecords,
   IStoreListRecords,
-} from "../../redux/features/recordSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { ButtonStyled } from "../ButtonStyled";
-import { InputStyled } from "../InputStyled";
+} from "../../../../redux/features/recordSlice";
+import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { ButtonStyled } from "../../../Controls/ButtonStyled";
+import { InputStyled } from "../../../Controls/InputStyled";
 
 export function FormAddRecord() {
   const [record, setRecord] = useState({});

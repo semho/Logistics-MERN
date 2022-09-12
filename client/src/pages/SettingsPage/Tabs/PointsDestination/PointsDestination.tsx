@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FormAddPointsDestination } from "../../../../components/FormAddPointsDestination";
+import { FormAddPointsDestination } from "../../../../components/Forms/FormsForAddRecords/FormAddPointsDestination";
 import { Loader } from "../../../../components/Loader";
-import TableSettings from "../../../../components/Tables/ForSettings/TableSettings";
+import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
 import { useShowError } from "../../../../hooks/useShowError";
 import { getDestinations } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";

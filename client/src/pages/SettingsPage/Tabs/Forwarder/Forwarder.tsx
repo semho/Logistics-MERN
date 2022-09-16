@@ -1,5 +1,5 @@
 import React from "react";
-import { FormAddForwarder } from "../../../../components/Forms/FormsForAddRecords/FormAddForwarder";
+import { FormAddForwarder } from "../../../../components/Form/FormsForAddRecords/FormAddForwarder";
 import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
 
 export default function Forwarder() {

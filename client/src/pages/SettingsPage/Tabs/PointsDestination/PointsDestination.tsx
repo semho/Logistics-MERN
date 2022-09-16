@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FormAddPointsDestination } from "../../../../components/Forms/FormsForAddRecords/FormAddPointsDestination";
+import { FormAddPointsDestination } from "../../../../components/Form/FormsForAddRecords/FormAddPointsDestination";
 import { Loader } from "../../../../components/Loader";
 import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
 import { useShowError } from "../../../../hooks/useShowError";

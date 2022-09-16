@@ -4,8 +4,8 @@ import Modal from "../../ModalWindows/ModalPortalWithChildren/ModalPortalWithChi
 import { useAppSelector } from "../../../redux/store";
 import { RecordItem } from "./RecordItem";
 import { TableHead } from "./TableHead";
-import FormForModalDelete from "../../Forms/FormsForDeleteRecords/FormDeleteRecord/FormForModalDelete";
-import FormEditRecord from "../../Forms/FormsForUpdateRecords/FormEditRecord/FormEditRecord";
+import FormForModalDelete from "../../Form/FormsForDeleteRecords/FormDeleteRecord/FormForModalDelete";
+import FormEditRecord from "../../Form/FormsForUpdateRecords/FormEditRecord/FormEditRecord";
 
 export function Table() {
   const [list, setList] = useState<IListRecords>([]);

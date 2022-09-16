@@ -6,7 +6,7 @@ import { CeilItem } from "../../TableMain/RecordItem/CeilItem";
 
 import Modal from "../../../ModalWindows/ModalPortalWithChildren/ModalPortalWithChildren";
 import TableCeil from "./TableCeil/TableCeil";
-import FormEditRecordDestination from "../../../Forms/FormsForUpdateRecords/FormEditRecordDestination/FormEditRecordDestination";
+import FormEditRecordDestination from "../../../Form/FormsForUpdateRecords/FormEditRecordDestination/FormEditRecordDestination";
 
 interface IOBjRow {
   [key: string]: string | number;

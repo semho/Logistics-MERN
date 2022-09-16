@@ -1,5 +1,5 @@
 import React from "react";
-import { FormAddProduct } from "../../../../components/Forms/FormsForAddRecords/FormAddProduct";
+import { FormAddProduct } from "../../../../components/Form/FormsForAddRecords/FormAddProduct";
 import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
 
 export default function Products() {

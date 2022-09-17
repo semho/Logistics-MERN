@@ -143,9 +143,18 @@ const settingsSlice = createSlice({
     newDestination: (state, action: PayloadAction<ISettingsDestination>) => {
       state.statusSettings.allSettings.settingsDestination.push(action.payload);
     },
+    newProduct: (state, action: PayloadAction<ISettingsProduct>) => {
+      state.statusSettings.allSettings.settingsProduct.push(action.payload);
+    },
     removeDestination: (state, action: PayloadAction<string>) => {
       state.statusSettings.allSettings.settingsDestination =
         state.statusSettings.allSettings.settingsDestination.filter(
+          (record) => record._id !== action.payload
+        );
+    },
+    removeProduct: (state, action: PayloadAction<string>) => {
+      state.statusSettings.allSettings.settingsProduct =
+        state.statusSettings.allSettings.settingsProduct.filter(
           (record) => record._id !== action.payload
         );
     },
@@ -160,6 +169,19 @@ const settingsSlice = createSlice({
               sender: action.payload.sender,
               recipient: action.payload.recipient,
               distance: action.payload.distance,
+            };
+          }
+          return record;
+        });
+    },
+    editProduct: (state, action: PayloadAction<ISettingsProduct>) => {
+      state.statusSettings.allSettings.settingsProduct =
+        state.statusSettings.allSettings.settingsProduct.map((record) => {
+          if (record._id === action.payload._id) {
+            return {
+              ...record,
+              product: action.payload.product,
+              unit: action.payload.unit,
             };
           }
           return record;
@@ -185,8 +207,14 @@ const settingsSlice = createSlice({
   },
 });
 
-const { newDestination, removeDestination, editDestination } =
-  settingsSlice.actions;
+const {
+  newDestination,
+  newProduct,
+  removeDestination,
+  removeProduct,
+  editDestination,
+  editProduct,
+} = settingsSlice.actions;
 
 export const dataSettings = (state: RootState) => state.settings;
 

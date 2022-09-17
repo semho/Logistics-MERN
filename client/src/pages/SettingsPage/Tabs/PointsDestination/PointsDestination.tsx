@@ -7,7 +7,12 @@ import { getDestinations } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 
 export default function PointsDestination() {
-  const [list, setList] = useState([{ id: "", type: "destination" }]);
+  const [list, setList] = useState([
+    {
+      id: "",
+      // type: "destination"
+    },
+  ]);
   const cellNames = [
     "#",
     "Откуда->Куда",
@@ -37,7 +42,7 @@ export default function PointsDestination() {
         fromTo: `${record.from} -> ${record.to}`,
         senderToRecipient: `${record.sender} -> ${record.recipient}`,
         distance: record.distance,
-        type: "destination",
+        // type: "destination",
       };
     });
   }, [stateDestination]);

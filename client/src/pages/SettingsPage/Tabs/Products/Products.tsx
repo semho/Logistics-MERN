@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { FormAddProduct } from "../../../../components/Form/FormsForAddRecords/FormAddProduct";
 import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
+import { useAppDispatch } from "../../../../redux/store";
 
 export default function Products() {
   const cellNames = ["#", "Товар", "Единица измерения", "Действия"];
@@ -9,6 +10,14 @@ export default function Products() {
     { id: "22222", product: "Бревна Березовые", unit: "м3", type: "products" },
     { id: "3333", product: "Пиловочник хвойный", unit: "м3", type: "products" },
   ];
+
+  // const [list, setList] = useState([
+  //   {
+  //     id: "",
+  //   },
+  // ]);
+  const dispatch = useAppDispatch();
+
   return (
     <>
       <FormAddProduct />

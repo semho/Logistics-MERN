@@ -24,7 +24,7 @@ export default function TableRow({ id, valueRow, index }: ITableRow) {
 
   const newObj = { ...valueRow };
   delete newObj.id;
-  delete newObj.type;
+  // delete newObj.type;
 
   const removeRecord = async (id: string) => {
     dispatch(deleteDestination(id));

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IRecord } from "../models/Record";
-import { ISettingsDestination } from "../models/Settings";
+import { ISettingsDestination, ISettingsProduct } from "../models/Settings";
 import { IUser } from "../models/User";
 
 //авторизация/регистрация
@@ -30,7 +30,7 @@ export const updateRecord = (record: IRecord, token: string) =>
   axios.put("/api/records/update", record, {
     headers: { Authorization: `Bearer ${token}` },
   });
-//запросы на добавление пунктов отправления-назначения
+//запросы на добавление пунктов отправления-назначения(раздел настройки)
 export const allDestinations = (token: string) =>
   axios.get("/api/settings/destination/", {
     headers: { Authorization: `Bearer ${token}` },
@@ -51,5 +51,24 @@ export const updateDestination = (
   token: string
 ) =>
   axios.put("/api/settings/destination/update", record, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+//запросы на добавление списка товаров(раздел настройки)
+export const allProducts = (token: string) =>
+  axios.get("/api/settings/product", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+export const newProduct = (record: {}, token: string) =>
+  axios.post("/api/settings/product/create", record, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+export const deleteProduct = (id: string, token: string) =>
+  axios.delete("/api/settings/product/delete", {
+    headers: { Authorization: `Bearer ${token}` },
+    data: { id },
+  });
+export const updateProduct = (record: ISettingsProduct, token: string) =>
+  axios.put("/api/settings/product/update", record, {
     headers: { Authorization: `Bearer ${token}` },
   });

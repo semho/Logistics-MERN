@@ -1,28 +1,27 @@
 import React, { useState } from "react";
-import {
-  createRecord,
-  dataRecords,
-  IStoreListRecords,
-} from "../../../../redux/features/recordSlice";
+import { useValidate } from "../../../../hooks/useValidate";
+import { initialSettingsProductShort } from "../../../../models/Settings";
+import { createProduct } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { ButtonStyled } from "../../../Controls/ButtonStyled";
 import { InputStyled } from "../../../Controls/InputStyled";
 
 export function FormAddProduct() {
-  const [record, setRecord] = useState({});
+  const { emptyField } = useValidate();
+  const [record, setRecord] = useState(initialSettingsProductShort);
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
   };
-  //TODO: добавить загрузку
-  // const {
-  //   statusRecords: { loading },
-  // }: IStoreListRecords = useAppSelector(dataRecords);
-  // const dispatch = useAppDispatch();
-  // const addRecordHandler = async () => {
-  //   const newRecord = { ...record };
-  //TODO: добавить в redux
-  //   dispatch();
-  // };
+  const loading = useAppSelector(
+    (state) => state.settings.statusSettings.loading
+  );
+  const dispatch = useAppDispatch();
+  const addRecordSettingsHandler = async () => {
+    const newRecord = { ...record };
+    if (emptyField(record.product, 'Поле ввода "Товар"')) return;
+    if (emptyField(record.unit, 'Поле ввода "Единица измерения"')) return;
+    dispatch(createProduct({ newRecord }));
+  };
 
   return (
     <>
@@ -51,8 +50,8 @@ export function FormAddProduct() {
             title="Добавить"
             variant="sky"
             type="button"
-            disabled={false}
-            // onClick={addRecordHandler}
+            disabled={loading}
+            onClick={addRecordSettingsHandler}
           />
         </div>
       </div>

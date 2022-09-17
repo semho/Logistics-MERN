@@ -170,7 +170,7 @@ export const createProduct = createAsyncThunk(
       const token = appState.auth.statusUser.user.token;
 
       const { newRecord } = dataRecord;
-      const response = await api.newApiDestination(newRecord, token);
+      const response = await api.newApiProduct(newRecord, token);
       if (!!response) {
         dispatch(newProduct(response.data.answerRecord));
         toast.success("Запись добавлена");

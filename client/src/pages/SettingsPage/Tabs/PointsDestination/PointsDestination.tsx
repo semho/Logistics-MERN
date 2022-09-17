@@ -10,7 +10,7 @@ export default function PointsDestination() {
   const [list, setList] = useState([
     {
       id: "",
-      // type: "destination"
+      type: "destination",
     },
   ]);
   const cellNames = [
@@ -42,7 +42,7 @@ export default function PointsDestination() {
         fromTo: `${record.from} -> ${record.to}`,
         senderToRecipient: `${record.sender} -> ${record.recipient}`,
         distance: record.distance,
-        // type: "destination",
+        type: "destination",
       };
     });
   }, [stateDestination]);

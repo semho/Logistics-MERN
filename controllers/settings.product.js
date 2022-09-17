@@ -9,10 +9,11 @@ export const createProduct = async (req, res) => {
   try {
     try {
       const { product, unit } = req.body;
+
       if (!product || !unit) {
         throw new Error("Некорректные данные в полях ввода формы");
       }
-      const newRecord = new Destination({
+      const newRecord = new Product({
         product,
         unit,
         owner: req.user.userId,

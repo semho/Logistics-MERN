@@ -53,6 +53,16 @@ export const initialSettingsProduct: ISettingsProduct = {
   _id: "",
 };
 
+export interface ISettingsProductShort {
+  product: string;
+  unit: string;
+}
+
+export const initialSettingsProductShort: ISettingsProductShort = {
+  product: "",
+  unit: "",
+};
+
 export interface IListSettingProduct extends Array<ISettingsProduct> {}
 
 export interface ISettingsForwarder {

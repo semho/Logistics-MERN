@@ -3,6 +3,7 @@ import {
   ISettingsDestination,
   ISettingsDestinationShort,
   ISettingsForwarder,
+  ISettingsForwarderShort,
   ISettingsProduct,
   ISettingsProductShort,
 } from "../../models/Settings";
@@ -45,11 +46,17 @@ interface IApiRecordDestination {
 interface IApiRecordProduct {
   record: ISettingsProduct;
 }
+interface IApiRecordForwarder {
+  record: ISettingsForwarder;
+}
 interface IApiCreateRecordDestination {
   newRecord: ISettingsDestinationShort;
 }
 interface IApiCreateRecordProduct {
   newRecord: ISettingsProductShort;
+}
+interface IApiCreateRecordForwarder {
+  newRecord: ISettingsForwarderShort;
 }
 
 export const updateDestination = createAsyncThunk(
@@ -98,6 +105,29 @@ export const updateProduct = createAsyncThunk(
   }
 );
 
+export const updateForwarder = createAsyncThunk(
+  "settingsForwarder/updateForwarder",
+  async (
+    dataRecord: IApiRecordForwarder,
+    { rejectWithValue, dispatch, getState }
+  ) => {
+    try {
+      const appState = getState() as RootState;
+      const token = appState.auth.statusUser.user.token;
+
+      const { record } = dataRecord;
+      const response = await api.updateApiForwarder(record, token);
+      if (!!response) {
+        dispatch(editForwarder(record));
+        toast.success("Запись изменена");
+      }
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  }
+);
+
 export const deleteDestination = createAsyncThunk(
   "settingsDestination/deleteDestination",
   async (id: string, { rejectWithValue, dispatch, getState }) => {
@@ -127,6 +157,25 @@ export const deleteProduct = createAsyncThunk(
       const response = await api.deleteApiProduct(id, token);
       if (!!response) {
         dispatch(removeProduct(id));
+        toast.success("Запись удалена");
+      }
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  }
+);
+
+export const deleteForwarder = createAsyncThunk(
+  "settingsForwarder/deleteForwarder",
+  async (id: string, { rejectWithValue, dispatch, getState }) => {
+    try {
+      const appState = getState() as RootState;
+      const token = appState.auth.statusUser.user.token;
+
+      const response = await api.deleteApiForwarder(id, token);
+      if (!!response) {
+        dispatch(removeForwarder(id));
         toast.success("Запись удалена");
       }
     } catch (error) {
@@ -182,6 +231,29 @@ export const createProduct = createAsyncThunk(
   }
 );
 
+export const createForwarder = createAsyncThunk(
+  "settingsForwarder/createForwarder",
+  async (
+    dataRecord: IApiCreateRecordForwarder,
+    { rejectWithValue, dispatch, getState }
+  ) => {
+    try {
+      const appState = getState() as RootState;
+      const token = appState.auth.statusUser.user.token;
+
+      const { newRecord } = dataRecord;
+      const response = await api.newApiForwarder(newRecord, token);
+      if (!!response) {
+        dispatch(newForwarder(response.data.answerRecord));
+        toast.success("Запись добавлена");
+      }
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  }
+);
+
 export const getDestinations = createAsyncThunk(
   "settingsDestination/getDestinations",
   async (_, { rejectWithValue, getState }) => {
@@ -204,6 +276,21 @@ export const getProducts = createAsyncThunk(
       const appState = getState() as RootState;
       const token = appState.auth.statusUser.user.token;
       const response = await api.allApiProducts(token);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue((error as AxiosError).response?.data);
+    }
+  }
+);
+
+export const getForwarders = createAsyncThunk(
+  "settingsForwarder/getForwarders",
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const appState = getState() as RootState;
+      const token = appState.auth.statusUser.user.token;
+      const response = await api.allApiForwarders(token);
       return response.data;
     } catch (error) {
       console.log(error);
@@ -235,6 +322,9 @@ const settingsSlice = createSlice({
     newProduct: (state, action: PayloadAction<ISettingsProduct>) => {
       state.statusSettings.allSettings.settingsProduct.push(action.payload);
     },
+    newForwarder: (state, action: PayloadAction<ISettingsForwarder>) => {
+      state.statusSettings.allSettings.settingsForwarder.push(action.payload);
+    },
     removeDestination: (state, action: PayloadAction<string>) => {
       state.statusSettings.allSettings.settingsDestination =
         state.statusSettings.allSettings.settingsDestination.filter(
@@ -244,6 +334,12 @@ const settingsSlice = createSlice({
     removeProduct: (state, action: PayloadAction<string>) => {
       state.statusSettings.allSettings.settingsProduct =
         state.statusSettings.allSettings.settingsProduct.filter(
+          (record) => record._id !== action.payload
+        );
+    },
+    removeForwarder: (state, action: PayloadAction<string>) => {
+      state.statusSettings.allSettings.settingsForwarder =
+        state.statusSettings.allSettings.settingsForwarder.filter(
           (record) => record._id !== action.payload
         );
     },
@@ -276,6 +372,21 @@ const settingsSlice = createSlice({
           return record;
         });
     },
+    editForwarder: (state, action: PayloadAction<ISettingsForwarder>) => {
+      state.statusSettings.allSettings.settingsForwarder =
+        state.statusSettings.allSettings.settingsForwarder.map((record) => {
+          if (record._id === action.payload._id) {
+            return {
+              ...record,
+              forwarder: action.payload.forwarder,
+              birth: action.payload.birth,
+              carNumber: action.payload.carNumber,
+              carBrand: action.payload.carBrand,
+            };
+          }
+          return record;
+        });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getDestinations.pending, setLoader);
@@ -284,6 +395,9 @@ const settingsSlice = createSlice({
     builder.addCase(getProducts.pending, setLoader);
     builder.addCase(createProduct.pending, setLoader);
     builder.addCase(deleteProduct.pending, setLoader);
+    builder.addCase(getForwarders.pending, setLoader);
+    builder.addCase(createForwarder.pending, setLoader);
+    builder.addCase(deleteForwarder.pending, setLoader);
 
     builder.addCase(getDestinations.fulfilled, (state, { payload }) => {
       state.statusSettings.loading = false;
@@ -297,6 +411,12 @@ const settingsSlice = createSlice({
     });
     builder.addCase(createProduct.fulfilled, deleteLoader);
     builder.addCase(deleteProduct.fulfilled, deleteLoader);
+    builder.addCase(getForwarders.fulfilled, (state, { payload }) => {
+      state.statusSettings.loading = false;
+      state.statusSettings.allSettings.settingsForwarder = payload;
+    });
+    builder.addCase(createForwarder.fulfilled, deleteLoader);
+    builder.addCase(deleteForwarder.fulfilled, deleteLoader);
 
     builder.addCase(getDestinations.rejected, setError);
     builder.addCase(deleteDestination.rejected, setError);
@@ -306,16 +426,23 @@ const settingsSlice = createSlice({
     builder.addCase(deleteProduct.rejected, setError);
     builder.addCase(createProduct.rejected, setError);
     builder.addCase(updateProduct.rejected, setError);
+    builder.addCase(getForwarders.rejected, setError);
+    builder.addCase(deleteForwarder.rejected, setError);
+    builder.addCase(createForwarder.rejected, setError);
+    builder.addCase(updateForwarder.rejected, setError);
   },
 });
 
 const {
   newDestination,
   newProduct,
+  newForwarder,
   removeDestination,
   removeProduct,
+  removeForwarder,
   editDestination,
   editProduct,
+  editForwarder,
 } = settingsSlice.actions;
 
 export const dataSettings = (state: RootState) => state.settings;

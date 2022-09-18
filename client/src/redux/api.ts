@@ -1,6 +1,10 @@
 import axios from "axios";
 import { IRecord } from "../models/Record";
-import { ISettingsDestination, ISettingsProduct } from "../models/Settings";
+import {
+  ISettingsDestination,
+  ISettingsForwarder,
+  ISettingsProduct,
+} from "../models/Settings";
 import { IUser } from "../models/User";
 
 //авторизация/регистрация
@@ -63,5 +67,23 @@ export const deleteApiProduct = (id: string, token: string) =>
   });
 export const updateApiProduct = (record: ISettingsProduct, token: string) =>
   axios.put("/api/settings/product/update", record, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+//запросы на добавление ответственного(раздел настройки)
+export const allApiForwarders = (token: string) =>
+  axios.get("/api/settings/forwarder", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+export const newApiForwarder = (record: {}, token: string) =>
+  axios.post("/api/settings/forwarder/create", record, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+export const deleteApiForwarder = (id: string, token: string) =>
+  axios.delete("/api/settings/forwarder/delete", {
+    headers: { Authorization: `Bearer ${token}` },
+    data: { id },
+  });
+export const updateApiForwarder = (record: ISettingsForwarder, token: string) =>
+  axios.put("/api/settings/forwarder/update", record, {
     headers: { Authorization: `Bearer ${token}` },
   });

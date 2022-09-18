@@ -68,7 +68,7 @@ export interface IListSettingProduct extends Array<ISettingsProduct> {}
 export interface ISettingsForwarder {
   forwarder: string;
   birth: string;
-  number: string;
+  carNumber: string;
   carBrand: string;
   owner: "";
   __v: number;
@@ -78,11 +78,25 @@ export interface ISettingsForwarder {
 export const initialSettingsForwarder: ISettingsForwarder = {
   forwarder: "",
   birth: "",
-  number: "",
+  carNumber: "",
   carBrand: "",
   owner: "",
   __v: Number(),
   _id: "",
+};
+
+export interface ISettingsForwarderShort {
+  forwarder: string;
+  birth: string;
+  carNumber: string;
+  carBrand: string;
+}
+
+export const initialSettingsForwarderShort: ISettingsForwarderShort = {
+  forwarder: "",
+  birth: "",
+  carNumber: "",
+  carBrand: "",
 };
 
 export interface IListSettingsForwarder extends Array<ISettingsForwarder> {}

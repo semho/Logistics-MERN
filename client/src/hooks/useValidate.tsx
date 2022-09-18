@@ -17,6 +17,17 @@ export function useValidate() {
     }
   }, []);
   /**
+   * Проверка на ноль
+   * @param number - поле с типом number, которую проверяем
+   * @param whatChecking - название поля проверки
+   * @returns - всплывающий тост с ошибкой
+   */
+  const zeroField = useCallback((number: number, whatChecking: string) => {
+    if (number === 0) {
+      return toast.error(`${whatChecking} не может быть ноль`);
+    }
+  }, []);
+  /**
    * Проверка по регулярному выражению на корректность Email
    * @param text - строка с email
    * @returns - всплывающий тост с ошибкой
@@ -58,5 +69,6 @@ export function useValidate() {
     checkingLength,
     matchEmail,
     emptyField,
+    zeroField,
   };
 }

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import config from "../config/default.json";
+import config from "../config/default.json" assert { type: "json" };
 
 export const auth = (req, res, next) => {
   if (req.method === "OPTIONS") {

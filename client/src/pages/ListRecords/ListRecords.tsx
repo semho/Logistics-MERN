@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect } from "react";
-import { FormAddRecord } from "../../components/FormAddRecord";
+import { FormAddRecord } from "../../components/Form/FormsForAddRecords/FormAddRecord";
 import { Loader } from "../../components/Loader";
-import { Table } from "../../components/Table";
+import { Table } from "../../components/Tables/TableMain";
 import { useShowError } from "../../hooks/useShowError";
-import { useToken } from "../../hooks/useToken";
 import {
   dataRecords,
   getRecords,
@@ -15,12 +14,12 @@ export function ListRecords() {
   const {
     statusRecords: { loading, error },
   }: IStoreListRecords = useAppSelector(dataRecords);
-  const token = useToken();
+
   //диспач для получения записей в redux от сервера
   const dispatch = useAppDispatch();
   const recordsDispatch = useCallback(() => {
-    dispatch(getRecords(token));
-  }, [dispatch, token]);
+    dispatch(getRecords());
+  }, [dispatch]);
   //вызываем этот колбэк в redux после монтирования
   useEffect(() => {
     recordsDispatch();

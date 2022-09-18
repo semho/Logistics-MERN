@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   deleteDestination,
+  deleteForwarder,
   deleteProduct,
 } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch } from "../../../../redux/store";
@@ -11,6 +12,7 @@ import Modal from "../../../ModalWindows/ModalPortalWithChildren/ModalPortalWith
 import TableCeil from "./TableCeil/TableCeil";
 import FormEditRecordDestination from "../../../Form/FormsForUpdateRecords/FormEditRecordDestination/FormEditRecordDestination";
 import FormEditRecordProduct from "../../../Form/FormsForUpdateRecords/FormEditRecordProduct/FormEditRecordProduct";
+import FormEditRecordForwarder from "../../../Form/FormsForUpdateRecords/FormEditRecordForwarder/FormEditRecordForwarder";
 
 interface IOBjRow {
   [key: string]: string | number;
@@ -26,6 +28,7 @@ export default function TableRow({ id, valueRow, index }: ITableRow) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDestination, setIsOpenDestination] = useState(false);
   const [isOpenProduct, setIsOpenProduct] = useState(false);
+  const [isOpenForwarder, setIsOpenForwarder] = useState(false);
   const dispatch = useAppDispatch();
 
   const newObj = { ...valueRow };
@@ -39,6 +42,9 @@ export default function TableRow({ id, valueRow, index }: ITableRow) {
     if (valueRow.type === "product") {
       dispatch(deleteProduct(id));
     }
+    if (valueRow.type === "forwarder") {
+      dispatch(deleteForwarder(id));
+    }
   };
   const updateRecord = () => {
     if (valueRow.type === "destination") {
@@ -48,6 +54,10 @@ export default function TableRow({ id, valueRow, index }: ITableRow) {
     if (valueRow.type === "product") {
       setIsOpen(true);
       setIsOpenProduct(true);
+    }
+    if (valueRow.type === "forwarder") {
+      setIsOpen(true);
+      setIsOpenForwarder(true);
     }
   };
 
@@ -81,6 +91,9 @@ export default function TableRow({ id, valueRow, index }: ITableRow) {
         )}
         {isOpenProduct && (
           <FormEditRecordProduct setModalActiveEdit={setIsOpen} id={id} />
+        )}
+        {isOpenForwarder && (
+          <FormEditRecordForwarder setModalActiveEdit={setIsOpen} id={id} />
         )}
       </Modal>
     </tr>

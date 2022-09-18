@@ -13,7 +13,7 @@ export const createForwarder = async (req, res) => {
       if (!forwarder || !birth || !carNumber || !carBrand) {
         throw new Error("Некорректные данные в полях ввода формы");
       }
-      const newRecord = new Product({
+      const newRecord = new Forwarder({
         forwarder,
         birth,
         carNumber,

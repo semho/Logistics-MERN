@@ -1,28 +1,29 @@
 import React, { useState } from "react";
-import {
-  createRecord,
-  dataRecords,
-  IStoreListRecords,
-} from "../../../../redux/features/recordSlice";
+import { useValidate } from "../../../../hooks/useValidate";
+import { initialSettingsForwarderShort } from "../../../../models/Settings";
+import { createForwarder } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { ButtonStyled } from "../../../Controls/ButtonStyled";
 import { InputStyled } from "../../../Controls/InputStyled";
 
 export function FormAddForwarder() {
-  const [record, setRecord] = useState({});
+  const { emptyField } = useValidate();
+  const [record, setRecord] = useState(initialSettingsForwarderShort);
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
   };
-  //TODO: добавить загрузку
-  // const {
-  //   statusRecords: { loading },
-  // }: IStoreListRecords = useAppSelector(dataRecords);
-  // const dispatch = useAppDispatch();
-  // const addRecordHandler = async () => {
-  //   const newRecord = { ...record };
-  //TODO: добавить в redux
-  //   dispatch();
-  // };
+  const loading = useAppSelector(
+    (state) => state.settings.statusSettings.loading
+  );
+  const dispatch = useAppDispatch();
+  const addRecordSettingsHandler = async () => {
+    const newRecord = { ...record };
+    if (emptyField(record.forwarder, 'Поле ввода "Фамилия И.О."')) return;
+    if (emptyField(record.birth, 'Поле ввода "Дата рождения"')) return;
+    if (emptyField(record.carNumber, 'Поле ввода "Гос.номер авто"')) return;
+    if (emptyField(record.carBrand, 'Поле ввода "Марка авто"')) return;
+    dispatch(createForwarder({ newRecord }));
+  };
 
   return (
     <>
@@ -53,7 +54,7 @@ export function FormAddForwarder() {
             colorFocus="sky"
             type="text"
             placeholder="Гос. номер машины"
-            name="number"
+            name="carNumber"
             onChange={changeHandler}
           />
         </div>
@@ -71,8 +72,8 @@ export function FormAddForwarder() {
             title="Добавить"
             variant="sky"
             type="button"
-            disabled={false}
-            // onClick={addRecordHandler}
+            disabled={loading}
+            onClick={addRecordSettingsHandler}
           />
         </div>
       </div>

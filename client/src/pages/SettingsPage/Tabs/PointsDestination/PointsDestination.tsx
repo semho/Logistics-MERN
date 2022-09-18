@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FormAddPointsDestination } from "../../../../components/Form/FormsForAddRecords/FormAddPointsDestination";
 import { Loader } from "../../../../components/Loader";
 import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
@@ -35,7 +35,7 @@ export default function PointsDestination() {
     (state) => state.settings.statusSettings.allSettings.settingsDestination
   );
   //прееобразуем его
-  const stateForTable = useCallback(() => {
+  const stateForTable = useMemo(() => {
     return stateDestination.map((record) => {
       return {
         id: record._id,

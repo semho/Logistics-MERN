@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { FormAddProduct } from "../../../../components/Form/FormsForAddRecords/FormAddProduct";
 import { Loader } from "../../../../components/Loader";
 import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
@@ -29,7 +29,7 @@ export default function Products() {
     (state) => state.settings.statusSettings.allSettings.settingsProduct
   );
   //прееобразуем его
-  const stateForTable = useCallback(() => {
+  const stateForTable = useMemo(() => {
     return stateProduct.map((record) => {
       return {
         id: record._id,

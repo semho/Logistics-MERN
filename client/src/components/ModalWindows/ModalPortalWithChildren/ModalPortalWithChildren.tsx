@@ -8,7 +8,7 @@ interface IModal {
   children?: React.ReactNode;
 }
 
-export default function ModalPortalWithChildren({
+export function ModalPortalWithChildren({
   active,
   setActive,
   children,

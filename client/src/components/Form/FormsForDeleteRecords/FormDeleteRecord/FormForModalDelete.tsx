@@ -8,10 +8,7 @@ interface IFormDelete {
   setModalActiveDelete: (value: React.SetStateAction<boolean>) => void;
 }
 
-export default function FormForModalDelete({
-  setModalActiveDelete,
-  id,
-}: IFormDelete) {
+export function FormForModalDelete({ setModalActiveDelete, id }: IFormDelete) {
   const dispatch = useAppDispatch();
   const removeRecord = async () => {
     if (id) {

@@ -8,11 +8,11 @@ import { useAppDispatch } from "../../../../redux/store";
 import { ButtonStyled } from "../../../Controls/ButtonStyled";
 import { CeilItem } from "../../TableMain/RecordItem/CeilItem";
 
-import Modal from "../../../ModalWindows/ModalPortalWithChildren/ModalPortalWithChildren";
-import TableCeil from "./TableCeil/TableCeil";
-import FormEditRecordDestination from "../../../Form/FormsForUpdateRecords/FormEditRecordDestination/FormEditRecordDestination";
-import FormEditRecordProduct from "../../../Form/FormsForUpdateRecords/FormEditRecordProduct/FormEditRecordProduct";
-import FormEditRecordForwarder from "../../../Form/FormsForUpdateRecords/FormEditRecordForwarder/FormEditRecordForwarder";
+import { ModalPortalWithChildren as Modal } from "../../../ModalWindows/ModalPortalWithChildren";
+import { TableCeil } from "./TableCeil";
+import { FormEditRecordDestination } from "../../../Form/FormsForUpdateRecords/FormEditRecordDestination";
+import { FormEditRecordProduct } from "../../../Form/FormsForUpdateRecords/FormEditRecordProduct";
+import { FormEditRecordForwarder } from "../../../Form/FormsForUpdateRecords/FormEditRecordForwarder";
 
 interface IOBjRow {
   [key: string]: string | number;
@@ -24,7 +24,7 @@ interface ITableRow {
   index: number;
 }
 
-export default function TableRow({ id, valueRow, index }: ITableRow) {
+export function TableRow({ id, valueRow, index }: ITableRow) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDestination, setIsOpenDestination] = useState(false);
   const [isOpenProduct, setIsOpenProduct] = useState(false);
@@ -47,16 +47,14 @@ export default function TableRow({ id, valueRow, index }: ITableRow) {
     }
   };
   const updateRecord = () => {
+    setIsOpen(true);
     if (valueRow.type === "destination") {
-      setIsOpen(true);
       setIsOpenDestination(true);
     }
     if (valueRow.type === "product") {
-      setIsOpen(true);
       setIsOpenProduct(true);
     }
     if (valueRow.type === "forwarder") {
-      setIsOpen(true);
       setIsOpenForwarder(true);
     }
   };

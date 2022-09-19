@@ -5,7 +5,7 @@ import { AuthPage } from "./pages/AuthPage";
 import { ListRecords } from "./pages/ListRecords";
 import { RegPage } from "./pages/RegPage";
 import SettingsPage from "./pages/SettingsPage/SettingsPage";
-import StatisticsPage from "./pages/StatisticsPage/StatisticsPage";
+import { StatisticsPage } from "./pages/StatisticsPage";
 
 export function useRoutes(isAuth: boolean) {
   if (isAuth) {

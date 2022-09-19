@@ -10,7 +10,7 @@ import { ButtonStyled } from "../../../Controls/ButtonStyled";
 import { InputStyled } from "../../../Controls/InputStyled";
 import { IFormEdit } from "../FormEditRecord/FormEditRecord";
 
-export default function FormEditRecordDestination({
+export function FormEditRecordDestination({
   setModalActiveEdit,
   id,
 }: IFormEdit) {

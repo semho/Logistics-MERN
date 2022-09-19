@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddPointsDestination } from "../../../../components/Form/FormsForAddRecords/FormAddPointsDestination";
 import { Loader } from "../../../../components/Loader";
-import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
+import { TableSettings } from "../../../../components/Tables/TableSettings";
 import { useShowError } from "../../../../hooks/useShowError";
-import { getDestinations } from "../../../../redux/features/settingsSlice";
-import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { useAppSelector } from "../../../../redux/store";
 
-export default function PointsDestination() {
+export function PointsDestination() {
   const [list, setList] = useState([
     {
       id: "",
@@ -20,11 +19,6 @@ export default function PointsDestination() {
     "Расстояние, км",
     "Действия",
   ];
-  const dispatch = useAppDispatch();
-  //загружаем из БД в redux
-  useEffect(() => {
-    dispatch(getDestinations());
-  }, [dispatch]);
 
   const loading = useAppSelector(
     (state) => state.settings.statusSettings.loading

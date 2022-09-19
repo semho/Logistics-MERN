@@ -4,7 +4,7 @@ interface IBurger {
   onClick: (value: React.SetStateAction<boolean>) => void;
 }
 
-export default function Burger({ onClick }: IBurger) {
+export function Burger({ onClick }: IBurger) {
   return (
     <div
       className="HAMBURGER-ICON space-y-2"

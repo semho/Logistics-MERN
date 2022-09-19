@@ -10,7 +10,7 @@ export interface IFormEdit {
   id: string;
 }
 
-export default function FormEditRecord({ setModalActiveEdit, id }: IFormEdit) {
+export function FormEditRecord({ setModalActiveEdit, id }: IFormEdit) {
   const dispatch = useAppDispatch();
   const [record, setRecord] = useState<IRecord>(initialEmptyState);
   const recordById = useAppSelector((state) =>

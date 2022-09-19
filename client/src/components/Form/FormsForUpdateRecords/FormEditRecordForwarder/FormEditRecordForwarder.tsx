@@ -10,10 +10,7 @@ import { ButtonStyled } from "../../../Controls/ButtonStyled";
 import { InputStyled } from "../../../Controls/InputStyled";
 import { IFormEdit } from "../FormEditRecord/FormEditRecord";
 
-export default function FormEditRecordForwarder({
-  setModalActiveEdit,
-  id,
-}: IFormEdit) {
+export function FormEditRecordForwarder({ setModalActiveEdit, id }: IFormEdit) {
   const dispatch = useAppDispatch();
   const [record, setRecord] = useState<ISettingsForwarder>(
     initialSettingsForwarder

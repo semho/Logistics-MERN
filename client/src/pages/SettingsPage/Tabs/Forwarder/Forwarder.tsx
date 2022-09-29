@@ -14,10 +14,13 @@ export function Forwarder() {
     "Марка машины",
     "Действия",
   ];
-
   const [list, setList] = useState([
     {
-      id: "",
+      id: "#",
+      forwarder: "Ответственный",
+      birth: "Дата рождения",
+      carNumber: "Гос.номер",
+      carBrand: "Марка машины",
       type: "forwarder",
     },
   ]);

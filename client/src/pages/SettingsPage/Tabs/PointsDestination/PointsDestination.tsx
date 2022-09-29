@@ -6,12 +6,6 @@ import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
 
 export function PointsDestination() {
-  const [list, setList] = useState([
-    {
-      id: "",
-      type: "destination",
-    },
-  ]);
   const cellNames = [
     "#",
     "Откуда->Куда",
@@ -19,6 +13,15 @@ export function PointsDestination() {
     "Расстояние, км",
     "Действия",
   ];
+  const [list, setList] = useState([
+    {
+      id: "#",
+      fromTo: "Откуда->Куда",
+      senderToRecipient: "Кто->Кому",
+      distance: 0,
+      type: "destination",
+    },
+  ]);
 
   const loading = useAppSelector(
     (state) => state.settings.statusSettings.loading

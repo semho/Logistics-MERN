@@ -7,10 +7,11 @@ import { useAppSelector } from "../../../../redux/store";
 
 export default function Products() {
   const cellNames = ["#", "Товар", "Единица измерения", "Действия"];
-
   const [list, setList] = useState([
     {
-      id: "",
+      id: "#",
+      product: "Товар",
+      unit: "Единица измерения",
       type: "product",
     },
   ]);

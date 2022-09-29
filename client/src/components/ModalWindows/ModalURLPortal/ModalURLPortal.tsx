@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { useNavigate, useParams } from "react-router-dom";
 import "./modalurlportal.css";
 
-export default function ModalURLPortal() {
+export function ModalURLPortal() {
   const params = useParams();
   const recordId = params.id;
   const recordTab = params.tab;

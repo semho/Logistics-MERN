@@ -1,7 +1,13 @@
-import React from "react";
-import Tabs from "../../components/Tabs/Tabs";
-import Forwarder from "./Tabs/Forwarder/Forwarder";
-import PointsDestination from "./Tabs/PointsDestination/PointsDestination";
+import React, { useEffect } from "react";
+import { Tabs } from "../../components/Tabs";
+import {
+  getDestinations,
+  getForwarders,
+  getProducts,
+} from "../../redux/features/settingsSlice";
+import { useAppDispatch } from "../../redux/store";
+import { Forwarder } from "./Tabs/Forwarder";
+import { PointsDestination } from "./Tabs/PointsDestination";
 import Products from "./Tabs/Products/Products";
 
 export default function SettingsPage() {
@@ -19,6 +25,14 @@ export default function SettingsPage() {
       contentElementJSX: <Forwarder />,
     },
   ];
+  //загрузка данных из БД в redux для этого раздела
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getDestinations());
+    dispatch(getProducts());
+    dispatch(getForwarders());
+  }, [dispatch]);
+
   return (
     <>
       <Tabs items={items} />

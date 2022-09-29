@@ -5,8 +5,8 @@ import { useAppDispatch } from "../../redux/store";
 import { removeUser } from "../../redux/features/authSlice";
 import "./navbar.css";
 import { NavbarItemMobile } from "./NavbarItemMobile";
-import Burger from "./Burger/Burger";
 import { CloseIcon } from "../Icons/CloseIcon";
+import { Burger } from "./Burger";
 
 export function Navbar() {
   const [isNavOpen, setIsNavOpen] = useState(false);

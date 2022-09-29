@@ -4,6 +4,6 @@ interface ITabContentProps {
   contentElementJSX: JSX.Element;
 }
 
-export default function TabContent({ contentElementJSX }: ITabContentProps) {
+export function TabContent({ contentElementJSX }: ITabContentProps) {
   return <div className="tabcontent">{contentElementJSX}</div>;
 }

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { IListRecords } from "../../../models/Record";
-import Modal from "../../ModalWindows/ModalPortalWithChildren/ModalPortalWithChildren";
 import { useAppSelector } from "../../../redux/store";
+import { FormForModalDelete } from "../../Form/FormsForDeleteRecords/FormDeleteRecord";
+import { FormEditRecord } from "../../Form/FormsForUpdateRecords/FormEditRecord";
 import { RecordItem } from "./RecordItem";
 import { TableHead } from "./TableHead";
-import FormForModalDelete from "../../Form/FormsForDeleteRecords/FormDeleteRecord/FormForModalDelete";
-import FormEditRecord from "../../Form/FormsForUpdateRecords/FormEditRecord/FormEditRecord";
+import { ModalPortalWithChildren as Modal } from "../../ModalWindows/ModalPortalWithChildren";
 
 export function Table() {
   const [list, setList] = useState<IListRecords>([]);

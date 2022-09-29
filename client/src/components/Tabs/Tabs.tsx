@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TabContent from "./TabContent/TabContent";
+import { TabContent } from "./TabContent";
 
 interface ITab {
   title: string;
@@ -10,7 +10,7 @@ interface ITabs {
   items: ITab[];
 }
 
-export default function Tabs({ items }: ITabs) {
+export function Tabs({ items }: ITabs) {
   const [active, setActive] = useState(0);
 
   const openTab = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

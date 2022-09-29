@@ -1,25 +1,21 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddProduct } from "../../../../components/Form/FormsForAddRecords/FormAddProduct";
 import { Loader } from "../../../../components/Loader";
-import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
+import { TableSettings } from "../../../../components/Tables/TableSettings";
 import { useShowError } from "../../../../hooks/useShowError";
-import { getProducts } from "../../../../redux/features/settingsSlice";
-import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { useAppSelector } from "../../../../redux/store";
 
 export default function Products() {
   const cellNames = ["#", "Товар", "Единица измерения", "Действия"];
-
   const [list, setList] = useState([
     {
-      id: "",
+      id: "#",
+      product: "Товар",
+      unit: "Единица измерения",
       type: "product",
     },
   ]);
-  const dispatch = useAppDispatch();
-  //загружаем из БД в redux
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+
   const loading = useAppSelector(
     (state) => state.settings.statusSettings.loading
   );

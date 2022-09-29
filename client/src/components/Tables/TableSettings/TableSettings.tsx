@@ -1,6 +1,6 @@
 import React from "react";
 import { TableHead } from "../TableMain/TableHead";
-import TableRow from "./TableRow/TableRow";
+import { TableRow } from "./TableRow";
 
 interface ITableSettings {
   nameThead: string[];
@@ -10,7 +10,7 @@ interface ITableSettings {
   }[];
 }
 
-export default function TableSettings({ nameThead, data }: ITableSettings) {
+export function TableSettings({ nameThead, data }: ITableSettings) {
   return (
     <div className="flex flex-col md:mx-20">
       <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">

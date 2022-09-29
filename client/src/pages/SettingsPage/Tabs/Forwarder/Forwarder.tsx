@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddForwarder } from "../../../../components/Form/FormsForAddRecords/FormAddForwarder";
 import { Loader } from "../../../../components/Loader";
-import TableSettings from "../../../../components/Tables/TableSettings/TableSettings";
+import { TableSettings } from "../../../../components/Tables/TableSettings";
 import { useShowError } from "../../../../hooks/useShowError";
-import { getForwarders } from "../../../../redux/features/settingsSlice";
-import { useAppDispatch, useAppSelector } from "../../../../redux/store";
+import { useAppSelector } from "../../../../redux/store";
 
-export default function Forwarder() {
+export function Forwarder() {
   const cellNames = [
     "#",
     "Ответственный",
@@ -15,19 +14,17 @@ export default function Forwarder() {
     "Марка машины",
     "Действия",
   ];
-
   const [list, setList] = useState([
     {
-      id: "",
+      id: "#",
+      forwarder: "Ответственный",
+      birth: "Дата рождения",
+      carNumber: "Гос.номер",
+      carBrand: "Марка машины",
       type: "forwarder",
     },
   ]);
 
-  const dispatch = useAppDispatch();
-  //загружаем из БД в redux
-  useEffect(() => {
-    dispatch(getForwarders());
-  }, [dispatch]);
   const loading = useAppSelector(
     (state) => state.settings.statusSettings.loading
   );

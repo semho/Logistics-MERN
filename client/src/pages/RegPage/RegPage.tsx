@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ButtonStyled } from "../../components/Controls/ButtonStyled";
-import { InputStyled } from "../../components/Controls/InputStyled";
-import { LabelStyled } from "../../components/Controls/LabelStyled";
-import { Loader } from "../../components/Loader";
+import { ButtonStyled } from "../../components/UI/ButtonStyled";
+import { InputStyled } from "../../components/UI/InputStyled";
+import { LabelStyled } from "../../components/UI/LabelStyled";
+import { Loader } from "../../components/UI/Loader";
 
 import { useShowError } from "../../hooks/useShowError";
 import { useValidate } from "../../hooks/useValidate";

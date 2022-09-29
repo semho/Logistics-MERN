@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddPointsDestination } from "../../../../components/Form/FormsForAddRecords/FormAddPointsDestination";
-import { Loader } from "../../../../components/Loader";
+import { Loader } from "../../../../components/UI/Loader";
 import { TableSettings } from "../../../../components/Tables/TableSettings";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";

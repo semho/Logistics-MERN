@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { FormAddRecord } from "../../components/Form/FormsForAddRecords/FormAddRecord";
-import { Loader } from "../../components/Loader";
+import { Loader } from "../../components/UI/Loader";
 import { Table } from "../../components/Tables/TableMain";
 import { useShowError } from "../../hooks/useShowError";
 import {

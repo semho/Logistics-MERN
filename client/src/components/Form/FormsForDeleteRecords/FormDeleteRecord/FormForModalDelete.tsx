@@ -1,7 +1,7 @@
 import React from "react";
 import { deleteRecord } from "../../../../redux/features/recordSlice";
 import { useAppDispatch } from "../../../../redux/store";
-import { ButtonStyled } from "../../../Controls/ButtonStyled";
+import { ButtonStyled } from "../../../UI/ButtonStyled";
 
 interface IFormDelete {
   id: string;

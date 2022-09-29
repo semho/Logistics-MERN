@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { NavbarItem } from "./NavbarItem";
+import { NavbarItem } from "../UI/NavbarItem";
 import { useAppDispatch } from "../../redux/store";
 import { removeUser } from "../../redux/features/authSlice";
 import "./navbar.css";
-import { NavbarItemMobile } from "./NavbarItemMobile";
+import { NavbarItemMobile } from "../UI/NavbarItemMobile";
 import { CloseIcon } from "../Icons/CloseIcon";
-import { Burger } from "./Burger";
+import { Burger } from "../UI/Burger";
 
 export function Navbar() {
   const [isNavOpen, setIsNavOpen] = useState(false);

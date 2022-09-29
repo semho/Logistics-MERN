@@ -5,8 +5,8 @@ import {
   IStoreListRecords,
 } from "../../../../redux/features/recordSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
-import { ButtonStyled } from "../../../Controls/ButtonStyled";
-import { InputStyled } from "../../../Controls/InputStyled";
+import { ButtonStyled } from "../../../UI/ButtonStyled";
+import { InputStyled } from "../../../UI/InputStyled";
 
 export function FormAddRecord() {
   const [record, setRecord] = useState({});

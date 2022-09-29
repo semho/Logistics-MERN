@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddForwarder } from "../../../../components/Form/FormsForAddRecords/FormAddForwarder";
-import { Loader } from "../../../../components/Loader";
+import { Loader } from "../../../../components/UI/Loader";
 import { TableSettings } from "../../../../components/Tables/TableSettings";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";

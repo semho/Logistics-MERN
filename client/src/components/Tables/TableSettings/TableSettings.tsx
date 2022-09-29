@@ -1,5 +1,5 @@
 import React from "react";
-import { TableHead } from "../TableMain/TableHead";
+import { TableHead } from "../../UI/TableHead";
 import { TableRow } from "./TableRow";
 
 interface ITableSettings {

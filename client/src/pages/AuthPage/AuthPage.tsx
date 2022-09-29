@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { ButtonStyled } from "../../components/Controls/ButtonStyled/ButtonStyled";
-import { InputStyled } from "../../components/Controls/InputStyled";
-import { LabelStyled } from "../../components/Controls/LabelStyled";
+import { ButtonStyled } from "../../components/UI/ButtonStyled/ButtonStyled";
+import { InputStyled } from "../../components/UI/InputStyled";
+import { LabelStyled } from "../../components/UI/LabelStyled";
 
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { dataUser, IStatusUser, login } from "../../redux/features/authSlice";
 import { toast } from "react-toastify";
-import { Loader } from "../../components/Loader";
+import { Loader } from "../../components/UI/Loader";
 import { Link } from "react-router-dom";
 import { useValidate } from "../../hooks/useValidate";
 import { initialUser } from "../../models/User";

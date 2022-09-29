@@ -1,8 +1,8 @@
 import React from "react";
 import { IRecord } from "../../../../models/Record";
 import { formatDate } from "../../../../utils/formatDate";
-import { ButtonStyled } from "../../../Controls/ButtonStyled";
-import { CeilItem } from "./CeilItem";
+import { ButtonStyled } from "../../../UI/ButtonStyled";
+import { TableCeilContent } from "../../../UI/TableCeilContent";
 
 interface IRecordItem {
   record: IRecord;
@@ -15,16 +15,16 @@ interface IRecordItem {
 export function RecordItem({ record, index, openModal }: IRecordItem) {
   return (
     <tr className="border-b" key={record._id} id={record._id}>
-      <CeilItem>{index + 1}</CeilItem>
-      <CeilItem>{formatDate(record.date)}</CeilItem>
-      <CeilItem>{record.fromTo}</CeilItem>
-      <CeilItem>{record.distance}</CeilItem>
-      <CeilItem>{record.product}</CeilItem>
-      <CeilItem>{record.units}</CeilItem>
-      <CeilItem>{record.forwarder}</CeilItem>
-      <CeilItem>{record.price}</CeilItem>
-      <CeilItem>{record.sum}</CeilItem>
-      <CeilItem>
+      <TableCeilContent>{index + 1}</TableCeilContent>
+      <TableCeilContent>{formatDate(record.date)}</TableCeilContent>
+      <TableCeilContent>{record.fromTo}</TableCeilContent>
+      <TableCeilContent>{record.distance}</TableCeilContent>
+      <TableCeilContent>{record.product}</TableCeilContent>
+      <TableCeilContent>{record.units}</TableCeilContent>
+      <TableCeilContent>{record.forwarder}</TableCeilContent>
+      <TableCeilContent>{record.price}</TableCeilContent>
+      <TableCeilContent>{record.sum}</TableCeilContent>
+      <TableCeilContent>
         <ButtonStyled
           title="Изменить"
           variant="sky"
@@ -40,7 +40,7 @@ export function RecordItem({ record, index, openModal }: IRecordItem) {
           disabled={false}
           onClick={openModal(true)}
         />
-      </CeilItem>
+      </TableCeilContent>
     </tr>
   );
 }

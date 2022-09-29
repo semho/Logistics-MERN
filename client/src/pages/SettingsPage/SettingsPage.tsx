@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Tabs } from "../../components/Tabs";
+import { Tabs } from "../../components/UI/Tabs";
 import {
   getDestinations,
   getForwarders,

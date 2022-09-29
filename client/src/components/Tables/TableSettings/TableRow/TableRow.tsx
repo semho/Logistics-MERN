@@ -5,14 +5,14 @@ import {
   deleteProduct,
 } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch } from "../../../../redux/store";
-import { ButtonStyled } from "../../../Controls/ButtonStyled";
-import { CeilItem } from "../../TableMain/RecordItem/CeilItem";
+import { ButtonStyled } from "../../../UI/ButtonStyled";
+import { TableCeilContent } from "../../../UI/TableCeilContent";
 
-import { ModalPortalWithChildren as Modal } from "../../../ModalWindows/ModalPortalWithChildren";
-import { TableCeil } from "./TableCeil";
+import { ModalPortalWithChildren as Modal } from "../../../UI/ModalPortalWithChildren";
 import { FormEditRecordDestination } from "../../../Form/FormsForUpdateRecords/FormEditRecordDestination";
 import { FormEditRecordProduct } from "../../../Form/FormsForUpdateRecords/FormEditRecordProduct";
 import { FormEditRecordForwarder } from "../../../Form/FormsForUpdateRecords/FormEditRecordForwarder";
+import { TableCeilTitle } from "../../../UI/TableCeilTitle";
 
 interface IOBjRow {
   [key: string]: string | number;
@@ -61,11 +61,11 @@ export function TableRow({ id, valueRow, index }: ITableRow) {
 
   return (
     <tr className="border-b" id={id} key={id}>
-      <CeilItem>{index}</CeilItem>
+      <TableCeilContent>{index}</TableCeilContent>
       {Object.values(newObj).map((title) => (
-        <TableCeil key={title} title={String(title)} />
+        <TableCeilTitle key={title} title={String(title)} />
       ))}
-      <CeilItem className="w-1/4">
+      <TableCeilContent className="w-1/4">
         <ButtonStyled
           title="Изменить"
           variant="sky"
@@ -82,7 +82,7 @@ export function TableRow({ id, valueRow, index }: ITableRow) {
           disabled={false}
           onClick={() => removeRecord(id)}
         />
-      </CeilItem>
+      </TableCeilContent>
       <Modal active={isOpen} setActive={setIsOpen}>
         {isOpenDestination && (
           <FormEditRecordDestination setModalActiveEdit={setIsOpen} id={id} />

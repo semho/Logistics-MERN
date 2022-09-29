@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { initialEmptyState, IRecord } from "../../../../models/Record";
 import { updateRecord } from "../../../../redux/features/recordSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
-import { ButtonStyled } from "../../../Controls/ButtonStyled";
-import { InputStyled } from "../../../Controls/InputStyled";
+import { ButtonStyled } from "../../../UI/ButtonStyled";
+import { InputStyled } from "../../../UI/InputStyled";
 
 export interface IFormEdit {
   setModalActiveEdit: (value: React.SetStateAction<boolean>) => void;

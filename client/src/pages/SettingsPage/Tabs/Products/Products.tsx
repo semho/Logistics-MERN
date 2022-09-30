@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddProduct } from "../../../../components/Form/FormsForAddRecords/FormAddProduct";
 import { Loader } from "../../../../components/UI/Loader";
-import { TableSettings } from "../../../../components/Tables/TableSettings";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
+import { TableContent } from "../../../../components/UI/TableContent/TableContent";
+import { TableRow } from "../../../../components/Tables/TableRow";
 
 export default function Products() {
   const cellNames = ["#", "Товар", "Единица измерения", "Действия"];
@@ -53,7 +54,20 @@ export default function Products() {
       {!loading && list.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>
       )}
-      {list.length > 0 && <TableSettings nameThead={cellNames} data={list} />}
+      {list.length > 0 && (
+        <TableContent nameThead={cellNames}>
+          {list.map((item, index) => {
+            return (
+              <TableRow
+                key={item.id}
+                id={item.id}
+                valueRow={item}
+                index={index + 1}
+              />
+            );
+          })}
+        </TableContent>
+      )}
     </>
   );
 }

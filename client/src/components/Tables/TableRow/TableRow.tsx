@@ -3,16 +3,16 @@ import {
   deleteDestination,
   deleteForwarder,
   deleteProduct,
-} from "../../../../redux/features/settingsSlice";
-import { useAppDispatch } from "../../../../redux/store";
-import { ButtonStyled } from "../../../UI/ButtonStyled";
-import { TableCeilContent } from "../../../UI/TableCeilContent";
+} from "../../../redux/features/settingsSlice";
+import { useAppDispatch } from "../../../redux/store";
+import { ButtonStyled } from "../../UI/ButtonStyled";
+import { TableCeilContent } from "../../UI/TableCeilContent";
 
-import { ModalPortalWithChildren as Modal } from "../../../UI/ModalPortalWithChildren";
-import { FormEditRecordDestination } from "../../../Form/FormsForUpdateRecords/FormEditRecordDestination";
-import { FormEditRecordProduct } from "../../../Form/FormsForUpdateRecords/FormEditRecordProduct";
-import { FormEditRecordForwarder } from "../../../Form/FormsForUpdateRecords/FormEditRecordForwarder";
-import { TableCeilTitle } from "../../../UI/TableCeilTitle";
+import { ModalPortalWithChildren as Modal } from "../../UI/ModalPortalWithChildren";
+import { FormEditRecordDestination } from "../../Form/FormsForUpdateRecords/FormEditRecordDestination";
+import { FormEditRecordProduct } from "../../Form/FormsForUpdateRecords/FormEditRecordProduct";
+import { FormEditRecordForwarder } from "../../Form/FormsForUpdateRecords/FormEditRecordForwarder";
+import { TableCeilTitle } from "../../UI/TableCeilTitle";
 
 interface IOBjRow {
   [key: string]: string | number;

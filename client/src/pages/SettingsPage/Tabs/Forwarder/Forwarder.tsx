@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddForwarder } from "../../../../components/Form/FormsForAddRecords/FormAddForwarder";
 import { Loader } from "../../../../components/UI/Loader";
-import { TableSettings } from "../../../../components/Tables/TableSettings";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
+import { TableContent } from "../../../../components/UI/TableContent/TableContent";
+import { TableRow } from "../../../../components/Tables/TableRow";
 
 export function Forwarder() {
   const cellNames = [
@@ -33,7 +34,7 @@ export function Forwarder() {
   const stateForwarders = useAppSelector(
     (state) => state.settings.statusSettings.allSettings.settingsForwarder
   );
-  //прееобразуем его
+  //преобразуем его
   const stateForTable = useMemo(() => {
     return stateForwarders.map((record) => {
       return {
@@ -64,7 +65,20 @@ export function Forwarder() {
       {!loading && list.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>
       )}
-      {list.length > 0 && <TableSettings nameThead={cellNames} data={list} />}
+      {list.length > 0 && (
+        <TableContent nameThead={cellNames}>
+          {list.map((item, index) => {
+            return (
+              <TableRow
+                key={item.id}
+                id={item.id}
+                valueRow={item}
+                index={index + 1}
+              />
+            );
+          })}
+        </TableContent>
+      )}
     </>
   );
 }

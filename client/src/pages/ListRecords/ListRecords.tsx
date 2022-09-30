@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/store";
 
 export function ListRecords() {
   const {
-    statusRecords: { loading, error },
+    statusRecords: { loading, error, listRecords },
   }: IStoreListRecords = useAppSelector(dataRecords);
 
   //диспач для получения записей в redux от сервера
@@ -27,6 +27,19 @@ export function ListRecords() {
   //показываем ошибки, если есть
   useShowError(error);
 
+  const cellNames = [
+    "#",
+    "Дата",
+    "Откуда-Куда",
+    "Расстояние, км",
+    "Товар",
+    "Количество, м3",
+    "Ответственный",
+    "Стоимость единицы, руб",
+    "Сумма товара, руб",
+    "Действия",
+  ];
+
   if (loading) {
     return <Loader />;
   }
@@ -34,7 +47,10 @@ export function ListRecords() {
   return (
     <>
       <FormAddRecord />
-      <Table />
+      {!loading && listRecords.length === 0 && (
+        <div className="text-center text-xl mt-20">Записей пока нет</div>
+      )}
+      {listRecords.length > 0 && (<Table headings={cellNames} records={listRecords} />)}
     </>
   );
 }

@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  deleteDestination,
-  deleteForwarder,
-  deleteProduct,
-} from "../../../redux/features/settingsSlice";
-import { useAppDispatch } from "../../../redux/store";
+
 import { ButtonStyled } from "../../UI/ButtonStyled";
 import { TableCeilContent } from "../../UI/TableCeilContent";
 
@@ -22,30 +17,21 @@ interface ITableRow {
   id: string;
   valueRow: IOBjRow;
   index: number;
+  openModal: (
+    isDelete: boolean
+  ) => (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-export function TableRow({ id, valueRow, index }: ITableRow) {
+export function TableRow({ id, valueRow, index, openModal }: ITableRow) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDestination, setIsOpenDestination] = useState(false);
   const [isOpenProduct, setIsOpenProduct] = useState(false);
   const [isOpenForwarder, setIsOpenForwarder] = useState(false);
-  const dispatch = useAppDispatch();
 
   const newObj = { ...valueRow };
   delete newObj.id;
   delete newObj.type;
 
-  const removeRecord = async (id: string) => {
-    if (valueRow.type === "destination") {
-      dispatch(deleteDestination(id));
-    }
-    if (valueRow.type === "product") {
-      dispatch(deleteProduct(id));
-    }
-    if (valueRow.type === "forwarder") {
-      dispatch(deleteForwarder(id));
-    }
-  };
   const updateRecord = () => {
     setIsOpen(true);
     if (valueRow.type === "destination") {
@@ -80,7 +66,7 @@ export function TableRow({ id, valueRow, index }: ITableRow) {
           variant="rose"
           type="button"
           disabled={false}
-          onClick={() => removeRecord(id)}
+          onClick={openModal(true)}
         />
       </TableCeilContent>
       <Modal active={isOpen} setActive={setIsOpen}>

@@ -1,19 +1,38 @@
 import React from "react";
 import { deleteRecord } from "../../../../redux/features/recordSlice";
+import { deleteDestination, deleteForwarder, deleteProduct } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch } from "../../../../redux/store";
 import { ButtonStyled } from "../../../UI/ButtonStyled";
 
 interface IFormDelete {
   id: string;
   setModalActiveDelete: (value: React.SetStateAction<boolean>) => void;
+  type?: string;
 }
 
-export function FormForModalDelete({ setModalActiveDelete, id }: IFormDelete) {
+export function FormForModalDelete({ setModalActiveDelete, id, type = 'record' }: IFormDelete) {
+
   const dispatch = useAppDispatch();
   const removeRecord = async () => {
     if (id) {
-      dispatch(deleteRecord(id));
-      setModalActiveDelete(false);
+      switch (type) {
+        case 'record':
+          dispatch(deleteRecord(id));
+          break;
+        case 'destination':
+          dispatch(deleteDestination(id));
+          break;
+        case 'product':
+          dispatch(deleteProduct(id));
+          break;
+        case 'forwarder':
+          dispatch(deleteForwarder(id));
+          break;
+        default:
+          break;
+      }
+
+    setModalActiveDelete(false);
     }
   };
 

@@ -3,8 +3,7 @@ import { FormAddForwarder } from "../../../../components/Form/FormsForAddRecords
 import { Loader } from "../../../../components/UI/Loader";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
-import { TableContent } from "../../../../components/UI/TableContent/TableContent";
-import { TableRow } from "../../../../components/Tables/TableRow";
+import { TableSettings } from "../../../../components/Tables/TableSettings";
 
 export function Forwarder() {
   const cellNames = [
@@ -65,20 +64,7 @@ export function Forwarder() {
       {!loading && list.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>
       )}
-      {list.length > 0 && (
-        <TableContent nameThead={cellNames}>
-          {list.map((item, index) => {
-            return (
-              <TableRow
-                key={item.id}
-                id={item.id}
-                valueRow={item}
-                index={index + 1}
-              />
-            );
-          })}
-        </TableContent>
-      )}
+      {list.length > 0 && (<TableSettings headings={cellNames} records={list} />)}
     </>
   );
 }

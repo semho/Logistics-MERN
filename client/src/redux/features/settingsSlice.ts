@@ -390,33 +390,33 @@ const settingsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getDestinations.pending, setLoader);
-    builder.addCase(createDestination.pending, setLoader);
-    builder.addCase(deleteDestination.pending, setLoader);
+    // builder.addCase(createDestination.pending, setLoader);
+    // builder.addCase(deleteDestination.pending, setLoader);
     builder.addCase(getProducts.pending, setLoader);
-    builder.addCase(createProduct.pending, setLoader);
-    builder.addCase(deleteProduct.pending, setLoader);
+    // builder.addCase(createProduct.pending, setLoader);
+    // builder.addCase(deleteProduct.pending, setLoader);
     builder.addCase(getForwarders.pending, setLoader);
-    builder.addCase(createForwarder.pending, setLoader);
-    builder.addCase(deleteForwarder.pending, setLoader);
+    // builder.addCase(createForwarder.pending, setLoader);
+    // builder.addCase(deleteForwarder.pending, setLoader);
 
     builder.addCase(getDestinations.fulfilled, (state, { payload }) => {
       state.statusSettings.loading = false;
       state.statusSettings.allSettings.settingsDestination = payload;
     });
-    builder.addCase(createDestination.fulfilled, deleteLoader);
-    builder.addCase(deleteDestination.fulfilled, deleteLoader);
+    // builder.addCase(createDestination.fulfilled, deleteLoader);
+    // builder.addCase(deleteDestination.fulfilled, deleteLoader);
     builder.addCase(getProducts.fulfilled, (state, { payload }) => {
       state.statusSettings.loading = false;
       state.statusSettings.allSettings.settingsProduct = payload;
     });
-    builder.addCase(createProduct.fulfilled, deleteLoader);
-    builder.addCase(deleteProduct.fulfilled, deleteLoader);
+    // builder.addCase(createProduct.fulfilled, deleteLoader);
+    // builder.addCase(deleteProduct.fulfilled, deleteLoader);
     builder.addCase(getForwarders.fulfilled, (state, { payload }) => {
       state.statusSettings.loading = false;
       state.statusSettings.allSettings.settingsForwarder = payload;
     });
-    builder.addCase(createForwarder.fulfilled, deleteLoader);
-    builder.addCase(deleteForwarder.fulfilled, deleteLoader);
+    // builder.addCase(createForwarder.fulfilled, deleteLoader);
+    // builder.addCase(deleteForwarder.fulfilled, deleteLoader);
 
     builder.addCase(getDestinations.rejected, setError);
     builder.addCase(deleteDestination.rejected, setError);

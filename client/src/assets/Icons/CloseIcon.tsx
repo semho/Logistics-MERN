@@ -12,7 +12,7 @@ export function CloseIcon({ size = 24, onClick }: ICloseProps) {
 
   return (
     <div
-      className="CROSS-ICON absolute top-0 right-0 px-8 py-8"
+      className="CROSS-ICON absolute top-0 right-0 px-10 py-6"
       onClick={() => onClick(false)}
     >
       <svg

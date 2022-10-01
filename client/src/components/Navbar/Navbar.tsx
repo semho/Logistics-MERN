@@ -5,7 +5,7 @@ import { useAppDispatch } from "../../redux/store";
 import { removeUser } from "../../redux/features/authSlice";
 import "./navbar.css";
 import { NavbarItemMobile } from "../UI/NavbarItemMobile";
-import { CloseIcon } from "../Icons/CloseIcon";
+import { CloseIcon } from "../../assets/Icons/CloseIcon";
 import { Burger } from "../UI/Burger";
 
 export function Navbar() {

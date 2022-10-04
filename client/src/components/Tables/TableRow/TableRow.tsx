@@ -1,12 +1,6 @@
-import React, { useState } from "react";
-
+import React from "react";
 import { ButtonStyled } from "../../../ui/ButtonStyled";
 import { TableCeilContent } from "../../../ui/TableCeilContent";
-
-import { ModalPortalWithChildren as Modal } from "../../../ui/ModalPortalWithChildren";
-import { FormEditRecordDestination } from "../../Form/FormsForUpdateRecords/FormEditRecordDestination";
-import { FormEditRecordProduct } from "../../Form/FormsForUpdateRecords/FormEditRecordProduct";
-import { FormEditRecordForwarder } from "../../Form/FormsForUpdateRecords/FormEditRecordForwarder";
 import { TableCeilTitle } from "../../../ui/TableCeilTitle";
 
 interface IOBjRow {
@@ -23,27 +17,9 @@ interface ITableRow {
 }
 
 export function TableRow({ id, valueRow, index, openModal }: ITableRow) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenDestination, setIsOpenDestination] = useState(false);
-  const [isOpenProduct, setIsOpenProduct] = useState(false);
-  const [isOpenForwarder, setIsOpenForwarder] = useState(false);
-
   const newObj = { ...valueRow };
   delete newObj.id;
   delete newObj.type;
-
-  const updateRecord = () => {
-    setIsOpen(true);
-    if (valueRow.type === "destination") {
-      setIsOpenDestination(true);
-    }
-    if (valueRow.type === "product") {
-      setIsOpenProduct(true);
-    }
-    if (valueRow.type === "forwarder") {
-      setIsOpenForwarder(true);
-    }
-  };
 
   return (
     <tr className="border-b" id={id} key={id}>
@@ -58,7 +34,7 @@ export function TableRow({ id, valueRow, index, openModal }: ITableRow) {
           type="button"
           disabled={false}
           className="mr-2"
-          onClick={updateRecord}
+          onClick={openModal(false)}
         />
 
         <ButtonStyled
@@ -69,17 +45,6 @@ export function TableRow({ id, valueRow, index, openModal }: ITableRow) {
           onClick={openModal(true)}
         />
       </TableCeilContent>
-      <Modal active={isOpen} setActive={setIsOpen}>
-        {isOpenDestination && (
-          <FormEditRecordDestination setModalActiveEdit={setIsOpen} id={id} />
-        )}
-        {isOpenProduct && (
-          <FormEditRecordProduct setModalActiveEdit={setIsOpen} id={id} />
-        )}
-        {isOpenForwarder && (
-          <FormEditRecordForwarder setModalActiveEdit={setIsOpen} id={id} />
-        )}
-      </Modal>
     </tr>
   );
 }

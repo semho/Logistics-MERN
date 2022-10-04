@@ -3,6 +3,7 @@ import { TableContent } from "../../../ui/TableContent/TableContent";
 import { TableRow } from "../TableRow";
 import { ModalPortalWithChildren as Modal } from "../../../ui/ModalPortalWithChildren";
 import { FormForModalDelete } from "../../Form/FormsForDeleteRecords/FormDeleteRecord";
+import { FormEditRecordMain } from "../../Form/FormsForUpdateRecords/FormEditRecordMain";
 
 interface IOBjRow {
   [key: string]: string | number;
@@ -58,6 +59,13 @@ export function TableSettings({ headings, records }: ITable) {
       <Modal active={modalActiveDelete} setActive={setModalActiveDelete}>
         <FormForModalDelete
           setModalActiveDelete={setModalActiveDelete}
+          id={idRecord}
+          type={type}
+        />
+      </Modal>
+      <Modal active={modalActiveEdit} setActive={setModalActiveEdit}>
+        <FormEditRecordMain
+          setModalActiveEdit={setModalActiveEdit}
           id={idRecord}
           type={type}
         />

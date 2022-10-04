@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddForwarder } from "../../../../components/Form/FormsForAddRecords/FormAddForwarder";
-import { Loader } from "../../../../components/UI/Loader";
+import { Loader } from "../../../../ui/Loader";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
 import { TableSettings } from "../../../../components/Tables/TableSettings";
@@ -64,7 +64,7 @@ export function Forwarder() {
       {!loading && list.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>
       )}
-      {list.length > 0 && (<TableSettings headings={cellNames} records={list} />)}
+      {list.length > 0 && <TableSettings headings={cellNames} records={list} />}
     </>
   );
 }

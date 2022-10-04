@@ -3,15 +3,15 @@ import { IListRecords } from "../../../models/Record";
 import { FormForModalDelete } from "../../Form/FormsForDeleteRecords/FormDeleteRecord";
 import { FormEditRecord } from "../../Form/FormsForUpdateRecords/FormEditRecord";
 import { RecordItem } from "./RecordItem";
-import { ModalPortalWithChildren as Modal } from "../../UI/ModalPortalWithChildren";
-import { TableContent } from "../../UI/TableContent/TableContent";
+import { ModalPortalWithChildren as Modal } from "../../../ui/ModalPortalWithChildren";
+import { TableContent } from "../../../ui/TableContent/TableContent";
 
 interface ITable {
-  headings:string[];
+  headings: string[];
   records: IListRecords;
 }
 
-export function Table({headings, records}: ITable) {
+export function Table({ headings, records }: ITable) {
   const [list, setList] = useState<IListRecords>([]);
   const [modalActiveDelete, setModalActiveDelete] = useState(false);
   const [modalActiveEdit, setModalActiveEdit] = useState(false);

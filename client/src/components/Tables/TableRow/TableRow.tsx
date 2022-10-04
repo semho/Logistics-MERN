@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-import { ButtonStyled } from "../../UI/ButtonStyled";
-import { TableCeilContent } from "../../UI/TableCeilContent";
+import { ButtonStyled } from "../../../ui/ButtonStyled";
+import { TableCeilContent } from "../../../ui/TableCeilContent";
 
-import { ModalPortalWithChildren as Modal } from "../../UI/ModalPortalWithChildren";
+import { ModalPortalWithChildren as Modal } from "../../../ui/ModalPortalWithChildren";
 import { FormEditRecordDestination } from "../../Form/FormsForUpdateRecords/FormEditRecordDestination";
 import { FormEditRecordProduct } from "../../Form/FormsForUpdateRecords/FormEditRecordProduct";
 import { FormEditRecordForwarder } from "../../Form/FormsForUpdateRecords/FormEditRecordForwarder";
-import { TableCeilTitle } from "../../UI/TableCeilTitle";
+import { TableCeilTitle } from "../../../ui/TableCeilTitle";
 
 interface IOBjRow {
   [key: string]: string | number;

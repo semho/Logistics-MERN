@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { TableContent } from '../../UI/TableContent/TableContent';
-import { TableRow } from '../TableRow';
-import { ModalPortalWithChildren as Modal } from "../../UI/ModalPortalWithChildren";
-import { FormForModalDelete } from '../../Form/FormsForDeleteRecords/FormDeleteRecord';
+import React, { useEffect, useState } from "react";
+import { TableContent } from "../../../ui/TableContent/TableContent";
+import { TableRow } from "../TableRow";
+import { ModalPortalWithChildren as Modal } from "../../../ui/ModalPortalWithChildren";
+import { FormForModalDelete } from "../../Form/FormsForDeleteRecords/FormDeleteRecord";
 
 interface IOBjRow {
   [key: string]: string | number;
@@ -11,32 +11,31 @@ interface IOBjRow {
 interface IListOBjRow extends Array<IOBjRow> {}
 
 interface ITable {
-  headings:string[];
+  headings: string[];
   records: IListOBjRow;
 }
 
-export function TableSettings({headings, records}: ITable) {
+export function TableSettings({ headings, records }: ITable) {
   const [list, setList] = useState<IListOBjRow>([]);
-  const [type, setType] = useState('record');
+  const [type, setType] = useState("record");
   const [modalActiveDelete, setModalActiveDelete] = useState(false);
   const [modalActiveEdit, setModalActiveEdit] = useState(false);
   const [idRecord, setIdRecord] = useState("");
 
-   //открываем модальное окно
-   const openModal =
-   (isDelete: boolean) => (event: React.MouseEvent<HTMLButtonElement>) => {
-     isDelete ? setModalActiveDelete(true) : setModalActiveEdit(true);
-     //получаем id записи для модального окна
-     const idRecord = (event.target as HTMLButtonElement).parentElement
-       ?.parentElement?.id;
+  //открываем модальное окно
+  const openModal =
+    (isDelete: boolean) => (event: React.MouseEvent<HTMLButtonElement>) => {
+      isDelete ? setModalActiveDelete(true) : setModalActiveEdit(true);
+      //получаем id записи для модального окна
+      const idRecord = (event.target as HTMLButtonElement).parentElement
+        ?.parentElement?.id;
 
-     if (idRecord) {
-       setIdRecord(idRecord);
-     }
-   };
+      if (idRecord) {
+        setIdRecord(idRecord);
+      }
+    };
 
   useEffect(() => {
-
     setList(records);
     if (list.length > 0) {
       setType(String(list[0].type));

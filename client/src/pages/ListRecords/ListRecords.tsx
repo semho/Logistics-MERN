@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { FormAddRecord } from "../../components/Form/FormsForAddRecords/FormAddRecord";
-import { Loader } from "../../components/UI/Loader";
+import { Loader } from "../../ui/Loader";
 import { Table } from "../../components/Tables/TableMain";
 import { useShowError } from "../../hooks/useShowError";
 import {
@@ -50,7 +50,9 @@ export function ListRecords() {
       {!loading && listRecords.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>
       )}
-      {listRecords.length > 0 && (<Table headings={cellNames} records={listRecords} />)}
+      {listRecords.length > 0 && (
+        <Table headings={cellNames} records={listRecords} />
+      )}
     </>
   );
 }

@@ -3,8 +3,8 @@ import { useValidate } from "../../../../hooks/useValidate";
 import { initialSettingsDestinationShort } from "../../../../models/Settings";
 import { createDestination } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
-import { ButtonStyled } from "../../../UI/ButtonStyled";
-import { InputStyled } from "../../../UI/InputStyled";
+import { ButtonStyled } from "../../../../ui/ButtonStyled";
+import { InputStyled } from "../../../../ui/InputStyled";
 
 export function FormAddPointsDestination() {
   const { emptyField, zeroField } = useValidate();

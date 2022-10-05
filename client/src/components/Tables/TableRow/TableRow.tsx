@@ -27,7 +27,7 @@ export function TableRow({ id, valueRow, index, openModal }: ITableRow) {
       {Object.values(newObj).map((title) => (
         <TableCeilTitle key={title} title={String(title)} />
       ))}
-      <TableCeilContent className="w-1/4">
+      <TableCeilContent className="w-1/6">
         <ButtonStyled
           title="Изменить"
           variant="sky"

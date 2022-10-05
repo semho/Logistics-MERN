@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FormEditRecord } from "../FormEditRecord/FormEditRecord";
 import { FormEditRecordDestination } from "../FormEditRecordDestination";
 import { FormEditRecordForwarder } from "../FormEditRecordForwarder";
 import { FormEditRecordProduct } from "../FormEditRecordProduct";
@@ -14,12 +15,15 @@ export function FormEditRecordMain({
   id,
   type = "record",
 }: IFormEdit) {
+  const [isOpenMain, setIsOpenMain] = useState(false);
   const [isOpenDestination, setIsOpenDestination] = useState(false);
   const [isOpenProduct, setIsOpenProduct] = useState(false);
   const [isOpenForwarder, setIsOpenForwarder] = useState(false);
-
   useEffect(() => {
     switch (type) {
+      case "record":
+        setIsOpenMain(true);
+        break;
       case "destination":
         setIsOpenDestination(true);
         break;
@@ -36,6 +40,9 @@ export function FormEditRecordMain({
 
   return (
     <>
+      {isOpenMain && (
+        <FormEditRecord setModalActiveEdit={setModalActiveEdit} id={id} />
+      )}
       {isOpenDestination && (
         <FormEditRecordDestination
           setModalActiveEdit={setModalActiveEdit}

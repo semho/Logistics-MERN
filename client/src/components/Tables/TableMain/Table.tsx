@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { IListRecords } from "../../../models/Record";
 import { FormForModalDelete } from "../../Form/FormsForDeleteRecords/FormDeleteRecord";
-import { FormEditRecord } from "../../Form/FormsForUpdateRecords/FormEditRecord";
-import { RecordItem } from "./RecordItem";
 import { ModalPortalWithChildren as Modal } from "../../../ui/ModalPortalWithChildren";
 import { TableContent } from "../../../ui/TableContent/TableContent";
+import { FormEditRecordMain } from "../../Form/FormsForUpdateRecords/FormEditRecordMain";
+import { TableRow } from "../TableRow";
+
+interface IOBjRow {
+  [key: string]: string | number;
+}
+interface IListOBjRow extends Array<IOBjRow> {}
 
 interface ITable {
   headings: string[];
-  records: IListRecords;
+  records: IListOBjRow;
 }
 
 export function Table({ headings, records }: ITable) {
-  const [list, setList] = useState<IListRecords>([]);
+  const [list, setList] = useState<IListOBjRow>([]);
+  const [type, setType] = useState("");
   const [modalActiveDelete, setModalActiveDelete] = useState(false);
   const [modalActiveEdit, setModalActiveEdit] = useState(false);
   const [idRecord, setIdRecord] = useState("");
@@ -32,28 +37,38 @@ export function Table({ headings, records }: ITable) {
   //обновляем массив объектов записей при изменении стейта
   useEffect(() => {
     setList(records);
-  }, [records]);
+    if (list.length > 0) {
+      setType(String(list[0].type));
+    }
+  }, [list, records]);
 
   return (
     <TableContent nameThead={headings}>
       {list.map((record, index) => {
         return (
-          <RecordItem
-            record={record}
-            index={index}
+          <TableRow
+            key={record.id}
+            id={String(record.id)}
+            valueRow={record}
+            index={index + 1}
             openModal={openModal}
-            key={record._id}
           />
         );
       })}
+
       <Modal active={modalActiveDelete} setActive={setModalActiveDelete}>
         <FormForModalDelete
           setModalActiveDelete={setModalActiveDelete}
           id={idRecord}
+          type={type}
         />
       </Modal>
       <Modal active={modalActiveEdit} setActive={setModalActiveEdit}>
-        <FormEditRecord setModalActiveEdit={setModalActiveEdit} id={idRecord} />
+        <FormEditRecordMain
+          setModalActiveEdit={setModalActiveEdit}
+          id={idRecord}
+          type={type}
+        />
       </Modal>
     </TableContent>
   );

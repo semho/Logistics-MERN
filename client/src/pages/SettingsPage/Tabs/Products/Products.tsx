@@ -3,7 +3,7 @@ import { FormAddProduct } from "../../../../components/Form/FormsForAddRecords/F
 import { Loader } from "../../../../ui/Loader";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
-import { TableSettings } from "../../../../components/Tables/TableSettings";
+import { Table } from "../../../../components/Tables/TableMain";
 
 export default function Products() {
   const cellNames = ["#", "Товар", "Единица измерения", "Действия"];
@@ -53,7 +53,7 @@ export default function Products() {
       {!loading && list.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>
       )}
-      {list.length > 0 && <TableSettings headings={cellNames} records={list} />}
+      {list.length > 0 && <Table headings={cellNames} records={list} />}
     </>
   );
 }

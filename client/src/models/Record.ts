@@ -1,3 +1,5 @@
+import { formatDate } from "../utils/formatDate";
+
 export interface IRecord {
   date: string;
   distance: number;
@@ -37,3 +39,33 @@ export type TRecord = {
 };
 
 export interface IListRecords extends Array<IRecord> {}
+
+export const namesTableRecord = [
+  "#",
+  "Дата",
+  "Откуда-Куда",
+  "Расстояние, км",
+  "Товар",
+  "Количество, м3",
+  "Ответственный",
+  "Стоимость единицы, руб",
+  "Сумма товара, руб",
+  "Действия",
+];
+
+export const dataConversionRecord = (list: IListRecords) => {
+  return list.map((record) => {
+    return {
+      id: record._id,
+      date: formatDate(record.date),
+      fromTo: record.fromTo,
+      distance: record.distance,
+      product: record.product,
+      units: record.units,
+      forwarder: record.forwarder,
+      price: record.price,
+      sum: record.sum,
+      type: "record",
+    };
+  });
+};

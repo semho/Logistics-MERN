@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useValidate } from "../../../../hooks/useValidate";
-import { initialSettingsProductShort } from "../../../../models/Settings";
+import { initialSettingsProductShort } from "../../../../models/settings/Product";
 import { createProduct } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { ButtonStyled } from "../../../../ui/ButtonStyled";

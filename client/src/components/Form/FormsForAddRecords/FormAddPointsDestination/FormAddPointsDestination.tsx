@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useValidate } from "../../../../hooks/useValidate";
-import { initialSettingsDestinationShort } from "../../../../models/Settings";
+import { initialSettingsDestinationShort } from "../../../../models/settings/PointDestination";
 import { createDestination } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { ButtonStyled } from "../../../../ui/ButtonStyled";

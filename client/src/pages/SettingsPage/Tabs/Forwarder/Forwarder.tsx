@@ -4,26 +4,15 @@ import { Loader } from "../../../../ui/Loader";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
 import { Table } from "../../../../components/Tables/TableMain";
+import {
+  dataConversionForwarder,
+  initialBodyTableForwarder,
+  namesTableForwarder,
+} from "../../../../models/settings/Forwarder";
 
 export function Forwarder() {
-  const cellNames = [
-    "#",
-    "Ответственный",
-    "Дата Рождения",
-    "Гос. номер",
-    "Марка машины",
-    "Действия",
-  ];
-  const [list, setList] = useState([
-    {
-      id: "#",
-      forwarder: "Ответственный",
-      birth: "Дата рождения",
-      carNumber: "Гос.номер",
-      carBrand: "Марка машины",
-      type: "forwarder",
-    },
-  ]);
+  const cellNames = namesTableForwarder;
+  const [list, setList] = useState(initialBodyTableForwarder);
 
   const loading = useAppSelector(
     (state) => state.settings.statusSettings.loading
@@ -35,16 +24,7 @@ export function Forwarder() {
   );
   //преобразуем его
   const stateForTable = useMemo(() => {
-    return stateForwarders.map((record) => {
-      return {
-        id: record._id,
-        forwarder: record.forwarder,
-        birth: record.birth,
-        carNumber: record.carNumber,
-        carBrand: record.carBrand,
-        type: "forwarder",
-      };
-    });
+    return dataConversionForwarder(stateForwarders);
   }, [stateForwarders]);
   //и сохраняем в стейт
   useEffect(() => {

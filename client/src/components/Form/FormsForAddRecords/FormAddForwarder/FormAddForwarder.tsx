@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useValidate } from "../../../../hooks/useValidate";
-import { initialSettingsForwarderShort } from "../../../../models/Settings";
+import { initialSettingsForwarderShort } from "../../../../models/settings/Forwarder";
 import { createForwarder } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { ButtonStyled } from "../../../../ui/ButtonStyled";

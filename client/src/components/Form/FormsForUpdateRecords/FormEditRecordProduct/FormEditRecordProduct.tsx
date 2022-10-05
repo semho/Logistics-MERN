@@ -3,7 +3,7 @@ import { useValidate } from "../../../../hooks/useValidate";
 import {
   initialSettingsProduct,
   ISettingsProduct,
-} from "../../../../models/Settings";
+} from "../../../../models/settings/Product";
 import { updateProduct } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { ButtonStyled } from "../../../../ui/ButtonStyled";

@@ -1,11 +1,11 @@
 import "./App.css";
-import "../main.global.css";
+import "../assets/css/main.global.css";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 import { Layout } from "../Layout";
 import { hot } from "react-hot-loader/root";
 import { setConfig } from "react-hot-loader";
-import { useRoutes } from "../routes";
+import { useRoutes } from "../routes/routes";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useToken } from "../hooks/useToken";

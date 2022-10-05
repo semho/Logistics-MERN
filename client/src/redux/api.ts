@@ -1,10 +1,8 @@
 import axios from "axios";
 import { IRecord } from "../models/Record";
-import {
-  ISettingsDestination,
-  ISettingsForwarder,
-  ISettingsProduct,
-} from "../models/Settings";
+import { ISettingsForwarder } from "../models/settings/Forwarder";
+import { ISettingsDestination } from "../models/settings/PointDestination";
+import { ISettingsProduct } from "../models/settings/Product";
 import { IUser } from "../models/User";
 
 //авторизация/регистрация

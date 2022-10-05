@@ -9,7 +9,7 @@ import {
   IStoreListRecords,
 } from "../../redux/features/recordSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { formatDate } from "../../utils/formatDate";
+import { dataConversionRecord, namesTableRecord } from "../../models/Record";
 
 export function ListRecords() {
   const {
@@ -28,34 +28,10 @@ export function ListRecords() {
   //показываем ошибки, если есть
   useShowError(error);
 
-  const cellNames = [
-    "#",
-    "Дата",
-    "Откуда-Куда",
-    "Расстояние, км",
-    "Товар",
-    "Количество, м3",
-    "Ответственный",
-    "Стоимость единицы, руб",
-    "Сумма товара, руб",
-    "Действия",
-  ];
+  const cellNames = namesTableRecord;
 
   const stateForTable = useMemo(() => {
-    return listRecords.map((record) => {
-      return {
-        id: record._id,
-        date: formatDate(record.date),
-        fromTo: record.fromTo,
-        distance: record.distance,
-        product: record.product,
-        units: record.units,
-        forwarder: record.forwarder,
-        price: record.price,
-        sum: record.sum,
-        type: "record",
-      };
-    });
+    return dataConversionRecord(listRecords);
   }, [listRecords]);
 
   useEffect(() => {

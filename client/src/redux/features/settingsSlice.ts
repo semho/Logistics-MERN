@@ -2,15 +2,19 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   ISettingsDestination,
   ISettingsDestinationShort,
-  ISettingsForwarder,
-  ISettingsForwarderShort,
-  ISettingsProduct,
-  ISettingsProductShort,
-} from "../../models/Settings";
+} from "../../models/settings/PointDestination";
 import { RootState } from "../store";
 import * as api from "../api";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import {
+  ISettingsProduct,
+  ISettingsProductShort,
+} from "../../models/settings/Product";
+import {
+  ISettingsForwarder,
+  ISettingsForwarderShort,
+} from "../../models/settings/Forwarder";
 
 interface ISettings {
   settingsDestination: ISettingsDestination[];

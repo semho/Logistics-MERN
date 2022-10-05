@@ -3,7 +3,7 @@ import { useValidate } from "../../../../hooks/useValidate";
 import {
   initialSettingsDestination,
   ISettingsDestination,
-} from "../../../../models/Settings";
+} from "../../../../models/settings/PointDestination";
 import { updateDestination } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { ButtonStyled } from "../../../../ui/ButtonStyled";

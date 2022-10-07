@@ -22,6 +22,7 @@ export const createRecord = async (req, res) => {
         sum,
         owner: req.user.userId,
       });
+
       const answerRecord = await newRecord.save();
       res.status(201).json({ message: "Запись добавлена", answerRecord });
     } catch (e) {
@@ -100,6 +101,7 @@ export const updateRecord = async (req, res) => {
         {
           $set: {
             fromTo: fromTo,
+            dateUpdate: new Date(),
             distance: distance,
             product: product,
             units: units,

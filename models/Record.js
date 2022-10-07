@@ -4,6 +4,7 @@ const { Schema, Types } = mongoose;
 
 const RecordSchema = new Schema({
   date: { type: Date, default: Date.now, require: true },
+  dateUpdate: { type: Date, default: Date.now, require: true },
   fromTo: { type: String, require: true },
   distance: { type: Number, require: true },
   product: { type: String, require: true },

@@ -10,7 +10,7 @@ import { Forwarder } from "./Tabs/Forwarder";
 import { PointsDestination } from "./Tabs/PointsDestination";
 import Products from "./Tabs/Products/Products";
 
-export default function SettingsPage() {
+export function SettingsPage() {
   const items = [
     {
       title: "Пункты отправления-назначения",

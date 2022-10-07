@@ -138,6 +138,7 @@ const recordSlice = createSlice({
               forwarder: action.payload.forwarder,
               price: action.payload.price,
               sum: action.payload.price * action.payload.units,
+              dateUpdate: action.payload.dateUpdate,
             };
           }
           return record;

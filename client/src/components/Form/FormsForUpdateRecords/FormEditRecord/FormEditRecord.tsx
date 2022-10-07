@@ -22,6 +22,7 @@ export function FormEditRecord({ setModalActiveEdit, id }: IFormEdit) {
       setRecord({
         ...record,
         [event.target.name]: event.target.value,
+        dateUpdate: String(new Date()),
       });
     }
   };

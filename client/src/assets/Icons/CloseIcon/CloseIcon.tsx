@@ -1,6 +1,6 @@
 import React from "react";
 
-type TSizes = 50 | 40 | 30 | 24 | 20 | 16 | 15 | 12 | 8;
+type TSizes = 50 | 40 | 30 | 24 | 20 | 16 | 15 | 12 | 10 | 8 | 6 | 4;
 
 interface ICloseProps {
   size?: TSizes;

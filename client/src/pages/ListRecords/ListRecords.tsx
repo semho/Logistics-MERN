@@ -10,6 +10,7 @@ import {
 } from "../../redux/features/recordSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { dataConversionRecord, namesTableRecord } from "../../models/Record";
+import { Select } from "../../ui/Select";
 
 export function ListRecords() {
   const {
@@ -44,6 +45,7 @@ export function ListRecords() {
 
   return (
     <>
+      <Select />
       <FormAddRecord />
       {!loading && listRecords.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>

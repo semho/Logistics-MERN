@@ -1,27 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddPointsDestination } from "../../../../components/Form/FormsForAddRecords/FormAddPointsDestination";
-import { Loader } from "../../../../components/UI/Loader";
-import { TableSettings } from "../../../../components/Tables/TableSettings";
+import { Loader } from "../../../../ui/Loader";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
+import { Table } from "../../../../components/Tables/TableMain";
+import {
+  dataConversionDestination,
+  initialBodyTableDestination,
+  namesTableDestination,
+} from "../../../../models/settings/PointDestination";
 
 export function PointsDestination() {
-  const cellNames = [
-    "#",
-    "Откуда->Куда",
-    "Кто->Кому",
-    "Расстояние, км",
-    "Действия",
-  ];
-  const [list, setList] = useState([
-    {
-      id: "#",
-      fromTo: "Откуда->Куда",
-      senderToRecipient: "Кто->Кому",
-      distance: 0,
-      type: "destination",
-    },
-  ]);
+  const cellNames = namesTableDestination;
+  const [list, setList] = useState(initialBodyTableDestination);
 
   const loading = useAppSelector(
     (state) => state.settings.statusSettings.loading
@@ -33,15 +24,7 @@ export function PointsDestination() {
   );
   //прееобразуем его
   const stateForTable = useMemo(() => {
-    return stateDestination.map((record) => {
-      return {
-        id: record._id,
-        fromTo: `${record.from} -> ${record.to}`,
-        senderToRecipient: `${record.sender} -> ${record.recipient}`,
-        distance: record.distance,
-        type: "destination",
-      };
-    });
+    return dataConversionDestination(stateDestination);
   }, [stateDestination]);
   //и сохраняем в стейт
   useEffect(() => {
@@ -61,7 +44,7 @@ export function PointsDestination() {
       {!loading && list.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>
       )}
-      {list.length > 0 && <TableSettings nameThead={cellNames} data={list} />}
+      {list.length > 0 && <Table headings={cellNames} records={list} />}
     </>
   );
 }

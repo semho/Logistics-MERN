@@ -1,29 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddForwarder } from "../../../../components/Form/FormsForAddRecords/FormAddForwarder";
-import { Loader } from "../../../../components/UI/Loader";
-import { TableSettings } from "../../../../components/Tables/TableSettings";
+import { Loader } from "../../../../ui/Loader";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
+import { Table } from "../../../../components/Tables/TableMain";
+import {
+  dataConversionForwarder,
+  initialBodyTableForwarder,
+  namesTableForwarder,
+} from "../../../../models/settings/Forwarder";
 
 export function Forwarder() {
-  const cellNames = [
-    "#",
-    "Ответственный",
-    "Дата Рождения",
-    "Гос. номер",
-    "Марка машины",
-    "Действия",
-  ];
-  const [list, setList] = useState([
-    {
-      id: "#",
-      forwarder: "Ответственный",
-      birth: "Дата рождения",
-      carNumber: "Гос.номер",
-      carBrand: "Марка машины",
-      type: "forwarder",
-    },
-  ]);
+  const cellNames = namesTableForwarder;
+  const [list, setList] = useState(initialBodyTableForwarder);
 
   const loading = useAppSelector(
     (state) => state.settings.statusSettings.loading
@@ -33,18 +22,9 @@ export function Forwarder() {
   const stateForwarders = useAppSelector(
     (state) => state.settings.statusSettings.allSettings.settingsForwarder
   );
-  //прееобразуем его
+  //преобразуем его
   const stateForTable = useMemo(() => {
-    return stateForwarders.map((record) => {
-      return {
-        id: record._id,
-        forwarder: record.forwarder,
-        birth: record.birth,
-        carNumber: record.carNumber,
-        carBrand: record.carBrand,
-        type: "forwarder",
-      };
-    });
+    return dataConversionForwarder(stateForwarders);
   }, [stateForwarders]);
   //и сохраняем в стейт
   useEffect(() => {
@@ -64,7 +44,7 @@ export function Forwarder() {
       {!loading && list.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>
       )}
-      {list.length > 0 && <TableSettings nameThead={cellNames} data={list} />}
+      {list.length > 0 && <Table headings={cellNames} records={list} />}
     </>
   );
 }

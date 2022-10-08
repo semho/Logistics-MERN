@@ -1,6 +1,6 @@
 import React from "react";
 
-type TSizes = 50 | 40 | 30 | 24 | 20 | 16 | 15 | 12 | 8;
+type TSizes = 50 | 40 | 30 | 24 | 20 | 16 | 15 | 12 | 10 | 8 | 6 | 4;
 
 interface ICloseProps {
   size?: TSizes;
@@ -12,7 +12,7 @@ export function CloseIcon({ size = 24, onClick }: ICloseProps) {
 
   return (
     <div
-      className="CROSS-ICON absolute top-0 right-0 px-8 py-8"
+      className="CROSS-ICON absolute top-0 right-0 px-10 py-6"
       onClick={() => onClick(false)}
     >
       <svg

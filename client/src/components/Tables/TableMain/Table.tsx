@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { IListRecords } from "../../../models/Record";
-import { useAppSelector } from "../../../redux/store";
 import { FormForModalDelete } from "../../Form/FormsForDeleteRecords/FormDeleteRecord";
-import { FormEditRecord } from "../../Form/FormsForUpdateRecords/FormEditRecord";
-import { RecordItem } from "./RecordItem";
-import { TableHead } from "../../UI/TableHead";
-import { ModalPortalWithChildren as Modal } from "../../UI/ModalPortalWithChildren";
+import { ModalPortalWithChildren as Modal } from "../../../ui/ModalPortalWithChildren";
+import { TableContent } from "../../../ui/TableContent/TableContent";
+import { FormEditRecordMain } from "../../Form/FormsForUpdateRecords/FormEditRecordMain";
+import { TableRow } from "../TableRow";
 
-export function Table() {
-  const [list, setList] = useState<IListRecords>([]);
-  //получаем актуальные данные таблицы записей из redux
-  const state = useAppSelector((state) => state.records);
+interface IOBjRow {
+  [key: string]: string | number;
+}
+interface IListOBjRow extends Array<IOBjRow> {}
+
+interface ITable {
+  headings: string[];
+  records: IListOBjRow;
+}
+
+export function Table({ headings, records }: ITable) {
+  const [list, setList] = useState<IListOBjRow>([]);
+  const [type, setType] = useState("");
   const [modalActiveDelete, setModalActiveDelete] = useState(false);
   const [modalActiveEdit, setModalActiveEdit] = useState(false);
   const [idRecord, setIdRecord] = useState("");
@@ -29,58 +36,40 @@ export function Table() {
     };
   //обновляем массив объектов записей при изменении стейта
   useEffect(() => {
-    setList(state.statusRecords.listRecords);
-  }, [state.statusRecords.listRecords]);
-
-  if (list.length === 0 && !state.statusRecords.loading) {
-    return <div className="text-center text-xl mt-20">Записей пока нет</div>;
-  }
-
-  const cellNames = [
-    "#",
-    "Дата",
-    "Откуда-Куда",
-    "Расстояние, км",
-    "Товар",
-    "Количество, м3",
-    "Ответственный",
-    "Стоимость единицы, руб",
-    "Сумма товара, руб",
-    "Действия",
-  ];
+    setList(records);
+    if (list.length > 0) {
+      setType(String(list[0].type));
+    }
+  }, [list, records]);
 
   return (
-    <div className="flex flex-col">
-      <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-          <div className="overflow-hidden">
-            <table className="min-w-full">
-              <TableHead cellNames={cellNames} />
-              <tbody>
-                {list.map((record, index) => {
-                  return (
-                    <RecordItem
-                      record={record}
-                      index={index}
-                      openModal={openModal}
-                      key={record._id}
-                    />
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+    <TableContent nameThead={headings}>
+      {list.map((record, index) => {
+        return (
+          <TableRow
+            key={record.id}
+            id={String(record.id)}
+            valueRow={record}
+            index={index + 1}
+            openModal={openModal}
+          />
+        );
+      })}
+
       <Modal active={modalActiveDelete} setActive={setModalActiveDelete}>
         <FormForModalDelete
           setModalActiveDelete={setModalActiveDelete}
           id={idRecord}
+          type={type}
         />
       </Modal>
       <Modal active={modalActiveEdit} setActive={setModalActiveEdit}>
-        <FormEditRecord setModalActiveEdit={setModalActiveEdit} id={idRecord} />
+        <FormEditRecordMain
+          setModalActiveEdit={setModalActiveEdit}
+          id={idRecord}
+          type={type}
+        />
       </Modal>
-    </div>
+    </TableContent>
   );
 }

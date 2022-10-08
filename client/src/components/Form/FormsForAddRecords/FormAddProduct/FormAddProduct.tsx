@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useValidate } from "../../../../hooks/useValidate";
-import { initialSettingsProductShort } from "../../../../models/Settings";
+import { initialSettingsProductShort } from "../../../../models/settings/Product";
 import { createProduct } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
-import { ButtonStyled } from "../../../UI/ButtonStyled";
-import { InputStyled } from "../../../UI/InputStyled";
+import { ButtonStyled } from "../../../../ui/ButtonStyled";
+import { InputStyled } from "../../../../ui/InputStyled";
 
 export function FormAddProduct() {
   const { emptyField } = useValidate();

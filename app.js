@@ -1,7 +1,7 @@
 import config from "./config/default.json" assert { type: "json" };
 import express from "express";
-
 import mongoose from "mongoose";
+
 import authRouter from "./routes/auth.routes.js";
 import recordRouter from "./routes/record.routes.js";
 import settingsDestinationRouter from "./routes/settings.destination.routes.js";

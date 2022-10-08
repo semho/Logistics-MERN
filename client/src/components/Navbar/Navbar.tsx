@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { NavbarItem } from "../UI/NavbarItem";
+import { NavbarItem } from "../../ui/NavbarItem";
 import { useAppDispatch } from "../../redux/store";
 import { removeUser } from "../../redux/features/authSlice";
 import "./navbar.css";
-import { NavbarItemMobile } from "../UI/NavbarItemMobile";
-import { CloseIcon } from "../Icons/CloseIcon";
-import { Burger } from "../UI/Burger";
+import { NavbarItemMobile } from "../../ui/NavbarItemMobile";
+import { Burger } from "../../ui/Burger";
+import { CloseIcon } from "../../assets/Icons/CloseIcon";
 
 export function Navbar() {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -37,6 +37,7 @@ export function Navbar() {
         <section className="MOBILE-MENU flex md:hidden">
           <Burger onClick={() => setIsNavOpen((prev) => !prev)} />
           <div className={isNavOpen ? "showMenuNav" : "hiddenMenuNav"}>
+            {/* <CloseIcon onClick={() => setIsNavOpen(false)} /> */}
             <CloseIcon onClick={() => setIsNavOpen(false)} />
             <ul className="MENU-OPEN flex flex-col items-center justify-between min-h-[250px]">
               <NavbarItemMobile

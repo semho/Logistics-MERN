@@ -1,20 +1,18 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FormAddProduct } from "../../../../components/Form/FormsForAddRecords/FormAddProduct";
-import { Loader } from "../../../../components/UI/Loader";
-import { TableSettings } from "../../../../components/Tables/TableSettings";
+import { Loader } from "../../../../ui/Loader";
 import { useShowError } from "../../../../hooks/useShowError";
 import { useAppSelector } from "../../../../redux/store";
+import { Table } from "../../../../components/Tables/TableMain";
+import {
+  dataConversionProduct,
+  initialBodyTableProduct,
+  namesTableProduct,
+} from "../../../../models/settings/Product";
 
 export default function Products() {
-  const cellNames = ["#", "Товар", "Единица измерения", "Действия"];
-  const [list, setList] = useState([
-    {
-      id: "#",
-      product: "Товар",
-      unit: "Единица измерения",
-      type: "product",
-    },
-  ]);
+  const cellNames = namesTableProduct;
+  const [list, setList] = useState(initialBodyTableProduct);
 
   const loading = useAppSelector(
     (state) => state.settings.statusSettings.loading
@@ -26,14 +24,7 @@ export default function Products() {
   );
   //прееобразуем его
   const stateForTable = useMemo(() => {
-    return stateProduct.map((record) => {
-      return {
-        id: record._id,
-        product: record.product,
-        unit: record.unit,
-        type: "product",
-      };
-    });
+    return dataConversionProduct(stateProduct);
   }, [stateProduct]);
   //и сохраняем в стейт
   useEffect(() => {
@@ -53,7 +44,7 @@ export default function Products() {
       {!loading && list.length === 0 && (
         <div className="text-center text-xl mt-20">Записей пока нет</div>
       )}
-      {list.length > 0 && <TableSettings nameThead={cellNames} data={list} />}
+      {list.length > 0 && <Table headings={cellNames} records={list} />}
     </>
   );
 }

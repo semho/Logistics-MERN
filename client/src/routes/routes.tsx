@@ -1,11 +1,11 @@
 import React from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
-import { Content } from "./components/Content/Content";
-import { AuthPage } from "./pages/AuthPage";
-import { ListRecords } from "./pages/ListRecords";
-import { RegPage } from "./pages/RegPage";
-import SettingsPage from "./pages/SettingsPage/SettingsPage";
-import { StatisticsPage } from "./pages/StatisticsPage";
+import { Content } from "../components/Content";
+import { AuthPage } from "../pages/AuthPage";
+import { ListRecords } from "../pages/ListRecords";
+import { RegPage } from "../pages/RegPage";
+import { SettingsPage } from "../pages/SettingsPage";
+import { StatisticsPage } from "../pages/StatisticsPage";
 
 export function useRoutes(isAuth: boolean) {
   if (isAuth) {

@@ -5,21 +5,19 @@ interface ISearchProps {
   size?: number;
 }
 
-export function SearchIcon({ viewBox = 24, size = 6 }: ISearchProps) {
+export function SearchIcon({ viewBox = 16, size = 16 }: ISearchProps) {
   const viewBoxString = `0 0 ${viewBox} ${viewBox}`;
 
   return (
-    <svg
-      className={`h-${size} w-${size} text-gray-600`}
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      fill="text-gray-600"
       viewBox={viewBoxString}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="13" cy="12" r="6" />
-      <line x1="20" y1="21" x2="16.65" y2="16.65" />
-    </svg>
+      >
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+      </svg>
+
   );
 }

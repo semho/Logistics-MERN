@@ -10,13 +10,15 @@ interface IList {
 interface ISelect {
   title?: string;
   list: IList[];
-  updateSelect: (value?: string) => void;
+  updateSelect: React.Dispatch<React.SetStateAction<{}>>;
+  nameSelect?: string;
 }
 
 export function Select({
   title = "Выберете значение",
   list,
   updateSelect,
+  nameSelect = 'select'
 }: ISelect) {
   const [inputValue, setInputValue] = useState("");
   const [selected, setSelected] = useState("");
@@ -24,8 +26,8 @@ export function Select({
 
   useEffect(() => {
     //передаем родителю стейт
-    updateSelect(selected);
-  }, [selected, updateSelect]);
+    updateSelect({ [nameSelect]: selected});
+  }, [nameSelect, selected, updateSelect]);
 
   return (
     <div
@@ -56,7 +58,7 @@ export function Select({
           <input
             type="text"
             placeholder="Поиск"
-            className="placeholder: text-gray-700 p-2 outline-none"
+            className="placeholder: text-gray-700 p-2 outline-none w-full"
             onChange={(e) => setInputValue(e.target.value.toLowerCase())}
             value={inputValue}
           />

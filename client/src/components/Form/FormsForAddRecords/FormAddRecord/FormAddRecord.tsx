@@ -12,11 +12,8 @@ import { Select } from "../../../../ui/Select";
 export function FormAddRecord() {
   const [record, setRecord] = useState({});
   //стейт под select
-  const [selectFromTo, setSelectFromTo] = useState("");
-  //функция через которую будем возвращать стейт селекта из дочернего компонента Select в родитель
-  function updateSelect(value?: string) {
-    if (value) setSelectFromTo(value);
-  }
+  const [selectFromTo, setSelectFromTo] = useState({});
+
   //запись всех полей в объект
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRecord({ ...record, [event.target.name]: event.target.value });
@@ -26,8 +23,8 @@ export function FormAddRecord() {
   }: IStoreListRecords = useAppSelector(dataRecords);
   const dispatch = useAppDispatch();
   //добавляем запись
-  const addRecordHandler = () => {
-    const newRecord = { ...record, fromTo: selectFromTo };
+  const addRecordHandler = async () => {
+    const newRecord = { ...record, ...selectFromTo };
     console.log(newRecord);
     // dispatch(createRecord({ newRecord }));
   };
@@ -50,7 +47,8 @@ export function FormAddRecord() {
             name="fromTo"
             onChange={changeHandler}
           /> */}
-          <Select list={list} updateSelect={updateSelect} />
+          {/* <Select list={list} updateSelect={updateSelect} /> */}
+          <Select list={list} updateSelect={setSelectFromTo} nameSelect="fromTo"/>
         </div>
         <div className="w-full md:w-1/6 px-3 mb-6 md:mb-0">
           <InputStyled

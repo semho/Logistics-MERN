@@ -1,6 +1,7 @@
 import axios from "axios";
 import { IRecord } from "../models/Record";
 import { ISettingsForwarder } from "../models/settings/Forwarder";
+import { ISettingsOrganization } from "../models/settings/Organization";
 import { ISettingsDestination } from "../models/settings/PointDestination";
 import { ISettingsProduct } from "../models/settings/Product";
 import { IUser } from "../models/User";
@@ -83,5 +84,26 @@ export const deleteApiForwarder = (id: string, token: string) =>
   });
 export const updateApiForwarder = (record: ISettingsForwarder, token: string) =>
   axios.put("/api/settings/forwarder/update", record, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+//запросы на добавление организации(раздел настройки)
+export const AllApiOrganizations = (token: string) =>
+  axios.get("/api/settings/organization", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+export const newApiOrganization = (record: {}, token: string) =>
+  axios.post("/api/settings/organization/create", record, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+export const deleteApiOrganization = (id: string, token: string) =>
+  axios.delete("/api/settings/organization/delete", {
+    headers: { Authorization: `Bearer ${token}` },
+    data: { id },
+  });
+export const updateApiOrganization = (
+  record: ISettingsOrganization,
+  token: string
+) =>
+  axios.put("/api/settings/organization/update", record, {
     headers: { Authorization: `Bearer ${token}` },
   });

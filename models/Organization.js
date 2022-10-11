@@ -57,7 +57,7 @@ const OrganizationSchema = new Schema({
     max: [20, "Расчетный счет слишком длинный"],
     default: null,
   },
-  corsets: {
+  corAccount: {
     type: Number,
     min: [20, "Кор.счет слишком короткий"],
     max: [20, "Кор.счет слишком длинный"],

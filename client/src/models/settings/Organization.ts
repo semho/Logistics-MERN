@@ -11,7 +11,7 @@ export interface ISettingsOrganization {
   KPP: number;
   OGRN: number;
   paymentAccount: number;
-  corsets: number;
+  corAccount: number;
   BIC: number;
   coordinates: string;
   owner: "";
@@ -28,7 +28,7 @@ export const initialSettingsOrganization: ISettingsOrganization = {
   KPP: Number(),
   OGRN: Number(),
   paymentAccount: Number(),
-  corsets: Number(),
+  corAccount: Number(),
   BIC: Number(),
   coordinates: "",
   owner: "",
@@ -45,7 +45,7 @@ export interface ISettingsOrganizationShort {
   KPP: number;
   OGRN: number;
   paymentAccount: number;
-  corsets: number;
+  corAccount: number;
   BIC: number;
   coordinates: string;
 }
@@ -59,7 +59,7 @@ export const initialSettingsOrganizationShort: ISettingsOrganizationShort = {
   KPP: Number(),
   OGRN: Number(),
   paymentAccount: Number(),
-  corsets: Number(),
+  corAccount: Number(),
   BIC: Number(),
   coordinates: "",
 };

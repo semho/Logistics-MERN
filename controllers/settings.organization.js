@@ -22,9 +22,11 @@ export const createOrganization = async (req, res) => {
         BIC,
         coordinates,
       } = req.body;
-      if (!INN || !name || !phone || !address) {
-        throw new Error("Обязательные поля не заполнены");
-      }
+
+      validateFieldsOrganization({
+        INN, name, phone, address, KPP, OGRN, paymentAccount, corAccount, BIC
+      });
+
       const newRecord = new Organization({
         INN,
         name,
@@ -40,9 +42,8 @@ export const createOrganization = async (req, res) => {
         coordinates,
         owner: req.user.userId,
       });
-      const reg = /^\d+$/;
-      console.log(reg.test(paymentAccount));
-      // const answerRecord = await newRecord.save();
+
+      const answerRecord = await newRecord.save();
       res.status(201).json({ message: "Запись добавлена", answerRecord });
     } catch (e) {
       res.status(400).json({ message: e.message });
@@ -117,6 +118,12 @@ export const updateOrganization = async (req, res) => {
         BIC,
         coordinates,
       } = req.body;
+
+      validateFieldsOrganization({
+        INN, name, phone, address, KPP, OGRN, paymentAccount, corAccount, BIC
+      });
+
+
       const editRecord = await Organization.updateOne(
         { _id: _id },
         {
@@ -150,3 +157,56 @@ export const updateOrganization = async (req, res) => {
     res.status(500).json({ message: "Что-то пошло не так." });
   }
 };
+
+/**
+ * функция валидации всех полей модели
+ * @param {object} obj - передаем объект с проверяемыми полями
+ */
+function validateFieldsOrganization(obj) {
+  if (!obj.INN || !obj.name || !obj.phone || !obj.address) {
+    throw new Error("Обязательные поля не заполнены");
+  }
+
+  fieldIsNumeric(obj.INN, 'ИНН');
+  fieldIsNumeric(obj.phone, 'Телефон');
+
+  if (obj.KPP) {
+    fieldIsNumeric(obj.KPP, 'КПП');
+  }
+
+  if (obj.OGRN) {
+    fieldIsNumeric(obj.OGRN, 'ОГРН');
+  }
+
+  if (obj.paymentAccount) {
+    fieldIsNumeric(obj.paymentAccount, 'Расчетный счет');
+  }
+
+  if (obj.corAccount) {
+    fieldIsNumeric(obj.corAccount, 'Кор.счет');
+  }
+
+  if (obj.BIC) {
+    fieldIsNumeric(obj.BIC, 'БИК');
+  }
+}
+
+/**
+ * выбрасываем ошибку если не число
+ * @param {number | string} value
+ * @param {string} name - найминг проверяемого поля
+ */
+function fieldIsNumeric(value, name = "формы") {
+  if (!isNumeric(value)) {
+    throw new Error(`Поле "${name}" должно быть числом`);
+  }
+}
+
+/**
+ * проверка на число
+ * @param {number | string} value
+ * @returns boolean
+ */
+function isNumeric(value) {
+  return /^-?\d+$/.test(value);
+}

@@ -254,7 +254,9 @@ export const createOrganization = createAsyncThunk(
       const token = appState.auth.statusUser.user.token;
 
       const { newRecord } = dataRecord;
+
       const response = await api.newApiOrganization(newRecord, token);
+
       if (!!response) {
         dispatch(newOrganization(response.data.answerRecord));
         toast.success("Запись добавлена");
@@ -560,6 +562,10 @@ const settingsSlice = createSlice({
     builder.addCase(deleteForwarder.rejected, setError);
     builder.addCase(createForwarder.rejected, setError);
     builder.addCase(updateForwarder.rejected, setError);
+    builder.addCase(getOrganizations.rejected, setError);
+    builder.addCase(deleteOrganization.rejected, setError);
+    builder.addCase(createOrganization.rejected, setError);
+    builder.addCase(updateOrganization.rejected, setError);
   },
 });
 

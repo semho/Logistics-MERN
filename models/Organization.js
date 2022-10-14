@@ -6,71 +6,131 @@ const OrganizationSchema = new Schema({
   INN: {
     type: Number,
     unique: true,
-    min: [10, "ИНН слишком короткий"],
-    max: 12,
+    min: [1000000000, "ИНН слишком короткий"],
+    max: [999999999999, "ИНН слишком длинный"],
+    trim: true,
     require: [true, "Требуется ИНН организации"],
   },
   name: {
     type: String,
-    min: [3, "Название организации должно состоять минимум из 3 символов"],
+    lowercase: true,
+    minlength: [
+      3,
+      "Название организации должно состоять минимум из 3 символов",
+    ],
+    trim: true,
     require: [true, "Требуется название организации"],
   },
   phone: {
     type: Number,
     unique: true,
-    min: [10, "телефон должен состоять из 10 символов"],
-    max: [10, "телефон должен состоять из 10 символов"],
+    min: [1000000000, "телефон должен состоять из 10 символов"],
+    max: [9999999999, "телефон должен состоять из 10 символов"],
     validate: {
       validator: function (v) {
-        return /\d{10}/.test(v);
+        return /\b\d{10}\b/.test(v);
       },
       message: (props) => `${props.value} Номер телефона не валиден!`,
     },
+    trim: true,
     required: [true, "Требуется номер телефона организации"],
   },
   address: {
     type: String,
+    lowercase: true,
+    trim: true,
     require: [true, "Требуется адрес организации"],
   },
   email: {
     type: String,
+    lowercase: true,
+    trim: true,
     unique: true,
+    require: [true, "Требуется email организации"],
+    sparse: true,
+    default: null,
+  },
+  bank: {
+    type: String,
+    trim: true,
+    lowercase: true,
     default: null,
   },
   KPP: {
-    type: Number,
+    type: String,
+    trim: true,
+    sparse: true,
     unique: true,
-    min: [9, "КПП слишком короткий"],
-    max: [9, "КПП слишком длинный"],
+    validate: {
+      validator: function (v) {
+        if (v > 0) {
+          return /\b\d{9}\b/.test(v);
+        }
+      },
+      message: (props) => `${props.value} КПП должно состоять из 9 цифр`,
+    },
     default: null,
   },
   OGRN: {
-    type: Number,
-    min: [13, "ОГРН слишком короткий"],
-    max: [15, "ОГРН слишком длинный"],
+    type: String,
+    trim: true,
+    validate: {
+      validator: function (v) {
+        if (v > 0) {
+          return /(\b\d{13}\b|\b\d{15}\b)/.test(v);
+        }
+      },
+      message: (props) =>
+        `${props.value} ОГРН должно состоять из 13 или 15 цифр`,
+    },
     default: null,
   },
   paymentAccount: {
-    type: Number,
+    type: String,
+    trim: true,
     unique: true,
-    min: [20, "Расчетный счет слишком короткий"],
-    max: [20, "Расчетный счет слишком длинный"],
+    sparse: true,
+    validate: {
+      validator: function (v) {
+        if (v > 0) {
+          return /\b\d{20}\b/.test(v);
+        }
+      },
+      message: (props) =>
+        `${props.value} Расчетный счет должен состоять из 20 цифр`,
+    },
     default: null,
   },
   corAccount: {
-    type: Number,
-    min: [20, "Кор.счет слишком короткий"],
-    max: [20, "Кор.счет слишком длинный"],
+    type: String,
+    trim: true,
+    validate: {
+      validator: function (v) {
+        if (v > 0) {
+          return /\b\d{20}\b/.test(v);
+        }
+      },
+      message: (props) => `${props.value} Кор.счет должен состоять из 20 цифр`,
+    },
     default: null,
   },
   BIC: {
-    type: Number,
-    min: [9, "БИК банка слишком короткий"],
-    max: [9, "БИК банка слишком длинный"],
+    type: String,
+    trim: true,
+    validate: {
+      validator: function (v) {
+        if (v > 0) {
+          return /\b\d{9}\b/.test(v);
+        }
+      },
+      message: (props) => `${props.value} БИК должен состоять из 9 цифр`,
+    },
     default: null,
   },
   coordinates: {
     type: String,
+    trim: true,
+    lowercase: true,
     default: null,
   },
   owner: { type: Types.ObjectId, ref: "User" },

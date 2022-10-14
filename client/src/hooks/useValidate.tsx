@@ -24,7 +24,7 @@ export function useValidate() {
    */
   const zeroField = useCallback((number: number, whatChecking: string) => {
     if (number === 0) {
-      return toast.error(`${whatChecking} не может быть ноль`);
+      return toast.error(`${whatChecking} не может быть ноль или пусто`);
     }
   }, []);
   /**

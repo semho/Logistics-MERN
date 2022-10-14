@@ -461,6 +461,7 @@ const settingsSlice = createSlice({
               phone: action.payload.phone,
               address: action.payload.address,
               email: action.payload.email,
+              bank: action.payload.bank,
               KPP: action.payload.KPP,
               OGRN: action.payload.OGRN,
               paymentAccount: action.payload.paymentAccount,

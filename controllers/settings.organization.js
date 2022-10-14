@@ -14,6 +14,7 @@ export const createOrganization = async (req, res) => {
         phone,
         address,
         email,
+        bank,
         KPP,
         OGRN,
         paymentAccount,
@@ -30,6 +31,7 @@ export const createOrganization = async (req, res) => {
         phone,
         address,
         email,
+        bank,
         KPP,
         OGRN,
         paymentAccount,
@@ -38,7 +40,9 @@ export const createOrganization = async (req, res) => {
         coordinates,
         owner: req.user.userId,
       });
-      const answerRecord = await newRecord.save();
+      const reg = /^\d+$/;
+      console.log(reg.test(paymentAccount));
+      // const answerRecord = await newRecord.save();
       res.status(201).json({ message: "Запись добавлена", answerRecord });
     } catch (e) {
       res.status(400).json({ message: e.message });
@@ -105,6 +109,7 @@ export const updateOrganization = async (req, res) => {
         phone,
         address,
         email,
+        bank,
         KPP,
         OGRN,
         paymentAccount,
@@ -119,8 +124,9 @@ export const updateOrganization = async (req, res) => {
             INN: INN,
             name: name,
             phone: phone,
-            address: adress,
+            address: address,
             email: email,
+            bank: bank,
             KPP: KPP,
             OGRN: OGRN,
             paymentAccount: paymentAccount,

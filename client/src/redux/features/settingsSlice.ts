@@ -252,9 +252,7 @@ export const createOrganization = createAsyncThunk(
     try {
       const appState = getState() as RootState;
       const token = appState.auth.statusUser.user.token;
-
       const { newRecord } = dataRecord;
-
       const response = await api.newApiOrganization(newRecord, token);
 
       if (!!response) {
@@ -404,6 +402,11 @@ const setError = (state: IStoreSettings, { payload }: any) => {
 
 const setLoader = (state: IStoreSettings) => {
   state.statusSettings.loading = true;
+  state.statusSettings.error = "";
+};
+
+const setEmptyError = (state: IStoreSettings) => {
+  state.statusSettings.error = "";
 };
 
 const deleteLoader = (state: IStoreSettings) => {
@@ -521,15 +524,29 @@ const settingsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getOrganizations.pending, setLoader);
+    builder.addCase(createOrganization.pending, setEmptyError);
+    // builder.addCase(createOrganization.pending, setLoader);
+    // builder.addCase(deleteOrganization.pending, setLoader);
     builder.addCase(getDestinations.pending, setLoader);
+    builder.addCase(createDestination.pending, setEmptyError);
     // builder.addCase(createDestination.pending, setLoader);
     // builder.addCase(deleteDestination.pending, setLoader);
     builder.addCase(getProducts.pending, setLoader);
+    builder.addCase(createProduct.pending, setEmptyError);
     // builder.addCase(createProduct.pending, setLoader);
     // builder.addCase(deleteProduct.pending, setLoader);
     builder.addCase(getForwarders.pending, setLoader);
+    builder.addCase(createForwarder.pending, setEmptyError);
     // builder.addCase(createForwarder.pending, setLoader);
     // builder.addCase(deleteForwarder.pending, setLoader);
+
+    builder.addCase(getOrganizations.fulfilled, (state, { payload }) => {
+      state.statusSettings.loading = false;
+      state.statusSettings.allSettings.settingsOrganization = payload;
+    });
+    // builder.addCase(createOrganization.fulfilled, deleteLoader);
+    // builder.addCase(deleteOrganization.fulfilled, deleteLoader);
 
     builder.addCase(getDestinations.fulfilled, (state, { payload }) => {
       state.statusSettings.loading = false;

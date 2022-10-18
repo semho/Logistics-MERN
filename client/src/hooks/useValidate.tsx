@@ -65,10 +65,28 @@ export function useValidate() {
     );
   };
 
+  /**
+   * Ограничивает число вводимых символов в input. Использовать только в обработчике управляемой компоненты
+   * @param name - нзвание поля инпут
+   * @param max - максимальное число символов
+   * @param event - событие в обработчике
+   */
+
+  const limitNumberCharacters = (
+    name: string,
+    max: number,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (event.target.name === name) {
+      event.target.value = event.target.value.substring(0, max);
+    }
+  };
+
   return {
     checkingLength,
     matchEmail,
     emptyField,
     zeroField,
+    limitNumberCharacters,
   };
 }

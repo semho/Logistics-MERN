@@ -7,9 +7,17 @@ import { ButtonStyled } from "../../../../ui/ButtonStyled";
 import { InputStyled } from "../../../../ui/InputStyled";
 
 export function FormAddOrganization() {
-  const { emptyField, zeroField, matchEmail } = useValidate();
+  const { emptyField, zeroField, matchEmail, limitNumberCharacters } =
+    useValidate();
   const [record, setRecord] = useState(initialSettingsOrganizationShort);
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    limitNumberCharacters("INN", 12, event);
+    limitNumberCharacters("phone", 10, event);
+    limitNumberCharacters("KPP", 9, event);
+    limitNumberCharacters("OGRN", 15, event);
+    limitNumberCharacters("paymentAccount", 20, event);
+    limitNumberCharacters("corAccount", 20, event);
+    limitNumberCharacters("BIC", 9, event);
     setRecord({ ...record, [event.target.name]: event.target.value });
   };
   const loading = useAppSelector(

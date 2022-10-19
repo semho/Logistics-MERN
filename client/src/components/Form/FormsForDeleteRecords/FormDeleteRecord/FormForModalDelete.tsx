@@ -1,8 +1,8 @@
 import React from "react";
 import { deleteRecord } from "../../../../redux/features/recordSlice";
 import {
-  deleteDestination,
   deleteForwarder,
+  deleteOrganization,
   deleteProduct,
 } from "../../../../redux/features/settingsSlice";
 import { useAppDispatch } from "../../../../redux/store";
@@ -26,14 +26,14 @@ export function FormForModalDelete({
         case "record":
           dispatch(deleteRecord(id));
           break;
-        case "destination":
-          dispatch(deleteDestination(id));
-          break;
         case "product":
           dispatch(deleteProduct(id));
           break;
         case "forwarder":
           dispatch(deleteForwarder(id));
+          break;
+        case "organization":
+          dispatch(deleteOrganization(id));
           break;
         default:
           break;

@@ -218,7 +218,7 @@ function validateFieldsOrganization(obj) {
 /**
  * выбрасываем ошибку если не число
  * @param {number | string} value
- * @param {string} name - найминг проверяемого поля
+ * @param {string} name - нейминг проверяемого поля
  */
 function fieldIsNumeric(value, name = "формы") {
   if (!isNumeric(value)) {

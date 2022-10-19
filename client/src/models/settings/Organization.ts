@@ -76,16 +76,9 @@ export const namesTableOrganization = [
   "ИНН",
   "Название организации",
   "Номер телефона",
-  "Действия",
   "Адрес организации",
   "Email",
-  "Банк",
-  "КПП",
-  "ОГРН",
-  "Расчетный счет",
-  "Кор.счет",
-  "БИК",
-  "Координаты",
+  "Действия",
 ];
 
 export const initialBodyTableOrganization = [
@@ -96,13 +89,20 @@ export const initialBodyTableOrganization = [
     phone: "(911) 111 1111",
     address: "Адрес организации",
     email: "exampl@mail.com",
-    bank: "Банк",
-    KPP: "111111111",
-    OGRN: "1111111111111",
-    paymentAccount: "11111111111111111111",
-    corAccount: "11111111111111111111",
-    BIC: "111111111",
-    coordinates: "11.1 11.1",
     type: "organization",
   },
 ];
+
+export const dataConversionOrganization = (list: ISettingsOrganization[]) => {
+  return list.map((record) => {
+    return {
+      id: record._id,
+      INN: record.INN,
+      name: record.name,
+      phone: record.phone,
+      address: record.address,
+      email: record.email,
+      type: "organization",
+    };
+  });
+};

@@ -54,6 +54,7 @@ export function useValidate() {
     },
     []
   );
+
   /**
    * Регулярное выражение для проверки корректности email
    * @param email - строка с email

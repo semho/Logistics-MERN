@@ -19,7 +19,7 @@ export function ModalPortalWithChildren({
   return ReactDOM.createPortal(
     <>
       <div
-        className={active ? "modal active" : "modal"}
+        className={active ? "modal active overflow-y-auto" : "modal"}
         onClick={() => setActive(false)}
       >
         <div

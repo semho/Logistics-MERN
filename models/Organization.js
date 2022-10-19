@@ -22,16 +22,9 @@ const OrganizationSchema = new Schema({
     require: [true, "Требуется название организации"],
   },
   phone: {
-    type: Number,
+    type: String,
     unique: true,
-    min: [1000000000, "телефон должен состоять из 10 символов"],
-    max: [9999999999, "телефон должен состоять из 10 символов"],
-    validate: {
-      validator: function (v) {
-        return /\b\d{10}\b/.test(v);
-      },
-      message: (props) => `${props.value} Номер телефона не валиден!`,
-    },
+    minlength: [14, "телефон должен состоять из 10 цифр"],
     trim: true,
     required: [true, "Требуется номер телефона организации"],
   },

@@ -82,11 +82,37 @@ export function useValidate() {
     }
   };
 
+  /**
+   * Маска номер телефона
+   * @param field название поля в инпут
+   * @param event событие
+   */
+  function mask(field: string, event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.name !== field) return;
+    const pos = event.target.selectionStart;
+    if (pos! < 3) event.preventDefault();
+    const matrix = "(___) ___ ____";
+    let i = 0;
+    const def = matrix.replace(/\D/g, "");
+    const val = event.target.value.replace(/\D/g, "");
+    let new_value = matrix.replace(/[_\d]/g, function (a) {
+      return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
+    });
+    i = new_value.indexOf("_");
+    if (i !== -1) {
+      i < 5 && (i = 3);
+      new_value = new_value.slice(0, i);
+    }
+
+    event.target.value = new_value;
+  }
+
   return {
     checkingLength,
     matchEmail,
     emptyField,
     zeroField,
     limitNumberCharacters,
+    mask,
   };
 }

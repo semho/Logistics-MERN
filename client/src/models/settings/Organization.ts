@@ -5,7 +5,7 @@
 export interface ISettingsOrganization {
   INN: number;
   name: string;
-  phone: number;
+  phone: string;
   address: string;
   email: string;
   bank: string;
@@ -23,7 +23,7 @@ export interface ISettingsOrganization {
 export const initialSettingsOrganization: ISettingsOrganization = {
   INN: Number(),
   name: "",
-  phone: Number(),
+  phone: "",
   address: "",
   email: "",
   bank: "",
@@ -41,7 +41,7 @@ export const initialSettingsOrganization: ISettingsOrganization = {
 export interface ISettingsOrganizationShort {
   INN: number;
   name: string;
-  phone: number;
+  phone: string;
   address: string;
   email: string;
   bank: string;
@@ -56,7 +56,7 @@ export interface ISettingsOrganizationShort {
 export const initialSettingsOrganizationShort: ISettingsOrganizationShort = {
   INN: Number(),
   name: "",
-  phone: Number(),
+  phone: "",
   address: "",
   email: "",
   bank: "",
@@ -93,7 +93,7 @@ export const initialBodyTableOrganization = [
     id: "#",
     INN: 1111111111,
     name: "Название организации",
-    phone: 1234567890,
+    phone: "(911) 111 1111",
     address: "Адрес организации",
     email: "exampl@mail.com",
     bank: "Банк",

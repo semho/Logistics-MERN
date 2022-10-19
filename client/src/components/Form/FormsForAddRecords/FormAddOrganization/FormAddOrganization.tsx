@@ -7,12 +7,12 @@ import { ButtonStyled } from "../../../../ui/ButtonStyled";
 import { InputStyled } from "../../../../ui/InputStyled";
 
 export function FormAddOrganization() {
-  const { emptyField, zeroField, matchEmail, limitNumberCharacters } =
+  const { emptyField, zeroField, matchEmail, limitNumberCharacters, mask } =
     useValidate();
   const [record, setRecord] = useState(initialSettingsOrganizationShort);
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    mask("phone", event);
     limitNumberCharacters("INN", 12, event);
-    limitNumberCharacters("phone", 10, event);
     limitNumberCharacters("KPP", 9, event);
     limitNumberCharacters("OGRN", 15, event);
     limitNumberCharacters("paymentAccount", 20, event);
@@ -28,7 +28,7 @@ export function FormAddOrganization() {
     const newRecord = { ...record };
     if (zeroField(record.INN, 'Поле ввода "ИНН"')) return;
     if (emptyField(record.name, 'Поле ввода "Название организации"')) return;
-    if (zeroField(record.phone, 'Поле ввода "Телефон"')) return;
+    if (emptyField(record.phone, 'Поле ввода "Телефон"')) return;
     if (emptyField(record.address, 'Поле ввода "Адрес"')) return;
     if (record.email !== "") {
       if (matchEmail(record.email)) return;
@@ -66,7 +66,7 @@ export function FormAddOrganization() {
             <InputStyled
               colorFocus="sky"
               type="text"
-              placeholder="Телефон"
+              placeholder="(911) 111 1111"
               name="phone"
               onChange={changeHandler}
             />

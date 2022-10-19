@@ -24,7 +24,15 @@ export const createOrganization = async (req, res) => {
       } = req.body;
 
       validateFieldsOrganization({
-        INN, name, phone, address, KPP, OGRN, paymentAccount, corAccount, BIC
+        INN,
+        name,
+        phone,
+        address,
+        KPP,
+        OGRN,
+        paymentAccount,
+        corAccount,
+        BIC,
       });
 
       const newRecord = new Organization({
@@ -42,6 +50,16 @@ export const createOrganization = async (req, res) => {
         coordinates,
         owner: req.user.userId,
       });
+
+      //проверка на существование дубля ИНН или Телефона
+      const existRecord = await Organization.find({
+        $or: [{ INN: INN }, { phone: phone }],
+      });
+
+      if (!!existRecord && existRecord.length > 0)
+        return res.status(400).json({
+          message: "Запись с таким 'ИНН' или 'Телефоном' уже существует",
+        });
 
       const answerRecord = await newRecord.save();
       res.status(201).json({ message: "Запись добавлена", answerRecord });
@@ -120,9 +138,16 @@ export const updateOrganization = async (req, res) => {
       } = req.body;
 
       validateFieldsOrganization({
-        INN, name, phone, address, KPP, OGRN, paymentAccount, corAccount, BIC
+        INN,
+        name,
+        phone,
+        address,
+        KPP,
+        OGRN,
+        paymentAccount,
+        corAccount,
+        BIC,
       });
-
 
       const editRecord = await Organization.updateOne(
         { _id: _id },
@@ -167,27 +192,26 @@ function validateFieldsOrganization(obj) {
     throw new Error("Обязательные поля не заполнены");
   }
 
-  fieldIsNumeric(obj.INN, 'ИНН');
-  fieldIsNumeric(obj.phone, 'Телефон');
+  fieldIsNumeric(obj.INN, "ИНН");
 
   if (obj.KPP) {
-    fieldIsNumeric(obj.KPP, 'КПП');
+    fieldIsNumeric(obj.KPP, "КПП");
   }
 
   if (obj.OGRN) {
-    fieldIsNumeric(obj.OGRN, 'ОГРН');
+    fieldIsNumeric(obj.OGRN, "ОГРН");
   }
 
   if (obj.paymentAccount) {
-    fieldIsNumeric(obj.paymentAccount, 'Расчетный счет');
+    fieldIsNumeric(obj.paymentAccount, "Расчетный счет");
   }
 
   if (obj.corAccount) {
-    fieldIsNumeric(obj.corAccount, 'Кор.счет');
+    fieldIsNumeric(obj.corAccount, "Кор.счет");
   }
 
   if (obj.BIC) {
-    fieldIsNumeric(obj.BIC, 'БИК');
+    fieldIsNumeric(obj.BIC, "БИК");
   }
 }
 

@@ -2,32 +2,38 @@ import React, { useEffect, useState } from "react";
 import { SearchIcon } from "../../assets/Icons/SearchIcon";
 import { SelectIcon } from "../../assets/Icons/SelectIcon";
 
-interface IList {
+export interface IList {
   id: string;
   name: string;
 }
 
 interface ISelect {
+  id?: string;
   title?: string;
-  list: IList[];
+  list?: IList[];
   updateSelect: React.Dispatch<React.SetStateAction<{}>>;
   nameSelect?: string;
 }
 
 export function Select({
-  title = "Выберете значение",
+  title = "Выбрать",
+  id,
   list,
   updateSelect,
-  nameSelect = 'select'
+  nameSelect = "select",
 }: ISelect) {
   const [inputValue, setInputValue] = useState("");
   const [selected, setSelected] = useState("");
+  const [selectedId, setSelectedId] = useState("");
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     //передаем родителю стейт
-    updateSelect({ [nameSelect]: selected});
-  }, [nameSelect, selected, updateSelect]);
+    updateSelect({
+      [nameSelect]: selected,
+      [nameSelect + "_id"]: selectedId,
+    });
+  }, [nameSelect, selected, selectedId, updateSelect]);
 
   return (
     <div
@@ -80,6 +86,7 @@ export function Select({
             onClick={() => {
               if (item?.name?.toLowerCase() !== selected.toLowerCase()) {
                 setSelected(item?.name);
+                setSelectedId(item?.id);
                 setOpen(false);
                 setInputValue("");
               }

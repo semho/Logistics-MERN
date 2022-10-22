@@ -4,11 +4,12 @@ export interface IRecord {
   date: string;
   dateUpdate: string;
   distance: number;
-  forwarder: string;
-  fromTo: string;
+  forwarder_id: string;
+  fromOrganization_id: string;
+  toOrganization_id: string;
   owner: string;
   price: number;
-  product: string;
+  product_id: string;
   sum: number;
   units: number;
   __v: number;
@@ -16,12 +17,13 @@ export interface IRecord {
 }
 
 export const initialEmptyState: IRecord = {
-  fromTo: "",
+  fromOrganization_id: "",
+  toOrganization_id: "",
   distance: Number(),
-  forwarder: "",
+  forwarder_id: "",
   owner: "",
   price: Number(),
-  product: "",
+  product_id: "",
   units: Number(),
   date: "",
   dateUpdate: "",
@@ -32,11 +34,12 @@ export const initialEmptyState: IRecord = {
 
 export type TRecord = {
   distance: number;
-  forwarder: string;
-  fromTo: string;
+  forwarder_id: string;
+  fromOrganization_id: string;
+  toOrganization_id: string;
   owner: string;
   price: number;
-  product: string;
+  product_id: string;
   units: number;
 };
 
@@ -62,11 +65,11 @@ export const dataConversionRecord = (list: IListRecords) => {
       id: record._id,
       date: formatDate(record.date),
       dateUpdate: formatDate(record.dateUpdate),
-      fromTo: record.fromTo,
+      fromTo: `${record.fromOrganization_id} | ${record.toOrganization_id}`,
       distance: record.distance,
-      product: record.product,
+      product: record.product_id,
       units: record.units,
-      forwarder: record.forwarder,
+      forwarder: record.forwarder_id,
       price: record.price,
       sum: record.sum,
       type: "record",

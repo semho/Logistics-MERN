@@ -24,8 +24,8 @@ export function TableRow({ id, valueRow, index, openModal }: ITableRow) {
   return (
     <tr className="border-b" id={id} key={id}>
       <TableCeilContent>{index}</TableCeilContent>
-      {Object.values(newObj).map((title) => (
-        <TableCeilTitle key={title} title={String(title)} />
+      {Object.values(newObj).map((title, index) => (
+        <TableCeilTitle key={String(index) + title} title={String(title)} />
       ))}
       <TableCeilContent className="w-1/6">
         <ButtonStyled

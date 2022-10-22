@@ -4,6 +4,7 @@ import { updateRecord } from "../../../../redux/features/recordSlice";
 import { useAppDispatch, useAppSelector } from "../../../../redux/store";
 import { ButtonStyled } from "../../../../ui/ButtonStyled";
 import { InputStyled } from "../../../../ui/InputStyled";
+import { LabelStyled } from "../../../../ui/LabelStyled";
 
 export interface IFormEdit {
   setModalActiveEdit: (value: React.SetStateAction<boolean>) => void;
@@ -45,15 +46,7 @@ export function FormEditRecord({ setModalActiveEdit, id }: IFormEdit) {
         Измененине записи №&nbsp;{id}
       </h3>
       <div>
-        <InputStyled
-          value={record.fromTo}
-          colorFocus="sky"
-          type="text"
-          placeholder="Откуда-Куда"
-          name="fromTo"
-          onChange={changeHandler}
-          className="my-2"
-        />
+        <LabelStyled title="Расстояние" forId="recordDistance" />
         <InputStyled
           value={record.distance}
           colorFocus="sky"
@@ -62,16 +55,9 @@ export function FormEditRecord({ setModalActiveEdit, id }: IFormEdit) {
           name="distance"
           onChange={changeHandler}
           className="my-2"
+          id="recordDistance"
         />
-        <InputStyled
-          value={record.product}
-          colorFocus="sky"
-          type="text"
-          placeholder="Продукт"
-          name="product"
-          onChange={changeHandler}
-          className="my-2"
-        />
+        <LabelStyled title="Количество" forId="recordUnits" />
         <InputStyled
           value={record.units}
           colorFocus="sky"
@@ -80,16 +66,9 @@ export function FormEditRecord({ setModalActiveEdit, id }: IFormEdit) {
           name="units"
           onChange={changeHandler}
           className="my-2"
+          id="recordUnits"
         />
-        <InputStyled
-          value={record.forwarder}
-          colorFocus="sky"
-          type="text"
-          placeholder="Ответственный"
-          name="forwarder"
-          onChange={changeHandler}
-          className="my-2"
-        />
+        <LabelStyled title="Цена" forId="recordPrice" />
         <InputStyled
           value={record.price}
           colorFocus="sky"
@@ -98,6 +77,7 @@ export function FormEditRecord({ setModalActiveEdit, id }: IFormEdit) {
           name="price"
           onChange={changeHandler}
           className="my-2"
+          id="recordPrice"
         />
         <div className="text-center">
           <ButtonStyled

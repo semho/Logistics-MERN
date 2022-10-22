@@ -30,7 +30,7 @@ export function Select({
   useEffect(() => {
     //передаем родителю стейт
     updateSelect({
-      [nameSelect]: selected,
+      // [nameSelect]: selected,
       [nameSelect + "_id"]: selectedId,
     });
   }, [nameSelect, selected, selectedId, updateSelect]);

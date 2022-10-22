@@ -15,11 +15,9 @@ export function FormAddRecord() {
   //стейт под select
   const [selectFrom, setSelectFrom] = useState({});
   const [selectTo, setSelectTo] = useState({});
-
   const [selectProduct, setSelectProduct] = useState({});
-
   const [selectForwarder, setSelectForwarder] = useState({});
-
+  //стейты под модели
   const [listFromTo, setListFromTo] = useState<IList[]>();
   const [listFromProduct, setListProduct] = useState<IList[]>();
   const [listFromForwarder, setListForwarder] = useState<IList[]>();
@@ -41,8 +39,8 @@ export function FormAddRecord() {
       ...selectProduct,
       ...selectForwarder,
     };
-    console.log(newRecord, selectFrom);
-    // dispatch(createRecord({ newRecord }));
+
+    dispatch(createRecord({ newRecord }));
   };
 
   const organization = useAppSelector(
@@ -91,7 +89,7 @@ export function FormAddRecord() {
           <Select
             list={listFromTo}
             updateSelect={setSelectFrom}
-            nameSelect="from"
+            nameSelect="fromOrganization"
             id="recordFrom"
             title="Откуда?"
           />
@@ -101,7 +99,7 @@ export function FormAddRecord() {
           <Select
             list={listFromTo}
             updateSelect={setSelectTo}
-            nameSelect="to"
+            nameSelect="toOrganization"
             id="recordFrom"
             title="Куда?"
           />

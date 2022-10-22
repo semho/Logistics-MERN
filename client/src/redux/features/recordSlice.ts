@@ -131,11 +131,8 @@ const recordSlice = createSlice({
           if (record._id === action.payload._id) {
             return {
               ...record,
-              fromTo: action.payload.fromTo,
               distance: action.payload.distance,
-              product: action.payload.product,
               units: action.payload.units,
-              forwarder: action.payload.forwarder,
               price: action.payload.price,
               sum: action.payload.price * action.payload.units,
               dateUpdate: action.payload.dateUpdate,

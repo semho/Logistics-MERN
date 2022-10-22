@@ -7,17 +7,34 @@ import Record from "../models/Record.js";
 export const createRecord = async (req, res) => {
   try {
     try {
-      const { fromTo, distance, product, units, forwarder, price } = req.body;
-      if (!fromTo || !distance || !product || !units || !forwarder || !price) {
+      const {
+        fromOrganization_id,
+        toOrganization_id,
+        distance,
+        product_id,
+        units,
+        forwarder_id,
+        price,
+      } = req.body;
+      if (
+        !fromOrganization_id ||
+        !toOrganization_id ||
+        !distance ||
+        !product_id ||
+        !units ||
+        !forwarder_id ||
+        !price
+      ) {
         throw new Error("Некорректные данные в полях ввода формы");
       }
       const sum = units * price;
       const newRecord = new Record({
-        fromTo,
+        fromOrganization_id,
+        toOrganization_id,
         distance,
-        product,
+        product_id,
         units,
-        forwarder,
+        forwarder_id,
         price,
         sum,
         owner: req.user.userId,
@@ -93,19 +110,15 @@ export const deleteRecord = async (req, res) => {
 export const updateRecord = async (req, res) => {
   try {
     try {
-      const { _id, fromTo, distance, product, units, forwarder, price } =
-        req.body;
+      const { _id, distance, units, price } = req.body;
       const sum = units * price;
       const editRecord = await Record.updateOne(
         { _id: _id },
         {
           $set: {
-            fromTo: fromTo,
             dateUpdate: new Date(),
             distance: distance,
-            product: product,
             units: units,
-            forwarder: forwarder,
             price: price,
             sum: sum,
           },

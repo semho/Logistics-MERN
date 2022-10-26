@@ -1,4 +1,7 @@
 import Record from "../models/Record.js";
+import Product from "../models/Product.js";
+import Forwarder from "../models/Forwarder.js";
+import Organization from "../models/Organization.js";
 /**
  * Создание записи
  * @param {*} req
@@ -40,7 +43,26 @@ export const createRecord = async (req, res) => {
         owner: req.user.userId,
       });
 
-      const answerRecord = await newRecord.save();
+      const record = await newRecord.save();
+      const from = await Organization.findById(
+        record.fromOrganization_id
+      ).exec();
+      const to = await Organization.findById(record.toOrganization_id).exec();
+      const product = await Product.findById(record.product_id).exec();
+      const forwarder = await Forwarder.findById(record.forwarder_id).exec();
+
+      const convertedRecord = async () => {
+        return {
+          ...record._doc,
+          fromOrganization_id: from.name,
+          toOrganization_id: to.name,
+          product_id: product.product,
+          forwarder_id: forwarder.forwarder,
+        };
+      };
+
+      const answerRecord = await convertedRecord();
+
       res.status(201).json({ message: "Запись добавлена", answerRecord });
     } catch (e) {
       res.status(400).json({ message: e.message });
@@ -58,8 +80,33 @@ export const getRecords = async (req, res) => {
   try {
     try {
       //userId следует получить из middleware
-      const records = await Record.find({ owner: req.user.userId });
-      res.json(records);
+      //получаем все записи
+      const result = await Record.find({ owner: req.user.userId }).exec();
+      //проходимся по ним циклом
+      const records = result.map(async (record) => {
+        //в цикле получаем по id запись товара
+        const product = await Product.findById(record.product_id).exec();
+        //запись ответственного
+        const forwarder = await Forwarder.findById(record.forwarder_id).exec();
+        //запись организации откуда везем
+        const from = await Organization.findById(
+          record.fromOrganization_id
+        ).exec();
+        //запись организации куда везем
+        const to = await Organization.findById(record.toOrganization_id).exec();
+        //возвратим преобразованный объект в массив
+        return {
+          ...record._doc,
+          product_id: product.product,
+          forwarder_id: forwarder.forwarder,
+          fromOrganization_id: from.name,
+          toOrganization_id: to.name,
+        };
+      });
+      //дождемся возврата с данными всех объектов в массиве записей
+      const recordsPromise = await Promise.all(records);
+      //и вернем на фронт
+      res.json(recordsPromise);
     } catch (e) {
       res.status(400).json({ message: "У пользователя записи не найдены" });
     }
@@ -67,6 +114,7 @@ export const getRecords = async (req, res) => {
     res.status(500).json({ message: "Что-то пошло не так." });
   }
 };
+
 /**
  * получение одной записи
  * @param {*} req

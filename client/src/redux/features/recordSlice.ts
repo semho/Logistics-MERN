@@ -148,9 +148,16 @@ const recordSlice = createSlice({
       state.statusRecords.loading = true;
       state.statusRecords.error = "";
     });
+    builder.addCase(createRecord.pending, (state) => {
+      state.statusRecords.loading = true;
+      state.statusRecords.error = "";
+    });
     builder.addCase(getRecords.fulfilled, (state, { payload }) => {
       state.statusRecords.loading = false;
       state.statusRecords.listRecords = payload;
+    });
+    builder.addCase(createRecord.fulfilled, (state) => {
+      state.statusRecords.loading = false;
     });
     builder.addCase(getRecords.rejected, setError);
     builder.addCase(deleteRecord.rejected, setError);

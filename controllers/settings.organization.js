@@ -184,6 +184,14 @@ export const updateOrganization = async (req, res) => {
 };
 
 /**
+ * Получаем объект организации по id
+ * @param {*} id - организации
+ * @returns - объект организации
+ */
+export const getOrganizationById = async (id) =>
+  await Organization.findById(id).exec();
+
+/**
  * функция валидации всех полей модели
  * @param {object} obj - передаем объект с проверяемыми полями
  */

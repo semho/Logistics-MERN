@@ -180,3 +180,89 @@ export const updateRecord = async (req, res) => {
     res.status(500).json({ message: "Что-то пошло не так." });
   }
 };
+
+/**
+ * Получаем сумму отгруженных товаров конкретной организации по ее id с полной стоимостью этих товаров
+ * @param {*} req
+ * @param {*} res
+ * @return json объект агрегационных данных
+ */
+export const getSumShipProductOrganization = async (req, res) => {
+  try {
+    try {
+      const id = req.params.id;
+
+      const result = await Record.aggregate([
+        {
+          $match: {
+            fromOrganization_id: id,
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalSum: { $sum: "$sum" },
+            totalUnits: { $sum: "$units" },
+          },
+        },
+      ]).exec();
+
+      let status = false;
+      if (result.length > 0) status = true;
+
+      const objAnswer = {
+        isFill: status,
+        ...result[0],
+      };
+
+      res.json({ objAnswer });
+    } catch (e) {
+      res.status(400).json({ message: e.message });
+    }
+  } catch (e) {
+    res.status(500).json({ message: "Что-то пошло не так." });
+  }
+};
+
+/**
+ * Получаем сумму полученных товаров конкретной организации по ее id с полной стоимостью этих товаров
+ * @param {*} req
+ * @param {*} res
+ * @return json объект агрегационных данных
+ */
+export const getSumArrivalProductOrganization = async (req, res) => {
+  try {
+    try {
+      const id = req.params.id;
+
+      const result = await Record.aggregate([
+        {
+          $match: {
+            toOrganization_id: id,
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalSum: { $sum: "$sum" },
+            totalUnits: { $sum: "$units" },
+          },
+        },
+      ]).exec();
+
+      let status = false;
+      if (result.length > 0) status = true;
+
+      const objAnswer = {
+        isFill: status,
+        ...result[0],
+      };
+
+      res.json({ objAnswer });
+    } catch (e) {
+      res.status(400).json({ message: e.message });
+    }
+  } catch (e) {
+    res.status(500).json({ message: "Что-то пошло не так." });
+  }
+};

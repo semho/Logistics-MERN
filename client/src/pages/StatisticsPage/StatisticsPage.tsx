@@ -1,17 +1,34 @@
 import React, { useEffect, useState } from "react";
+import { getSumArrivalProduct, getSumShipProduct } from "../../redux/api";
 import { useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../../ui/ButtonStyled";
 import { IList, Select } from "../../ui/Select";
+
+interface ISelectOrganization {
+  organization_id?: string;
+}
+
+interface ISumAggregation {
+  isFill: boolean;
+  totalUnits?: number;
+  totalSum?: number;
+}
 
 export function StatisticsPage() {
   //стейт куда попадает выбранная пользователем организация
   const [selectOrganization, setSelectOrganization] = useState({});
   //стейт для хранения списка организаций из редакс
   const [listOrganization, setListOrganization] = useState<IList[]>();
+
+  const [agrFromOrg, setAgrFromOrg] = useState<ISumAggregation>();
+  const [agrToOrg, setAgrToOrg] = useState<ISumAggregation>();
   //получаем организации
   const organization = useAppSelector(
     (state) => state.settings.statusSettings.allSettings.settingsOrganization
   );
+
+  const token = useAppSelector((state) => state.auth.statusUser.user.token);
+
   useEffect(() => {
     setListOrganization(
       organization.map((record) => {
@@ -25,9 +42,14 @@ export function StatisticsPage() {
 
   //обработик кнопки
   const selectHandler = async () => {
-    console.log(selectOrganization);
+    const { organization_id }: ISelectOrganization = selectOrganization;
+    if (organization_id) {
+      const resShip = await getSumShipProduct(organization_id, token);
+      const resArrival = await getSumArrivalProduct(organization_id, token);
 
-    // dispatch(getRecord({ selectOrganization }));
+      setAgrFromOrg(resShip.data.objAnswer);
+      setAgrToOrg(resArrival.data.objAnswer);
+    }
   };
 
   return (
@@ -58,13 +80,18 @@ export function StatisticsPage() {
           />
         </div>
       </div>
-      Краткая сводка по организации: Селект выбрать организацию, получаем
-      данные.
-      <br />
-      Отгруженно товаров всего на общую сумму и количество за все время
-      <br />
-      Полученно товаров всего на общую сумму и количестово за все время
-      <br />
+      {agrFromOrg?.isFill && (
+        <div>
+          Отгруженно всего: {agrFromOrg?.totalUnits} единиц товара, на общую
+          сумму: {agrFromOrg?.totalSum} рублей
+        </div>
+      )}
+      {agrToOrg?.isFill && (
+        <div>
+          Полученно всего: {agrToOrg?.totalUnits} единиц товара, на общую сумму:{" "}
+          {agrToOrg?.totalSum} рублей
+        </div>
+      )}
       Самый дорогой товар за единицу
       <br />
       Самый дешевый товар за единицу

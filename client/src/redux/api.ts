@@ -85,3 +85,15 @@ export const updateApiOrganization = (
   axios.put("/api/settings/organization/update", record, {
     headers: { Authorization: `Bearer ${token}` },
   });
+//запросы для статистики и аналитики
+//запросы вне redux
+export const getSumShipProduct = async (id: string, token: string) => {
+  return await axios.get(`/api/records/statistics/ship-product/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+export const getSumArrivalProduct = async (id: string, token: string) => {
+  return await axios.get(`/api/records/statistics/arrival-product/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};

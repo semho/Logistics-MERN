@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  getSumArrivalProduct,
-  getSumShipProduct,
-  maxPrice,
-  minPrice,
-} from "../../redux/api";
+import { IRecord } from "../../models/Record";
+import { getSumArrivalProduct, getSumShipProduct } from "../../redux/api";
 import { useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../../ui/ButtonStyled";
 import { IList, Select } from "../../ui/Select";
@@ -19,19 +15,15 @@ interface ISumAggregation {
   totalSum?: number;
 }
 
-interface IPriceProduct {
-  price: number;
-  productName: string;
-}
-
 export function StatisticsPage() {
   //стейт куда попадает выбранная пользователем организация
   const [selectOrganization, setSelectOrganization] = useState({});
   //стейт для хранения списка организаций из редакс
   const [listOrganization, setListOrganization] = useState<IList[]>();
 
-  const [maxPriceState, setMaxPriceState] = useState<IPriceProduct>();
-  const [minPriceState, setMinPriceState] = useState<IPriceProduct>();
+  const [maxPriceRecord, setMaxPriceRecord] = useState<IRecord>();
+  const [minPriceRecord, setMinPriceRecord] = useState<IRecord>();
+  const [avgPriceState, setAvgPriceState] = useState<number>();
 
   const [agrFromOrg, setAgrFromOrg] = useState<ISumAggregation>();
   const [agrToOrg, setAgrToOrg] = useState<ISumAggregation>();
@@ -41,6 +33,9 @@ export function StatisticsPage() {
   );
 
   const token = useAppSelector((state) => state.auth.statusUser.user.token);
+  const listRecord = useAppSelector(
+    (state) => state.records.statusRecords.listRecords
+  );
 
   useEffect(() => {
     setListOrganization(
@@ -51,15 +46,21 @@ export function StatisticsPage() {
         };
       })
     );
-    const fetchData = async () => {
-      const maxPriceProduct = await maxPrice(token);
-      const minPriceProduct = await minPrice(token);
-      setMaxPriceState(maxPriceProduct.data);
-      setMinPriceState(minPriceProduct.data);
-    };
 
-    fetchData();
-  }, [organization, token]);
+    setAvgPriceState(
+      listRecord.reduce((acc, cur) => acc + cur.price, 0) / listRecord.length
+    );
+    setMinPriceRecord(
+      listRecord.reduce(function (res, obj) {
+        return obj.price < res.price ? obj : res;
+      })
+    );
+    setMaxPriceRecord(
+      listRecord.reduce(function (res, obj) {
+        return obj.price > res.price ? obj : res;
+      })
+    );
+  }, [listRecord, organization]);
 
   //обработик кнопки
   const selectHandler = async () => {
@@ -81,69 +82,78 @@ export function StatisticsPage() {
       <hr />
       <div className="form-group mb-6 mt-2 flex flex-wrap">
         <div className="w-full mb-2">
-          Самый дорогой товар за единицу: {maxPriceState?.productName}, цена{" "}
-          {maxPriceState?.price} рублей
+          Самый дорогой товар за единицу: {maxPriceRecord?.product_id}, цена{" "}
+          {maxPriceRecord?.price} рублей
         </div>
         <div className="w-full mb-2">
-          Самый дешевый товар за единицу: {minPriceState?.productName}, цена{" "}
-          {minPriceState?.price} рублей
+          Самый дешевый товар за единицу: {minPriceRecord?.product_id}, цена{" "}
+          {minPriceRecord?.price} рублей
         </div>
-        <span className="self-center">Краткая сводка по организации</span>
-        <div className="w-full md:w-[25%] lg:w-[20%] xl:w-[13%]  px-3 mb-6 md:mb-0">
-          <Select
-            list={listOrganization}
-            updateSelect={setSelectOrganization}
-            nameSelect="organization"
-            id="organization"
-            title="Выбрать"
-          />
+        <div className="w-full mb-2">
+          Средняя цена всех товаров: {avgPriceState} рублей
         </div>
-        <div className="w-full sm:w-full sm:pt-2 md:pt-0 md:w-1/12 lg:w-1/12 lg:pt-0 px-3 mb-6 md:mb-0 md:relative">
-          <ButtonStyled
-            title="Добавить"
-            variant="sky"
-            type="button"
-            disabled={false}
-            onClick={selectHandler}
-            className="md:absolute md:bottom-0"
-          />
+        <hr className="w-full mb-2" />
+        <div className="w-full form-group flex flex-wrap mb-2">
+          <span className="self-center text-lg font-semibold">
+            Общая краткая сводка по организации
+          </span>
+          <div className="w-full md:w-[25%] lg:w-[20%] xl:w-[13%]  px-3 mb-6 md:mb-0">
+            <Select
+              list={listOrganization}
+              updateSelect={setSelectOrganization}
+              nameSelect="organization"
+              id="organization"
+              title="Выбрать"
+            />
+          </div>
+          <div className="w-full sm:w-full sm:pt-2 md:pt-0 md:w-1/12 lg:w-1/12 lg:pt-0 px-3 mb-6 md:mb-0 md:relative">
+            <ButtonStyled
+              title="Показать"
+              variant="sky"
+              type="button"
+              disabled={false}
+              onClick={selectHandler}
+              className="md:absolute md:bottom-0"
+            />
+          </div>
         </div>
+        {agrFromOrg?.isFill && (
+          <div className="w-full mb-2">
+            Отгруженно всего: {agrFromOrg?.totalUnits} единиц товара, на общую
+            сумму: {agrFromOrg?.totalSum} рублей
+          </div>
+        )}
+        {agrToOrg?.isFill && (
+          <div className="w-full mb-2">
+            Полученно всего: {agrToOrg?.totalUnits} единиц товара, на общую
+            сумму: {agrToOrg?.totalSum} рублей
+          </div>
+        )}
+        {/* TODO:Заняться как появиться время */}
+        {/* Краткая сводка получателя и отправителя товара:
+        Это сводка покажет от кого кому сколько единиц товара пришло и на какую сумму
+        Первый селект: Организация отправитель
+        Второй селект: Организация получатель
+        Возможно стоит добавить третий селект с выбором конкретного товара */}
+
+        {/* <hr className="w-full mb-2" />
+        <div className="w-full form-group flex flex-wrap mb-2">
+          <span className="self-center text-lg font-semibold">
+            Подробная сводка
+          </span>
+          Селект: Отгрузка/Приход
+          <br />
+          Селект: Все товары/Конкретный <br />
+          Селект: Все организации/Конкретная <br />
+          Инпут начальной даты: Дата первой записи/Конкретная дата дд/мм/гггг
+          <br />
+          Инпут конечной даты: Текущая дата/Конкретная дата дд/мм/гггг
+          <br />
+          Формируем ответ цены товара(средняя если все/либо конкретная),
+          название товара(либо просто все), всего отгружено/полученно на общую
+          сумму за указанный период для выбранной организации(или всех),
+        </div> */}
       </div>
-      {agrFromOrg?.isFill && (
-        <div className="w-full mb-2">
-          Отгруженно всего: {agrFromOrg?.totalUnits} единиц товара, на общую
-          сумму: {agrFromOrg?.totalSum} рублей
-        </div>
-      )}
-      {agrToOrg?.isFill && (
-        <div className="w-full mb-2">
-          Полученно всего: {agrToOrg?.totalUnits} единиц товара, на общую сумму:{" "}
-          {agrToOrg?.totalSum} рублей
-        </div>
-      )}
-      Самый дорогой товар за единицу
-      <br />
-      Самый дешевый товар за единицу
-      <br />
-      Средняя стоимость единицы товара на отгрузке
-      <br />
-      Средняя стоимость единицы товара при получении
-      <br />
-      Общая стоимость отгруженных товаров(всех или опредленный) с указанием их
-      количества за определенный срок(или за все время)
-      <br />
-      Первый селект содержит: По дефолту все товары, либо выбрать конкретный
-      <br />
-      Второй селект содержит: Нужно выбрать конкретную организацию
-      <br />
-      Третий селект: По дефолту первая дата записей, либо конкретная начальня
-      дата по определенной маске типа дд/мм/гггг <br />
-      Четвертый селект: По дефолту текущая дата, либо конкретная конечная дата
-      по определенной маске типа дд/мм/гггг
-      <br />
-      <br />
-      <br />
-      Все тоже самое, но теперь общая стоимость принятого товара
     </>
   );
 }

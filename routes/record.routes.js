@@ -8,6 +8,8 @@ import {
   updateRecord,
   getSumShipProductOrganization,
   getSumArrivalProductOrganization,
+  maxPriceProduct,
+  minPriceProduct,
 } from "../controllers/record.js";
 import { auth } from "../middleware/auth.middleware.js";
 
@@ -22,5 +24,7 @@ router.get(
   auth,
   getSumArrivalProductOrganization
 );
+router.get("/statistics/max-price", auth, maxPriceProduct);
+router.get("/statistics/min-price", auth, minPriceProduct);
 
 export default router;

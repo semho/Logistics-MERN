@@ -266,3 +266,51 @@ export const getSumArrivalProductOrganization = async (req, res) => {
     res.status(500).json({ message: "Что-то пошло не так." });
   }
 };
+
+/**
+ * Самый дорогой товар за единицу с его названием
+ * @param {*} req
+ * @param {*} res
+ * @return объект с ценой и названием
+ */
+export const maxPriceProduct = async (req, res) => {
+  try {
+    try {
+      const result = await Record.find({ owner: req.user.userId })
+        .sort({ price: -1 })
+        .limit(1);
+      const price = result[0].price;
+      const product = await getProductById(result[0].product_id);
+      const productName = product.product;
+      res.json({ price, productName });
+    } catch (e) {
+      res.status(400).json({ message: e.message });
+    }
+  } catch (e) {
+    res.status(500).json({ message: "Что-то пошло не так." });
+  }
+};
+
+/**
+ * Самый дешевый товар за единицу с его названием
+ * @param {*} req
+ * @param {*} res
+ * @return объект с ценой и названием
+ */
+export const minPriceProduct = async (req, res) => {
+  try {
+    try {
+      const result = await Record.find({ owner: req.user.userId })
+        .sort({ price: +1 })
+        .limit(1);
+      const price = result[0].price;
+      const product = await getProductById(result[0].product_id);
+      const productName = product.product;
+      res.json({ price, productName });
+    } catch (e) {
+      res.status(400).json({ message: e.message });
+    }
+  } catch (e) {
+    res.status(500).json({ message: "Что-то пошло не так." });
+  }
+};

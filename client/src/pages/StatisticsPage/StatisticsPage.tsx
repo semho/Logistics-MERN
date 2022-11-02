@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getSumArrivalProduct, getSumShipProduct } from "../../redux/api";
+import {
+  getSumArrivalProduct,
+  getSumShipProduct,
+  maxPrice,
+  minPrice,
+} from "../../redux/api";
 import { useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../../ui/ButtonStyled";
 import { IList, Select } from "../../ui/Select";
@@ -14,11 +19,19 @@ interface ISumAggregation {
   totalSum?: number;
 }
 
+interface IPriceProduct {
+  price: number;
+  productName: string;
+}
+
 export function StatisticsPage() {
   //стейт куда попадает выбранная пользователем организация
   const [selectOrganization, setSelectOrganization] = useState({});
   //стейт для хранения списка организаций из редакс
   const [listOrganization, setListOrganization] = useState<IList[]>();
+
+  const [maxPriceState, setMaxPriceState] = useState<IPriceProduct>();
+  const [minPriceState, setMinPriceState] = useState<IPriceProduct>();
 
   const [agrFromOrg, setAgrFromOrg] = useState<ISumAggregation>();
   const [agrToOrg, setAgrToOrg] = useState<ISumAggregation>();
@@ -38,7 +51,15 @@ export function StatisticsPage() {
         };
       })
     );
-  }, [organization]);
+    const fetchData = async () => {
+      const maxPriceProduct = await maxPrice(token);
+      const minPriceProduct = await minPrice(token);
+      setMaxPriceState(maxPriceProduct.data);
+      setMinPriceState(minPriceProduct.data);
+    };
+
+    fetchData();
+  }, [organization, token]);
 
   //обработик кнопки
   const selectHandler = async () => {
@@ -59,6 +80,14 @@ export function StatisticsPage() {
       </h3>
       <hr />
       <div className="form-group mb-6 mt-2 flex flex-wrap">
+        <div className="w-full mb-2">
+          Самый дорогой товар за единицу: {maxPriceState?.productName}, цена{" "}
+          {maxPriceState?.price} рублей
+        </div>
+        <div className="w-full mb-2">
+          Самый дешевый товар за единицу: {minPriceState?.productName}, цена{" "}
+          {minPriceState?.price} рублей
+        </div>
         <span className="self-center">Краткая сводка по организации</span>
         <div className="w-full md:w-[25%] lg:w-[20%] xl:w-[13%]  px-3 mb-6 md:mb-0">
           <Select
@@ -81,13 +110,13 @@ export function StatisticsPage() {
         </div>
       </div>
       {agrFromOrg?.isFill && (
-        <div>
+        <div className="w-full mb-2">
           Отгруженно всего: {agrFromOrg?.totalUnits} единиц товара, на общую
           сумму: {agrFromOrg?.totalSum} рублей
         </div>
       )}
       {agrToOrg?.isFill && (
-        <div>
+        <div className="w-full mb-2">
           Полученно всего: {agrToOrg?.totalUnits} единиц товара, на общую сумму:{" "}
           {agrToOrg?.totalSum} рублей
         </div>

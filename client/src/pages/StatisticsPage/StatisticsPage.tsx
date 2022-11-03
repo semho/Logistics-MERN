@@ -4,6 +4,7 @@ import { getSumArrivalProduct, getSumShipProduct } from "../../redux/api";
 import { useAppSelector } from "../../redux/store";
 import { ButtonStyled } from "../../ui/ButtonStyled";
 import { IList, Select } from "../../ui/Select";
+import { SummarySenderRecipient } from "./SummarySenderRecipient";
 
 interface ISelectOrganization {
   organization_id?: string;
@@ -95,7 +96,7 @@ export function StatisticsPage() {
         <hr className="w-full mb-2" />
         <div className="w-full form-group flex flex-wrap mb-2">
           <span className="self-center text-lg font-semibold">
-            Общая краткая сводка по организации
+            Краткая сводка по организации
           </span>
           <div className="w-full md:w-[25%] lg:w-[20%] xl:w-[13%]  px-3 mb-6 md:mb-0">
             <Select
@@ -129,12 +130,9 @@ export function StatisticsPage() {
             сумму: {agrToOrg?.totalSum} рублей
           </div>
         )}
+        <SummarySenderRecipient listOrganization={listOrganization} />
+
         {/* TODO:Заняться как появиться время */}
-        {/* Краткая сводка получателя и отправителя товара:
-        Это сводка покажет от кого кому сколько единиц товара пришло и на какую сумму
-        Первый селект: Организация отправитель
-        Второй селект: Организация получатель
-        Возможно стоит добавить третий селект с выбором конкретного товара */}
 
         {/* <hr className="w-full mb-2" />
         <div className="w-full form-group flex flex-wrap mb-2">

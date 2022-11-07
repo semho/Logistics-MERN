@@ -314,3 +314,50 @@ export const minPriceProduct = async (req, res) => {
     res.status(500).json({ message: "Что-то пошло не так." });
   }
 };
+/**
+ * получение записей отправленного товара от одной организации к другой
+ * @param {*} req
+ * @param {*} res
+ */
+export const shipArrivalProducts = async (req, res) => {
+  try {
+    try {
+      const { organizationFrom_id, organizationTo_id, product_id } = req.body;
+      const objQuery = {
+        product_id: { $eq: product_id },
+        toOrganization_id: { $eq: organizationTo_id },
+        fromOrganization_id: { $eq: organizationFrom_id },
+      };
+      if (product_id === "1") {
+        delete objQuery.product_id;
+      }
+
+      const result = await Record.aggregate([
+        {
+          $match: objQuery,
+        },
+        {
+          $group: {
+            _id: null,
+            totalSum: { $sum: "$sum" },
+            totalUnits: { $sum: "$units" },
+          },
+        },
+      ]).exec();
+
+      let status = false;
+      if (result.length > 0) status = true;
+
+      const objAnswer = {
+        isFill: status,
+        ...result[0],
+      };
+
+      res.json({ objAnswer });
+    } catch (e) {
+      res.status(400).json({ message: "У пользователя записи не найдены" });
+    }
+  } catch (e) {
+    res.status(500).json({ message: "Что-то пошло не так." });
+  }
+};

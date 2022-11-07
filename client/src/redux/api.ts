@@ -109,3 +109,7 @@ export const minPrice = async (token: string) =>
   axios.get("/api/records/statistics/min-price", {
     headers: { Authorization: `Bearer ${token}` },
   });
+export const shipArrivalProductsOrg = (record: {}, token: string) =>
+  axios.post("/api/records/statistics/ship-arrival-products", record, {
+    headers: { Authorization: `Bearer ${token}` },
+  });

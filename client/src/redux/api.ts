@@ -89,27 +89,27 @@ export const updateApiOrganization = (
 //запросы вне redux
 //получить статистику сумм по органиции, которая отправляет товар
 export const getSumShipProduct = async (id: string, token: string) => {
-  return await axios.get(`/api/records/statistics/ship-product/${id}`, {
+  return await axios.get(`/api/statistics/ship-product/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 //получить статистику сумм по органиции, которая получает товар
 export const getSumArrivalProduct = async (id: string, token: string) => {
-  return await axios.get(`/api/records/statistics/arrival-product/${id}`, {
+  return await axios.get(`/api/statistics/arrival-product/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
 //маскимальная цена товара
 export const maxPrice = async (token: string) =>
-  axios.get("/api/records/statistics/max-price", {
+  axios.get("/api/statistics/max-price", {
     headers: { Authorization: `Bearer ${token}` },
   });
 //минимальная цена товара
 export const minPrice = async (token: string) =>
-  axios.get("/api/records/statistics/min-price", {
+  axios.get("/api/statistics/min-price", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export const shipArrivalProductsOrg = (record: {}, token: string) =>
-  axios.post("/api/records/statistics/ship-arrival-products", record, {
+  axios.post("/api/statistics/ship-arrival-products", record, {
     headers: { Authorization: `Bearer ${token}` },
   });

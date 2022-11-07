@@ -7,6 +7,7 @@ import recordRouter from "./routes/record.routes.js";
 import settingsOrganizationRouter from "./routes/settings.organization.routes.js";
 import settingsProductRouter from "./routes/settings.product.routes.js";
 import settingsForwarderRouter from "./routes/settings.forwarder.routes.js";
+import statsRouter from "./routes/statistics.routes.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use("/api/records", recordRouter);
 app.use("/api/settings/organization", settingsOrganizationRouter);
 app.use("/api/settings/product", settingsProductRouter);
 app.use("/api/settings/forwarder", settingsForwarderRouter);
+app.use("/api/statistics", statsRouter);
 
 const PORT = config.port || 5000;
 

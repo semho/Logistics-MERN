@@ -1,4 +1,6 @@
+import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
+import { useShowError } from "../../../hooks/useShowError";
 import { getSumArrivalProduct, getSumShipProduct } from "../../../redux/api";
 import { useAppSelector } from "../../../redux/store";
 import { ButtonStyled } from "../../../ui/ButtonStyled";
@@ -24,6 +26,7 @@ export function SummaryBriefOrganization() {
   const [agrToOrg, setAgrToOrg] = useState<ISumAggregation>();
 
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<unknown>("");
 
   //получаем организации
   const organization = useAppSelector(
@@ -45,16 +48,23 @@ export function SummaryBriefOrganization() {
   //обработчик кнопки
   const selectHandler = async () => {
     setLoading(true);
-    const { organization_id }: ISelectOrganization = selectOrganization;
-    if (organization_id) {
-      const resShip = await getSumShipProduct(organization_id, token);
-      const resArrival = await getSumArrivalProduct(organization_id, token);
+    try {
+      setErrorMessage("");
+      const { organization_id }: ISelectOrganization = selectOrganization;
+      if (organization_id) {
+        const resShip = await getSumShipProduct(organization_id, token);
+        const resArrival = await getSumArrivalProduct(organization_id, token);
 
-      setAgrFromOrg(resShip.data.objAnswer);
-      setAgrToOrg(resArrival.data.objAnswer);
+        setAgrFromOrg(resShip.data.objAnswer);
+        setAgrToOrg(resArrival.data.objAnswer);
+      }
+    } catch (error) {
+      setErrorMessage((error as AxiosError).response?.data);
     }
     setLoading(false);
   };
+  //показываем ошибки, если есть
+  useShowError(errorMessage);
 
   return (
     <>

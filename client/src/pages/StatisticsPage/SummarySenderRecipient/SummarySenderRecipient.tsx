@@ -1,4 +1,6 @@
+import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
+import { useShowError } from "../../../hooks/useShowError";
 import { shipArrivalProductsOrg } from "../../../redux/api";
 import { useAppSelector } from "../../../redux/store";
 import { ButtonStyled } from "../../../ui/ButtonStyled";
@@ -23,14 +25,15 @@ export function SummarySenderRecipient() {
   const [selectFromOrg, setSelectFromOrg] = useState({});
   const [selectToOrg, setSelectToOrg] = useState({});
   const [selectProduct, setSelectProduct] = useState({});
-  const [selectFromOrgId, setSelectFromOrgId] = useState({ id: "" });
-  const [selectToOrgId, setSelectToOrgId] = useState({ id: "" });
-  const [selectProductId, setSelectProductId] = useState({ id: "" });
+  const [selectedFromOrg, setSelectedFromOrg] = useState(false);
+  const [selectedToOrg, setSelectedToOrg] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(false);
 
   const [resultAnswerRequest, setResultAnswerRequest] =
     useState<ISumAggregation>();
 
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<unknown>("");
   //получаем продукты из хранилища
   const product = useAppSelector(
     (state) => state.settings.statusSettings.allSettings.settingsProduct
@@ -42,7 +45,6 @@ export function SummarySenderRecipient() {
   );
 
   const token = useAppSelector((state) => state.auth.statusUser.user.token);
-
   //первый эффект преобразовывает массивы объектов
   useEffect(() => {
     setListOrganization(
@@ -64,33 +66,40 @@ export function SummarySenderRecipient() {
     //а так же записываем значения возвращаемые из селекта
     const { organizationFrom_id }: ISelect = selectFromOrg;
     if (organizationFrom_id) {
-      setSelectFromOrgId({ id: organizationFrom_id });
+      setSelectedFromOrg(true);
     }
     const { organizationTo_id }: ISelect = selectToOrg;
     if (organizationTo_id) {
-      setSelectToOrgId({ id: organizationTo_id });
+      setSelectedToOrg(true);
     }
     const { product_id }: ISelect = selectProduct;
     if (product_id) {
-      setSelectProductId({ id: product_id });
+      setSelectedProduct(true);
     }
   }, [organization, product, selectFromOrg, selectProduct, selectToOrg]);
   //второй эффект добавляет категорию "Все товары" в селект, а затем сортирует массив товаров в обратном порядке
   useEffect(() => {
-    listProduct?.push({ id: "1", name: "Все товары" });
+    listProduct?.push({ id: "AllProducts", name: "Все товары" });
     setListProduct(listProduct?.reverse());
   }, [listProduct]);
 
   //обработчик кнопки
   const selectHandler = async () => {
     setLoading(true);
-    const res = await shipArrivalProductsOrg(
-      { ...selectFromOrg, ...selectToOrg, ...selectProduct },
-      token
-    );
-    setResultAnswerRequest(res.data.objAnswer);
+    try {
+      setErrorMessage("");
+      const res = await shipArrivalProductsOrg(
+        { ...selectFromOrg, ...selectToOrg, ...selectProduct },
+        token
+      );
+      setResultAnswerRequest(res.data.objAnswer);
+    } catch (error) {
+      setErrorMessage((error as AxiosError).response?.data);
+    }
     setLoading(false);
   };
+  //показываем ошибки, если есть
+  useShowError(errorMessage);
 
   return (
     <>
@@ -109,7 +118,7 @@ export function SummarySenderRecipient() {
               title="Выбрать"
             />
           </div>
-          {selectFromOrgId.id && (
+          {selectedFromOrg && (
             <div className="w-full md:w-[30%] lg:w-[30%] xl:w-[20%] px-3 mb-6 md:mb-0">
               <span className="self-center text-lg ">Выбрать получателя</span>
               <Select
@@ -121,7 +130,7 @@ export function SummarySenderRecipient() {
               />
             </div>
           )}
-          {selectToOrgId.id && (
+          {selectedToOrg && (
             <div className="w-full md:w-[30%] lg:w-[30%] xl:w-[20%] px-3 mb-6 md:mb-0">
               <span className="self-center text-lg ">Выбрать Товар</span>
               <Select
@@ -133,7 +142,7 @@ export function SummarySenderRecipient() {
               />
             </div>
           )}
-          {selectProductId.id && (
+          {selectedProduct && (
             <div className="w-full sm:w-full sm:pt-2 md:pt-0 md:w-1/12 lg:w-1/12 lg:pt-0 px-3 mb-6 md:mb-0 md:relative">
               <ButtonStyled
                 title="Показать"

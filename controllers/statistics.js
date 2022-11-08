@@ -148,7 +148,7 @@ export const shipArrivalProducts = async (req, res) => {
         toOrganization_id: { $eq: organizationTo_id },
         fromOrganization_id: { $eq: organizationFrom_id },
       };
-      if (product_id === "1") {
+      if (product_id === "AllProducts") {
         delete objQuery.product_id;
       }
 

@@ -23,6 +23,8 @@ export function SummaryBriefOrganization() {
   const [agrFromOrg, setAgrFromOrg] = useState<ISumAggregation>();
   const [agrToOrg, setAgrToOrg] = useState<ISumAggregation>();
 
+  const [loading, setLoading] = useState(false);
+
   //получаем организации
   const organization = useAppSelector(
     (state) => state.settings.statusSettings.allSettings.settingsOrganization
@@ -42,6 +44,7 @@ export function SummaryBriefOrganization() {
 
   //обработчик кнопки
   const selectHandler = async () => {
+    setLoading(true);
     const { organization_id }: ISelectOrganization = selectOrganization;
     if (organization_id) {
       const resShip = await getSumShipProduct(organization_id, token);
@@ -50,6 +53,7 @@ export function SummaryBriefOrganization() {
       setAgrFromOrg(resShip.data.objAnswer);
       setAgrToOrg(resArrival.data.objAnswer);
     }
+    setLoading(false);
   };
 
   return (
@@ -78,18 +82,19 @@ export function SummaryBriefOrganization() {
           />
         </div>
       </div>
-      {agrFromOrg?.isFill && (
+      {!loading && agrFromOrg?.isFill && (
         <div className="w-full mb-2">
           Отгруженно всего: {agrFromOrg?.totalUnits} единиц товара, на общую
           сумму: {agrFromOrg?.totalSum} рублей
         </div>
       )}
-      {agrToOrg?.isFill && (
+      {!loading && agrToOrg?.isFill && (
         <div className="w-full mb-2">
           Полученно всего: {agrToOrg?.totalUnits} единиц товара, на общую сумму:{" "}
           {agrToOrg?.totalSum} рублей
         </div>
       )}
+      {loading && <div>Загрузка...</div>}
     </>
   );
 }

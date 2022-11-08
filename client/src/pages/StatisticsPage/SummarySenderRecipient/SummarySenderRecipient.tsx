@@ -4,16 +4,8 @@ import { useAppSelector } from "../../../redux/store";
 import { ButtonStyled } from "../../../ui/ButtonStyled";
 import { IList, Select } from "../../../ui/Select";
 
-interface ISelectFromOrganization {
-  organizationFrom_id?: string;
-}
-
-interface ISelectToOrganization {
-  organizationTo_id?: string;
-}
-
-interface ISelectProduct {
-  product_id?: string;
+interface ISelect {
+  [index: string]: string;
 }
 
 interface ISumAggregation {
@@ -37,6 +29,8 @@ export function SummarySenderRecipient() {
 
   const [resultAnswerRequest, setResultAnswerRequest] =
     useState<ISumAggregation>();
+
+  const [loading, setLoading] = useState(false);
   //получаем продукты из хранилища
   const product = useAppSelector(
     (state) => state.settings.statusSettings.allSettings.settingsProduct
@@ -68,15 +62,15 @@ export function SummarySenderRecipient() {
       })
     );
     //а так же записываем значения возвращаемые из селекта
-    const { organizationFrom_id }: ISelectFromOrganization = selectFromOrg;
+    const { organizationFrom_id }: ISelect = selectFromOrg;
     if (organizationFrom_id) {
       setSelectFromOrgId({ id: organizationFrom_id });
     }
-    const { organizationTo_id }: ISelectToOrganization = selectToOrg;
+    const { organizationTo_id }: ISelect = selectToOrg;
     if (organizationTo_id) {
       setSelectToOrgId({ id: organizationTo_id });
     }
-    const { product_id }: ISelectProduct = selectProduct;
+    const { product_id }: ISelect = selectProduct;
     if (product_id) {
       setSelectProductId({ id: product_id });
     }
@@ -89,11 +83,13 @@ export function SummarySenderRecipient() {
 
   //обработчик кнопки
   const selectHandler = async () => {
+    setLoading(true);
     const res = await shipArrivalProductsOrg(
       { ...selectFromOrg, ...selectToOrg, ...selectProduct },
       token
     );
     setResultAnswerRequest(res.data.objAnswer);
+    setLoading(false);
   };
 
   return (
@@ -150,15 +146,16 @@ export function SummarySenderRecipient() {
             </div>
           )}
         </div>
-        {resultAnswerRequest?.isFill && (
+        {!loading && resultAnswerRequest?.isFill && (
           <div className="w-full mb-2">
             Отгруженно всего: {resultAnswerRequest?.totalUnits} единиц товара,
             на общую сумму: {resultAnswerRequest?.totalSum} рублей
           </div>
         )}
-        {resultAnswerRequest?.isFill === false && (
+        {!loading && resultAnswerRequest?.isFill === false && (
           <div className="w-full mb-2">Отгрузка еще не состоялась</div>
         )}
+        {loading && <div>Загрузка...</div>}
       </div>
     </>
   );

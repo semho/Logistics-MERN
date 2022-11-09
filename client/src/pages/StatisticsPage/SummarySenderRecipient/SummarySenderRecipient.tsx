@@ -4,7 +4,9 @@ import { useShowError } from "../../../hooks/useShowError";
 import { shipArrivalProductsOrg } from "../../../redux/api";
 import { useAppSelector } from "../../../redux/store";
 import { ButtonStyled } from "../../../ui/ButtonStyled";
+import { InputStyled } from "../../../ui/InputStyled";
 import { IList, Select } from "../../../ui/Select";
+import { formatDate } from "../../../utils/formatDate";
 
 interface ISelect {
   [index: string]: string;
@@ -34,6 +36,26 @@ export function SummarySenderRecipient() {
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<unknown>("");
+
+  //стейт под даты
+  const dateNow = new Date();
+  const today = formatDate(String(new Date()), false, true, true);
+  const dateYesterday = dateNow.setDate(dateNow.getDate() - 1);
+  const yesterday = formatDate(
+    String(new Date(dateYesterday)),
+    false,
+    true,
+    true
+  );
+  const firstDayYear = formatDate(
+    String(new Date(dateNow.getFullYear(), 0, 1)),
+    false,
+    true,
+    true
+  );
+  const [dateStart, setDateStart] = useState(firstDayYear);
+  const [dateEnd, setDateEnd] = useState(today);
+
   //получаем продукты из хранилища
   const product = useAppSelector(
     (state) => state.settings.statusSettings.allSettings.settingsProduct
@@ -88,18 +110,36 @@ export function SummarySenderRecipient() {
     setLoading(true);
     try {
       setErrorMessage("");
+
+      if (Date.parse(dateStart) / 1000 >= Date.parse(dateEnd) / 1000) {
+        throw new AxiosError("Начальная дата должна быть меньше конечной");
+      }
       const res = await shipArrivalProductsOrg(
         { ...selectFromOrg, ...selectToOrg, ...selectProduct },
         token
       );
       setResultAnswerRequest(res.data.objAnswer);
     } catch (error) {
-      setErrorMessage((error as AxiosError).response?.data);
+      const axiosError = error as AxiosError;
+      if (axiosError.hasOwnProperty("message")) {
+        setErrorMessage(axiosError);
+      } else {
+        setErrorMessage(axiosError.response?.data);
+      }
     }
     setLoading(false);
   };
   //показываем ошибки, если есть
   useShowError(errorMessage);
+
+  //запись начальной даты
+  const changeStartDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDateStart(event.target.value);
+  };
+  //запись конечной даты
+  const changeEndDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDateEnd(event.target.value);
+  };
 
   return (
     <>
@@ -142,6 +182,32 @@ export function SummarySenderRecipient() {
               />
             </div>
           )}
+          <div className="w-full md:w-[20%] lg:w-[20%] xl:w-[12%] px-3 mb-6 md:mb-0">
+            <span className="self-center text-lg ">От</span>
+            <InputStyled
+              colorFocus="sky"
+              type="date"
+              name="start-date"
+              onChange={changeStartDate}
+              id="start-date"
+              min="2021-01-01"
+              max={yesterday}
+              value={firstDayYear}
+            />
+          </div>
+          <div className="w-full md:w-[20%] lg:w-[20%] xl:w-[12%] px-3 mb-6 md:mb-0">
+            <span className="self-center text-lg ">До</span>
+            <InputStyled
+              colorFocus="sky"
+              type="date"
+              name="end-date"
+              onChange={changeEndDate}
+              id="end-date"
+              min="2021-01-01"
+              max={today}
+              value={today}
+            />
+          </div>
           {selectedProduct && (
             <div className="w-full sm:w-full sm:pt-2 md:pt-0 md:w-1/12 lg:w-1/12 lg:pt-0 px-3 mb-6 md:mb-0 md:relative">
               <ButtonStyled

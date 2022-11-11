@@ -45,3 +45,15 @@ export function formatDate(
 
   return `${dd}-${mm}-${yy}`;
 }
+
+/**
+ * Преобразование короткой даты в полную
+ * @param date - строка короткой даты вида гггг-мм-дд
+ * @param separator - сепаратор по котоому разбиваем на массив
+ * @returns - полную дату
+ */
+export function parserDate(date: string, separator = "-") {
+  const arr = date.split(separator);
+
+  return new Date(Number(arr[0]), Number(arr[1]) - 1, Number(arr[2]) + 1);
+}

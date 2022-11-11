@@ -143,11 +143,13 @@ export const shipArrivalProducts = async (req, res) => {
   try {
     try {
       const { organizationFrom_id, organizationTo_id, product_id } = req.body;
+
       const objQuery = {
         product_id: { $eq: product_id },
         toOrganization_id: { $eq: organizationTo_id },
         fromOrganization_id: { $eq: organizationFrom_id },
       };
+
       if (product_id === "AllProducts") {
         delete objQuery.product_id;
       }
@@ -171,6 +173,64 @@ export const shipArrivalProducts = async (req, res) => {
       const objAnswer = {
         isFill: status,
         ...result[0],
+      };
+
+      res.json({ objAnswer });
+    } catch (e) {
+      res.status(400).json({ message: "У пользователя записи не найдены" });
+    }
+  } catch (e) {
+    res.status(500).json({ message: "Что-то пошло не так." });
+  }
+};
+
+/**
+ * получение записей отправленного товара от одной организации к другой за диапазон дат
+ * @param {*} req
+ * @param {*} res
+ */
+export const shipArrivalProductsDateInterval = async (req, res) => {
+  try {
+    try {
+      const {
+        organizationFrom_id,
+        organizationTo_id,
+        product_id,
+        dateStart,
+        dateEnd,
+      } = req.body;
+
+      const objQuery = {
+        date: {
+          $gte: dateStart,
+          $lt: dateEnd,
+        },
+
+        fromOrganization_id: organizationFrom_id,
+        toOrganization_id: organizationTo_id,
+        product_id: product_id,
+      };
+
+      if (product_id === "AllProducts") {
+        delete objQuery.product_id;
+      }
+
+      const resultFind = await Record.find(objQuery, {
+        units: 1,
+        sum: 1,
+        _id: 0,
+      }).exec();
+
+      const totalUnits = resultFind.reduce((acc, cur) => acc + cur.units, 0);
+      const totalSum = resultFind.reduce((acc, cur) => acc + cur.sum, 0);
+
+      let status = false;
+      if (totalUnits > 0 && totalSum > 0) status = true;
+
+      const objAnswer = {
+        isFill: status,
+        totalUnits: totalUnits,
+        totalSum: totalSum,
       };
 
       res.json({ objAnswer });

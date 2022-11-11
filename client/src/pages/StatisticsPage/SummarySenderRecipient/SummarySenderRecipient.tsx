@@ -1,7 +1,10 @@
 import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { useShowError } from "../../../hooks/useShowError";
-import { shipArrivalProductsOrg } from "../../../redux/api";
+import {
+  shipArrivalProductsDateInterval,
+  shipArrivalProductsOrg,
+} from "../../../redux/api";
 import { useAppSelector } from "../../../redux/store";
 import { ButtonStyled } from "../../../ui/ButtonStyled";
 import { InputStyled } from "../../../ui/InputStyled";
@@ -55,6 +58,9 @@ export function SummarySenderRecipient() {
   );
   const [dateStart, setDateStart] = useState(firstDayYear);
   const [dateEnd, setDateEnd] = useState(today);
+
+  //стейт под радио
+  const [currentRadioValue, setCurrentRadioValue] = useState("allDates");
 
   //получаем продукты из хранилища
   const product = useAppSelector(
@@ -110,21 +116,44 @@ export function SummarySenderRecipient() {
     setLoading(true);
     try {
       setErrorMessage("");
-
-      if (Date.parse(dateStart) / 1000 >= Date.parse(dateEnd) / 1000) {
-        throw new AxiosError("Начальная дата должна быть меньше конечной");
+      if (Date.parse(dateStart) / 1000 < Date.parse(firstDayYear) / 1000) {
+        throw new AxiosError(
+          "Начальная дата должна быть больше минимального значения даты"
+        );
       }
-      const res = await shipArrivalProductsOrg(
-        { ...selectFromOrg, ...selectToOrg, ...selectProduct },
-        token
-      );
-      setResultAnswerRequest(res.data.objAnswer);
+      if (Date.parse(dateStart) / 1000 >= Date.parse(dateEnd) / 1000) {
+        throw new AxiosError("Конечная дата должна быть больше начальной");
+      }
+
+      if (currentRadioValue === "allDates") {
+        const res = await shipArrivalProductsOrg(
+          {
+            ...selectFromOrg,
+            ...selectToOrg,
+            ...selectProduct,
+          },
+          token
+        );
+        setResultAnswerRequest(res.data.objAnswer);
+      } else {
+        const res = await shipArrivalProductsDateInterval(
+          {
+            ...selectFromOrg,
+            ...selectToOrg,
+            ...selectProduct,
+            dateStart,
+            dateEnd,
+          },
+          token
+        );
+        setResultAnswerRequest(res.data.objAnswer);
+      }
     } catch (error) {
       const axiosError = error as AxiosError;
-      if (axiosError.hasOwnProperty("message")) {
-        setErrorMessage(axiosError);
-      } else {
+      if (!!axiosError.response?.data) {
         setErrorMessage(axiosError.response?.data);
+      } else {
+        setErrorMessage(axiosError);
       }
     }
     setLoading(false);
@@ -140,6 +169,10 @@ export function SummarySenderRecipient() {
   const changeEndDate = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDateEnd(event.target.value);
   };
+  //обработка состояния радио
+  const handleChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentRadioValue(event.target.value);
+  };
 
   return (
     <>
@@ -147,7 +180,73 @@ export function SummarySenderRecipient() {
         <div className="self-center text-lg font-semibold">
           Cводка о получателе и отправителе товара
         </div>
+        <div className="flex justify-start mt-2 mb-2">
+          <div className="form-check form-check-inline mr-2">
+            <input
+              className="form-check-input form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-sky-400 checked:border-sky-400 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+              type="radio"
+              name="allDates"
+              id="inlineRadio1"
+              value="allDates"
+              checked={currentRadioValue === "allDates"}
+              onChange={handleChangeRadio}
+            />
+            <label
+              className="form-check-label inline-block text-gray-800"
+              htmlFor="inlineRadio1"
+            >
+              За все время
+            </label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-sky-400 checked:border-sky-400 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+              type="radio"
+              name="selectDate"
+              id="inlineRadio2"
+              value="selectDate"
+              checked={currentRadioValue === "selectDate"}
+              onChange={handleChangeRadio}
+            />
+            <label
+              className="form-check-label inline-block text-gray-800"
+              htmlFor="inlineRadio2"
+            >
+              Выбрать дату
+            </label>
+          </div>
+        </div>
         <div className="flex mb-2">
+          {currentRadioValue === "selectDate" && (
+            <div className="w-full md:w-[20%] lg:w-[20%] xl:w-[12%] px-3 mb-6 md:mb-0">
+              <span className="self-center text-lg ">От</span>
+              <InputStyled
+                colorFocus="sky"
+                type="date"
+                name="start-date"
+                onChange={changeStartDate}
+                id="start-date"
+                min="2021-01-01"
+                max={yesterday}
+                value={firstDayYear}
+              />
+            </div>
+          )}
+          {currentRadioValue === "selectDate" && (
+            <div className="w-full md:w-[20%] lg:w-[20%] xl:w-[12%] px-3 mb-6 md:mb-0">
+              <span className="self-center text-lg ">До</span>
+              <InputStyled
+                colorFocus="sky"
+                type="date"
+                name="end-date"
+                onChange={changeEndDate}
+                id="end-date"
+                min="2021-01-01"
+                max={today}
+                value={today}
+              />
+            </div>
+          )}
           <div className="w-full md:w-[30%] lg:w-[30%] xl:w-[20%] px-3 mb-6 md:mb-0">
             <span className="self-center text-lg ">Выбрать отправителя</span>
             <Select
@@ -182,32 +281,6 @@ export function SummarySenderRecipient() {
               />
             </div>
           )}
-          <div className="w-full md:w-[20%] lg:w-[20%] xl:w-[12%] px-3 mb-6 md:mb-0">
-            <span className="self-center text-lg ">От</span>
-            <InputStyled
-              colorFocus="sky"
-              type="date"
-              name="start-date"
-              onChange={changeStartDate}
-              id="start-date"
-              min="2021-01-01"
-              max={yesterday}
-              value={firstDayYear}
-            />
-          </div>
-          <div className="w-full md:w-[20%] lg:w-[20%] xl:w-[12%] px-3 mb-6 md:mb-0">
-            <span className="self-center text-lg ">До</span>
-            <InputStyled
-              colorFocus="sky"
-              type="date"
-              name="end-date"
-              onChange={changeEndDate}
-              id="end-date"
-              min="2021-01-01"
-              max={today}
-              value={today}
-            />
-          </div>
           {selectedProduct && (
             <div className="w-full sm:w-full sm:pt-2 md:pt-0 md:w-1/12 lg:w-1/12 lg:pt-0 px-3 mb-6 md:mb-0 md:relative">
               <ButtonStyled
@@ -224,7 +297,8 @@ export function SummarySenderRecipient() {
         {!loading && resultAnswerRequest?.isFill && (
           <div className="w-full mb-2">
             Отгруженно всего: {resultAnswerRequest?.totalUnits} единиц товара,
-            на общую сумму: {resultAnswerRequest?.totalSum} рублей
+            за период с {dateStart} по {dateEnd}, на общую сумму:{" "}
+            {resultAnswerRequest?.totalSum} рублей
           </div>
         )}
         {!loading && resultAnswerRequest?.isFill === false && (

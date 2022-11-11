@@ -109,7 +109,13 @@ export const minPrice = async (token: string) =>
   axios.get("/api/statistics/min-price", {
     headers: { Authorization: `Bearer ${token}` },
   });
+//получаем товары для сводки
 export const shipArrivalProductsOrg = (record: {}, token: string) =>
   axios.post("/api/statistics/ship-arrival-products", record, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+//получаем товары для сводки в диапазоне дат
+export const shipArrivalProductsDateInterval = (record: {}, token: string) =>
+  axios.post("/api/statistics/ship-arrival-products-interval", record, {
     headers: { Authorization: `Bearer ${token}` },
   });

@@ -53,7 +53,7 @@ export function Select({
         </div>
       </div>
       <ul
-        className={`bg-white w-full absolute border border-solid border-sky-500 rounded ${
+        className={`bg-white z-20 w-full absolute border border-solid border-sky-500 rounded ${
           open ? "block" : "hidden"
         }`}
       >

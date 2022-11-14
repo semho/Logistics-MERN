@@ -203,7 +203,7 @@ export const shipArrivalProductsDateInterval = async (req, res) => {
       const objQuery = {
         date: {
           $gte: dateStart,
-          $lt: dateEnd,
+          $lte: dateEnd,
         },
 
         fromOrganization_id: organizationFrom_id,

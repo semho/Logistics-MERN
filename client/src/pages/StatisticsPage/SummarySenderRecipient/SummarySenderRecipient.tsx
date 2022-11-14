@@ -172,6 +172,8 @@ export function SummarySenderRecipient() {
   //обработка состояния радио
   const handleChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentRadioValue(event.target.value);
+    setDateStart(firstDayYear);
+    setDateEnd(today);
   };
 
   return (

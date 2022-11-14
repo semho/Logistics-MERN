@@ -10,6 +10,11 @@ import {
 } from "../../redux/features/recordSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { dataConversionRecord, namesTableRecord } from "../../models/Record";
+import {
+  getForwarders,
+  getOrganizations,
+  getProducts,
+} from "../../redux/features/settingsSlice";
 
 export function ListRecords() {
   const {
@@ -20,11 +25,14 @@ export function ListRecords() {
   const dispatch = useAppDispatch();
   const recordsDispatch = useCallback(() => {
     dispatch(getRecords());
+    dispatch(getOrganizations());
+    dispatch(getProducts());
+    dispatch(getForwarders());
   }, [dispatch]);
   //вызываем этот колбэк в redux после монтирования
   useEffect(() => {
     recordsDispatch();
-  }, [recordsDispatch]);
+  }, [dispatch, recordsDispatch]);
   //показываем ошибки, если есть
   useShowError(error);
 

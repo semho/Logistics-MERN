@@ -40,24 +40,23 @@ Api.interceptors.response.use(
   },
   async error => {
       const app: IApp =  JSON.parse(localStorage.getItem('AppLogistics') || "{}");
-      console.log(error.config)
       const originalRequest = error.config;
       const refreshToken = app?.auth.statusUser.user.refreshToken;
 
       if (
           refreshToken &&
-          error.response.status === 403 &&
+          error.response.status === 401 &&
           !originalRequest._retry
       ) {
           originalRequest._retry = true;
-          console.log('ok')
-          try {
-            //TODO: уходит в бесконечный цикл
-            //const rs = await getRefreshToken(refreshToken);
-            //app.auth.statusUser.user.token = token;
-            //localStorage.setItem('AppLogistics', JSON.stringify(app));
 
-            //Api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          try {
+            const rs = await getRefreshToken(refreshToken);
+            const { token } = rs.data;
+            app.auth.statusUser.user.token = token;
+            localStorage.setItem('AppLogistics', JSON.stringify(app));
+
+            Api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
             return Api(originalRequest);
           } catch (_error) {
@@ -69,7 +68,7 @@ Api.interceptors.response.use(
             return Promise.reject(_error);
           }
       }
-      // console.log((error as AxiosError).response?.data);
+
       return Promise.reject((error as AxiosError).response?.data);
 
       // return Promise.reject(error.response || error.message);

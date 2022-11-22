@@ -85,7 +85,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    removeUser: (state, action: PayloadAction<string>) => {
+    removeUser: (state: IStatusUser, action: PayloadAction<string>) => {
       state.statusUser.user = { token: "", userId: "", refreshToken: "" };
     },
   },

@@ -20,7 +20,7 @@ export const auth = (req, res, next) => {
       req.user = decoded;
       next();
     } catch (e) {
-      res.status(403).json({
+      res.status(401).json({
         message: "Срок действия токена авторизации истек",
         jwtSessionClose: "true",
       });

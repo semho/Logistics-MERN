@@ -10,6 +10,7 @@ export interface IStatusUser {
     user: {
       token: string;
       userId: string;
+      refreshToken: string;
     };
     error: unknown;
     loading: boolean;
@@ -23,6 +24,7 @@ const initialState: IStatusUser = {
         user: {
           token: "",
           userId: "",
+          refreshToken: "",
         },
         error: "",
         loading: false,
@@ -84,7 +86,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     removeUser: (state, action: PayloadAction<string>) => {
-      state.statusUser.user = { token: "", userId: "" };
+      state.statusUser.user = { token: "", userId: "", refreshToken: "" };
     },
   },
   extraReducers: (builder) => {

@@ -4,5 +4,5 @@
   "secretJwt": "semho-mern",
   "baseUrl": "http://localhost:5000",
   "jwtExpiration": 60,
-  "jwtRefreshExpiration": 180
+  "jwtRefreshExpiration": 120
 }

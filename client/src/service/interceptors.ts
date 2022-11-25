@@ -2,7 +2,6 @@ import { AnyAction, EnhancedStore, MiddlewareArray } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { ThunkMiddleware } from "redux-thunk";
-// import config from "../../../config/default.json";
 import {
   IStatusUser,
   removeUser,
@@ -12,7 +11,6 @@ import { IStoreListRecords } from "../redux/features/recordSlice";
 import { IStoreSettings } from "../redux/features/settingsSlice";
 
 export const Api = axios.create({
-  // baseURL: config.baseUrl + "/api/",
   baseURL: "/api/",
   headers: {
     Accept: "application/json",

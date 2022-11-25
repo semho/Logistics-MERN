@@ -34,7 +34,7 @@ export function InputStyled({
     <StyleInput
       onKeyDown={onKeyDown}
       onChange={onChange}
-      defaultValue={value}
+      value={value}
       type={type}
       name={name}
       id={id}

@@ -1,8 +1,13 @@
 import { AnyAction, EnhancedStore, MiddlewareArray } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
+import { toast } from "react-toastify";
 import { ThunkMiddleware } from "redux-thunk";
 // import config from "../../../config/default.json";
-import { IStatusUser, removeUser } from "../redux/features/authSlice";
+import {
+  IStatusUser,
+  removeUser,
+  replaceToken,
+} from "../redux/features/authSlice";
 import { IStoreListRecords } from "../redux/features/recordSlice";
 import { IStoreSettings } from "../redux/features/settingsSlice";
 
@@ -34,10 +39,8 @@ export const setup = (
 ) => {
   Api.interceptors.request.use(
     (config) => {
-      const app: IApp = JSON.parse(
-        localStorage.getItem("AppLogistics") || "{}"
-      );
-      const token = app?.auth.statusUser.user.token;
+      //достаем из redux
+      const token = store.getState().auth.statusUser.user.token;
       if (token) {
         config.headers = config.headers ?? {};
         config.headers.Authorization = `Bearer ${token}`;
@@ -55,12 +58,9 @@ export const setup = (
       return response;
     },
     async (error) => {
-      const app: IApp = JSON.parse(
-        localStorage.getItem("AppLogistics") || "{}"
-      );
       const originalRequest = error.config;
-      const refreshToken = app?.auth.statusUser.user.refreshToken;
-
+      //достаем из redux
+      const refreshToken = store.getState().auth.statusUser.user.refreshToken;
       if (
         refreshToken &&
         error.response.status === 401 &&
@@ -71,8 +71,8 @@ export const setup = (
         try {
           const rs = await getRefreshToken(refreshToken);
           const { token } = rs.data;
-          app.auth.statusUser.user.token = token;
-          localStorage.setItem("AppLogistics", JSON.stringify(app));
+          //перезаписать токен в сторе
+          dispatch(replaceToken(token));
 
           Api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -91,12 +91,18 @@ export const setup = (
 
       if (error.response.status === 403 && error.response.data) {
         dispatch(removeUser(""));
-        console.log("403");
+        toast.error(error.response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       }
 
       return Promise.reject((error as AxiosError).response?.data);
-
-      // return Promise.reject(error.response || error.message);
     }
   );
 };

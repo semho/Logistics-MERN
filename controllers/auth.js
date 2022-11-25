@@ -90,14 +90,16 @@ export const refreshToken = async (req, res) => {
   const { refreshToken: requestToken } = req.body;
 
   if (requestToken == null) {
-    return res.status(403).json({ message: "Refresh Token is required!" });
+    return res.status(403).json({ message: "Refresh Token не найден!" });
   }
 
   try {
     let refreshToken = await RefreshToken.findOne({ token: requestToken });
 
     if (!refreshToken) {
-      res.status(403).json({ message: "Refresh token is not in database!" });
+      res
+        .status(403)
+        .json({ message: "Refresh token не найден в базе данных!" });
       return;
     }
 
@@ -107,7 +109,8 @@ export const refreshToken = async (req, res) => {
       }).exec();
 
       res.status(403).json({
-        message: "Refresh token was expired. Please make a new signin request",
+        message:
+          "Refresh token был просрочен. Пожалуйста, авторизуйтесь снова.",
       });
       return;
     }

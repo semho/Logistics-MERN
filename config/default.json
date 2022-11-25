@@ -3,6 +3,6 @@
   "mongoUri": "mongodb+srv://semho:chvQuaad0husHkv0@cluster0.mo1bcuh.mongodb.net/app?retryWrites=true&w=majority",
   "secretJwt": "semho-mern",
   "baseUrl": "http://localhost:5000",
-  "jwtExpiration": 60,
-  "jwtRefreshExpiration": 120
+  "jwtExpiration": 86400,
+  "jwtRefreshExpiration": 604800
 }

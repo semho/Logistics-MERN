@@ -7,14 +7,16 @@ import { RootState } from "../store";
 
 export interface IStatusUser {
   statusUser: {
-    user: {
-      token: string;
-      userId: string;
-      refreshToken: string;
-    };
+    user: IAppUser;
     error: unknown;
     loading: boolean;
   };
+}
+
+interface IAppUser {
+  token: string;
+  userId: string;
+  refreshToken: string;
 }
 
 const initialState: IStatusUser = {
@@ -88,6 +90,9 @@ const authSlice = createSlice({
     removeUser: (state: IStatusUser, action: PayloadAction<string>) => {
       state.statusUser.user = { token: "", userId: "", refreshToken: "" };
     },
+    replaceToken: (state: any, action: PayloadAction<string>) => {
+      state.statusUser.user.token = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, setLoad);
@@ -99,7 +104,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { removeUser } = authSlice.actions;
+export const { removeUser, replaceToken } = authSlice.actions;
 
 export const dataUser = (state: RootState) => state.auth;
 

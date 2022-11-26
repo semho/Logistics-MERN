@@ -1,9 +1,8 @@
 {
-  "port": 5000,
-  "portProduction": 80,
+  "port": 80,
   "mongoUri": "mongodb+srv://semho:chvQuaad0husHkv0@cluster0.mo1bcuh.mongodb.net/app?retryWrites=true&w=majority",
   "secretJwt": "semho-mern",
-  "baseUrl": "http://localhost:5000",
+  "baseUrl": "http://domen.ru",
   "jwtExpiration": 86400,
   "jwtRefreshExpiration": 604800
 }

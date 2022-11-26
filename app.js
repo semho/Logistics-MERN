@@ -1,6 +1,9 @@
 import config from "./config/default.json" assert { type: "json" };
 import express from "express";
 import mongoose from "mongoose";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 import authRouter from "./routes/auth.routes.js";
 import recordRouter from "./routes/record.routes.js";
@@ -20,7 +23,20 @@ app.use("/api/settings/product", settingsProductRouter);
 app.use("/api/settings/forwarder", settingsForwarderRouter);
 app.use("/api/statistics", statsRouter);
 
-const PORT = config.port || 5000;
+let PORT = config.port || 5000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+//загрузка фронтенд статики с помощью middleware
+if (process.env.NODE_ENV === "production") {
+  app.use("/", express.static(path.join(__dirname, "client", "build")));
+  //все остальные запросы отправляем на index.html
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+
+  PORT = config.portProduction || 5000;
+}
 
 async function start() {
   try {

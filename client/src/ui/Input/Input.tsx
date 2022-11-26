@@ -11,10 +11,12 @@ interface IInputProps {
   id?: string;
   placeholder?: string;
   ariaDescribedby?: string;
+  value?: string | number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   borderDefault?: string;
 }
 export function Input({
+  value,
   borderColor,
   type,
   name,
@@ -46,6 +48,7 @@ export function Input({
       aria-describedby={ariaDescribedby}
       onFocus={handleFocus}
       onBlur={handleBlur}
+      value={value}
       style={{ borderColor: color }}
     />
   );

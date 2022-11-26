@@ -99,3 +99,9 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ message: "Что-то пошло не так." });
   }
 };
+/**
+ * Получаем объект товара по его id
+ * @param {*} id - товара
+ * @returns - объект товара
+ */
+export const getProductById = async (id) => await Product.findById(id).exec();

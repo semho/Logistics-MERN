@@ -103,3 +103,11 @@ export const updateForwarder = async (req, res) => {
     res.status(500).json({ message: "Что-то пошло не так." });
   }
 };
+
+/**
+ * Получаем объект ответственного по его id
+ * @param {*} id - ответственного
+ * @returns - объект ответственного
+ */
+export const getForwarderById = async (id) =>
+  await Forwarder.findById(id).exec();

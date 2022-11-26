@@ -6,8 +6,10 @@ export function useShowError(error: unknown) {
   const message = useMessage();
   //показываем ошибки, если есть
   useEffect(() => {
-    setErrorRecord((error as Error).message);
-    error && message(errorRecord, "error");
+    if (error !== undefined) {
+      setErrorRecord((error as Error).message);
+      error && message(errorRecord, "error");
+    }
   }, [error, errorRecord, message]);
   //удаляем ошибки
   useEffect(() => {

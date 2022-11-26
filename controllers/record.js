@@ -1,7 +1,7 @@
 import Record from "../models/Record.js";
-import Product from "../models/Product.js";
-import Forwarder from "../models/Forwarder.js";
-import Organization from "../models/Organization.js";
+import { getProductById } from "./settings.product.js";
+import { getOrganizationById } from "./settings.organization.js";
+import { getForwarderById } from "./settings.forwarder.js";
 /**
  * Создание записи
  * @param {*} req
@@ -44,12 +44,10 @@ export const createRecord = async (req, res) => {
       });
 
       const record = await newRecord.save();
-      const from = await Organization.findById(
-        record.fromOrganization_id
-      ).exec();
-      const to = await Organization.findById(record.toOrganization_id).exec();
-      const product = await Product.findById(record.product_id).exec();
-      const forwarder = await Forwarder.findById(record.forwarder_id).exec();
+      const from = await getOrganizationById(record.fromOrganization_id);
+      const to = await getOrganizationById(record.toOrganization_id);
+      const product = await getProductById(record.product_id);
+      const forwarder = await getForwarderById(record.forwarder_id);
 
       const convertedRecord = async () => {
         return {
@@ -85,15 +83,13 @@ export const getRecords = async (req, res) => {
       //проходимся по ним циклом
       const records = result.map(async (record) => {
         //в цикле получаем по id запись товара
-        const product = await Product.findById(record.product_id).exec();
+        const product = await getProductById(record.product_id);
         //запись ответственного
-        const forwarder = await Forwarder.findById(record.forwarder_id).exec();
+        const forwarder = await getForwarderById(record.forwarder_id);
         //запись организации откуда везем
-        const from = await Organization.findById(
-          record.fromOrganization_id
-        ).exec();
+        const from = await getOrganizationById(record.fromOrganization_id);
         //запись организации куда везем
-        const to = await Organization.findById(record.toOrganization_id).exec();
+        const to = await getOrganizationById(record.toOrganization_id);
         //возвратим преобразованный объект в массив
         return {
           ...record._doc,

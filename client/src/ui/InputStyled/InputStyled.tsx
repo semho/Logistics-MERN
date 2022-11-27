@@ -11,6 +11,7 @@ interface IInputProps {
   id?: string;
   placeholder?: string;
   value?: string | number;
+  defaultValue?: string | number;
   min?: string;
   max?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -29,12 +30,14 @@ export function InputStyled({
   onKeyDown,
   min,
   max,
+  defaultValue,
 }: IInputProps) {
   return (
     <StyleInput
       onKeyDown={onKeyDown}
       onChange={onChange}
       value={value}
+      defaultValue={defaultValue}
       type={type}
       name={name}
       id={id}

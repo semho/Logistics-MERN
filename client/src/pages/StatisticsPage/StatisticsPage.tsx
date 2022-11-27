@@ -16,9 +16,6 @@ export function StatisticsPage() {
 
   useEffect(() => {
     if (listRecord.length > 0) {
-      setAvgPriceState(
-        listRecord.reduce((acc, cur) => acc + cur.price, 0) / listRecord.length
-      );
       setMinPriceRecord(
         listRecord.reduce(function (res, obj) {
           return obj.price < res.price ? obj : res;
@@ -29,9 +26,13 @@ export function StatisticsPage() {
           return obj.price > res.price ? obj : res;
         })
       );
+      setAvgPriceState(
+        listRecord.reduce((acc, cur) => Number(acc) + Number(cur.price), 0) /
+          listRecord.length
+      );
       setIsRecords(true);
     }
-  }, [listRecord]);
+  }, [listRecord, maxPriceRecord, minPriceRecord]);
 
   return (
     <>

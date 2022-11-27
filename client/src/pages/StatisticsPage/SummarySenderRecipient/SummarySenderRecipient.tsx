@@ -230,7 +230,7 @@ export function SummarySenderRecipient() {
                 id="start-date"
                 min="2021-01-01"
                 max={yesterday}
-                value={firstDayYear}
+                defaultValue={firstDayYear}
               />
             </div>
           )}
@@ -245,7 +245,7 @@ export function SummarySenderRecipient() {
                 id="end-date"
                 min="2021-01-01"
                 max={today}
-                value={today}
+                defaultValue={today}
               />
             </div>
           )}

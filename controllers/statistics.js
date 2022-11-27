@@ -200,10 +200,23 @@ export const shipArrivalProductsDateInterval = async (req, res) => {
         dateEnd,
       } = req.body;
 
+      const parseDateEnd = dateEnd.split("-");
+
+      const dateEndAtEndOfDay = new Date(
+        Date.UTC(
+          parseDateEnd[0],
+          parseDateEnd[1] - 1,
+          parseDateEnd[2],
+          23,
+          59,
+          59
+        )
+      );
+
       const objQuery = {
         date: {
           $gte: dateStart,
-          $lte: dateEnd,
+          $lte: dateEndAtEndOfDay,
         },
 
         fromOrganization_id: organizationFrom_id,

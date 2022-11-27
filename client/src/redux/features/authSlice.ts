@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { IUser } from "../../models/User";
 import * as api from "../api";
@@ -48,7 +47,7 @@ export const login = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -63,7 +62,7 @@ export const register = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );

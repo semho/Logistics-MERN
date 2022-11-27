@@ -1,4 +1,3 @@
-import axios from "axios";
 import { IRecord } from "../models/Record";
 import { ISettingsForwarder } from "../models/settings/Forwarder";
 import { ISettingsOrganization } from "../models/settings/Organization";
@@ -7,10 +6,8 @@ import { IUser } from "../models/User";
 import { Api } from "../service/interceptors";
 
 //авторизация/регистрация
-export const signIn = (formData: IUser) =>
-  axios.post("/api/auth/login", formData);
-export const signUp = (formData: IUser) =>
-  axios.post("/api/auth/register", formData);
+export const signIn = (formData: IUser) => Api.post("/auth/login", formData);
+export const signUp = (formData: IUser) => Api.post("/auth/register", formData);
 //запросы на записи для таблицы
 export const allRecords = (token: string) =>
   Api.get("/records/", {

@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { IListRecords, IRecord } from "../../models/Record";
 import * as api from "../api";
@@ -46,7 +45,7 @@ export const updateRecord = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -65,7 +64,7 @@ export const deleteRecord = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -88,7 +87,7 @@ export const createRecord = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -103,7 +102,7 @@ export const getRecords = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );

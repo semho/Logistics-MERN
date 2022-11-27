@@ -53,7 +53,14 @@ export const createOrganization = async (req, res) => {
 
       //проверка на существование дубля ИНН или Телефона
       const existRecord = await Organization.find({
-        $or: [{ INN: INN }, { phone: phone }],
+        $and: [
+          {
+            $or: [{ INN: INN }, { phone: phone }],
+          },
+          {
+            owner: req.user.userId,
+          },
+        ],
       });
 
       if (!!existRecord && existRecord.length > 0)

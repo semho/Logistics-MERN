@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import * as api from "../api";
-import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import {
   ISettingsProduct,
@@ -81,7 +80,7 @@ export const updateOrganization = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -104,7 +103,7 @@ export const updateProduct = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -127,7 +126,7 @@ export const updateForwarder = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -146,7 +145,7 @@ export const deleteOrganization = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -165,7 +164,7 @@ export const deleteProduct = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -184,7 +183,7 @@ export const deleteForwarder = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -207,7 +206,7 @@ export const createOrganization = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -230,7 +229,7 @@ export const createProduct = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -253,7 +252,7 @@ export const createForwarder = createAsyncThunk(
       }
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -268,7 +267,7 @@ export const getOrganizations = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -283,7 +282,7 @@ export const getProducts = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -298,7 +297,7 @@ export const getForwarders = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      return rejectWithValue((error as AxiosError).response?.data);
+      return rejectWithValue(error);
     }
   }
 );
@@ -316,10 +315,12 @@ const setLoader = (state: IStoreSettings) => {
 const setEmptyError = (state: IStoreSettings) => {
   state.statusSettings.error = "";
 };
-
-const deleteLoader = (state: IStoreSettings) => {
-  state.statusSettings.loading = false;
-};
+/**
+ * TODO:раскомментировать, если потребуется лоадер. В extraReducers так же потребуется раскомментировать
+ */
+// const deleteLoader = (state: IStoreSettings) => {
+//   state.statusSettings.loading = false;
+// };
 
 const settingsSlice = createSlice({
   name: "tablesSettings",
